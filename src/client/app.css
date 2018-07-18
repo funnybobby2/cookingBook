@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  background: #303030;
+  background: #303030 url(./assets/img/background.png) repeat;
   height: calc(100% - 16px);
   display: flex;
   flex: 1;
