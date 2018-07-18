@@ -1,0 +1,75 @@
+.meats {
+  position: relative;
+  top: -10px;
+  left: 46px;
+  height: 140px;
+  width: 100px;
+  img {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    background: #202020;
+    clip-path: circle(50px at center);
+    &.firstMeat, &.secondMeat, &.thirdMeat, &.fourthMeat, &.fifthMeat, &.sixthMeat, &.seventhMeat, &.eightMeat, &.nineMeat {
+      z-index: 1;
+      top: 40px;
+      left: 40px;
+      opacity: 0;
+      transition: all 0.4s;
+      clip-path: circle(20px at center);
+    }
+    &.firstMeat:hover, &.secondMeat:hover, &.thirdMeat:hover, &.fourthMeat:hover, &.fifthMeat:hover, &.sixthMeat:hover, &.seventhMeat:hover, &.eightMeat:hover, &.nineMeat:hover {
+      cursor: pointer;
+    }
+    &.firstMeat.disable, &.secondMeat.disable, &.thirdMeat.disable, &.fourthMeat.disable, &.fifthMeat.disable, &.sixthMeat.disable, &.seventhMeat.disable, &.eightMeat.disable, &.nineMeat.disable {
+      opacity: 0.3 !important;
+      cursor: default;
+    }
+    &.firstMeat.visibleImg {
+      top: -16px;
+      left: 85px;
+      opacity: 1;
+    }
+    &.secondMeat.visibleImg {
+      top: 19px;
+      left: 107px;
+      opacity: 1;
+    }
+    &.thirdMeat.visibleImg {
+      top: 60px;
+      left: 108px;
+      opacity: 1;
+    }
+    &.fourthMeat.visibleImg {
+      top: 95px;
+      left: 85px;
+      opacity: 1;
+    }
+    &.fifthMeat.visibleImg {
+      top: 111px;
+      left: 46px;
+      opacity: 1;
+    }
+    &.sixthMeat.visibleImg {
+      top: 102px;
+      left: 5px;
+      opacity: 1;
+    }
+    &.seventhMeat.visibleImg {
+      top: 70px;
+      left: -23px;
+      opacity: 1;
+    }
+    &.eightMeat.visibleImg {
+      top: 28px;
+      left: -32px;
+      opacity: 1;
+    }
+    &.nineMeat.visibleImg {
+      top: -11px;
+      left: -13px;
+      opacity: 1;
+    }
+  }
+}

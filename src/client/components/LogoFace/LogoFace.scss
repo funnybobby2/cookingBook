@@ -1,0 +1,31 @@
+.logoFace {
+  text-align: center;
+  font-family: 'Lobster',cursive;
+  margin-top: -27px;
+  .websiteTitle {
+    margin-top: -129px;
+    position: absolute;
+    color: #fff;
+    font-size: 34px;
+    margin-left: 105px;
+  }
+  .neon {
+    margin-top: -38px;
+    margin-left: 3px;
+    .text-neon {
+      font-size: 23px;
+      padding-right: 5px;
+      color: #fff;
+      text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 4px #01a0ec, 0 0 6px #01a0ec, 0 0 8px #01a0ec, 0 0 11px #01a0ec, 0 0 15px #01a0ec;
+      &.text2 {
+        animation: neon 1s ease-in-out 3 alternate;
+        padding-left: 7px;
+      }
+    }
+    i:hover {
+      cursor: pointer;
+      color: #01a0ec;
+      text-shadow: none;
+    }
+  }
+}

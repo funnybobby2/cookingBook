@@ -1,0 +1,14 @@
+.topBarItem {
+  padding: 3px 10px;
+  &:hover {
+    cursor: pointer;
+    background: #009EE0;
+    border-radius: 4px;
+  }
+  &.selected {
+    cursor: pointer;
+    background: #bee000;
+    border-radius: 4px;
+    color: #202020;
+  }
+}

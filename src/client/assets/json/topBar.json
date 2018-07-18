@@ -1,0 +1,36 @@
+{
+	"topBarItems": [{
+    "title": "Apéros",
+    "order": 1,
+		"actionKey": "aperitif"
+	}, {
+    "title": "Entrées",
+    "order": 2,
+		"actionKey": "entree"
+	}, {
+    "title": "Plats",
+    "order": 3,
+		"actionKey": "plat"
+	}, {
+    "title": "Desserts",
+    "order": 4,
+		"actionKey": "dessert"
+	}, {
+    "title": "Boissons",
+    "order": 5,
+		"actionKey": "boisson"
+	}, {
+    "title": "Autres",
+    "order": 6,
+		"actionKey": "autre"
+  },{
+    "title": "Tous",
+    "order": 7,
+		"actionKey": "all"
+  },
+  {
+    "title": "Astuces",
+    "order": 8,
+		"actionKey": "astuce"
+  }]
+}

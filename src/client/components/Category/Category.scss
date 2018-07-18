@@ -1,0 +1,49 @@
+
+.editionCategory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  img {
+    flex: 1 1 0;
+  }
+  span {
+    color: #424242;
+    font-weight: bolder;
+    font-size: 30px;
+    font-family: 'luckiest guy';
+    letter-spacing: 1px;
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    i{
+      display: none;
+    }
+    &.edition i{
+      display: block;
+    }
+    i:hover{
+      cursor: pointer;
+      color: #009ee0;
+    }
+    i.before {
+      transform: rotate(180deg);
+    }
+    &:first-letter {
+      text-transform: uppercase;
+    }
+    &.editButton {
+      color: #424242;
+      i:hover {
+        cursor: pointer;
+        color: #009ee0;
+      }
+    }
+    div {
+      display: inline-block;
+      width: 135px;
+      text-align: center;
+    }
+  }
+}

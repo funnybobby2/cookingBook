@@ -1,0 +1,28 @@
+.content {
+  min-width: calc(100% - 320px);
+  display: flex;
+  flex-direction: column;
+}
+
+.recipesZone {
+  background: #202020;
+  flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe {
+  background: #202020;
+  flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  overflow-x: hidden;
+}
