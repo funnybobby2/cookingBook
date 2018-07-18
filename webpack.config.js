@@ -1,23 +1,24 @@
 const Path = require('path');
-var fs = require('fs') // file system interaction
-const webpack = require('webpack')
-const rimraf = require('rimraf')
-const uglifyJSPlugin = require('uglifyjs-webpack-plugin') // to minify and obfuscate
+const fs = require('fs'); // file system interaction
+const webpack = require('webpack');
+const rimraf = require('rimraf');
+const uglifyJSPlugin = require('uglifyjs-webpack-plugin'); // to minify and obfuscate
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin'); // to clean the output directory with each build
-const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // replace extractTextPlugin not available with webpack 4
-const ManifestPlugin = require('webpack-manifest-plugin') // cache management
-const dev = process.env.NODE_ENV === 'dev' // get the value of the environment variable NODE_ENV
+const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // replace extractTextPlugin not available with webpack 4
+const ManifestPlugin = require('webpack-manifest-plugin');
+// cache management
+const dev = process.env.NODE_ENV === 'dev'; // get the value of the environment variable NODE_ENV
 
 // output folder
 const outputDirectory = 'dist';
 if (fs.existsSync(outputDirectory)) { // If it exists, remove the content to start fresh
-  rimraf.sync(outputDirectory + '/**')
+  rimraf.sync(`${outputDirectory }/**`);
 } else { // Otherwise, we create it on the fly
-  fs.mkdirSync(outputDirectory)
+  fs.mkdirSync(outputDirectory);
 }
 
-let cssLoaders = [
+const cssLoaders = [
   'style-loader',
   {
     loader: 'css-loader',
@@ -26,22 +27,22 @@ let cssLoaders = [
       minimize: !dev
     }
   }
-]
+];
 
 if (!dev) {
   cssLoaders.push({
     loader: 'postcss-loader',
     options: {
-      plugins: (loader) => [
+      plugins: loader => [
         require('autoprefixer')({ // to auto-prefix css with -webkit- (for Chrome, Safari, ...), -moz- (for Firefox, Flock, ...), -o- (for Opera) or -ms- ( for Internet Explorer)
           browsers: ['last 2 versions', 'safari > 7', 'ie > 8']
         })
       ]
     }
-  })
+  });
 }
 
-let config = {
+const config = {
   // Entry point
   entry: {
     app: [
@@ -69,29 +70,29 @@ let config = {
         use: ['eslint-loader']
       },
       {
-         // all the js out of node_modules and dist passes by babel to make them readable by all the navigators
-         test: /\.(js|jsx)$/,
-         exclude: /(node_modules)/,
-         loader: ['react-hot-loader/webpack', 'babel-loader']
+        // all the js out of node_modules and dist passes by babel to make them readable by all the navigators
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules)/,
+        loader: ['react-hot-loader/webpack', 'babel-loader']
       },
       {
         test: /\.(scss|css)$/,
         use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: 'css-loader',
-              options: { sourceMap: true, importLoaders: 1 },
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true, importLoaders: 1 },
+          },
+          {
+            loader: 'sass-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')()],
+              sourceMap: true,
             },
-            {
-              loader: "sass-loader"
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: () => [require('autoprefixer')()],
-                sourceMap: true,
-              },
-            }
+          }
         ]
       },
       {
@@ -147,26 +148,26 @@ let config = {
   ],
   optimization: {
     splitChunks: {
-        chunks: "async",
-        minSize: 30000,
-        minChunks: 1,
-        maxAsyncRequests: 5,
-        maxInitialRequests: 3,
-        automaticNameDelimiter: '~',
-        name: true,
-        cacheGroups: {
-            vendors: {
-                test: /[\\/]node_modules[\\/]/,
-                priority: -10
-            },
-            default: {
-                minChunks: 2,
-                priority: -20,
-                reuseExistingChunk: true
-            }
+      chunks: 'async',
+      minSize: 30000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
         }
+      }
     }
   }
 };
 
-module.exports = config
+module.exports = config;
