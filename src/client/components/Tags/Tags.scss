@@ -1,0 +1,121 @@
+.tags {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding-bottom: 20px;
+  .tagsTitle {
+    font-weight: bolder;
+    color: whitesmoke;
+    padding: 10px;
+    font-size: 28px;
+    font-family: 'Amatic SC';
+    &:before, &:after {
+      content: " - ";
+      width: 100px;
+      height: 10px;
+    }
+  }
+  .tagsDisplay {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding-left: 30px;
+    width: calc(100% - 30px);
+    .tag {
+      background: #3d8eb9;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 4px;
+      color: #303030;
+      font-size: 12px;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+      padding: 1px 10px;
+      margin-right: 8px;
+      cursor: default;
+      font-weight: bold;
+      &:nth-child(2n) {
+        background: #de3f3e;
+      }
+      &:nth-child(3n) {
+        background: #97c224;
+      }
+      &:nth-child(4n) {
+        background: #f58220;
+      }
+      &:nth-child(5n) {
+        background: #9365b8;
+      }
+      span{
+        display: block;
+      }
+      input, i{
+        display: none;
+      }
+
+      &.edition{
+        display: flex;
+        align-items: center;
+        span{
+          display: none;
+        }
+        input{
+          display: block;
+          width: 80px;
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(0,0,0,0.3);
+          border-radius: 5px;
+          padding: 0 5px;
+          color: #202020;
+          font-style: italic;
+        }
+        i{
+          display: block;
+          &:hover{
+            color: #FFFFFF;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .tagAdd {
+      background: #eaeaea;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 4px;
+      color: #303030;
+      font-size: 12px;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+      padding: 1px 10px;
+      margin-right: 8px;
+      display: none;
+      cursor: default;
+      font-weight: bold;
+      transition: width 1s ease-in-out;
+      overflow: hidden;
+      input{
+        display: none;
+      }
+      &.edition{
+        display: flex;
+        &:hover{
+          color: #FFFFFF;
+          cursor: pointer;
+          background: #009EE0;
+        }
+        input.show{
+          display: block;
+          width: 80px;
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(0,0,0,0.3);
+          border-radius: 5px;
+          padding: 0 5px;
+          color: #202020;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+.loggingFace {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .loginBox {
+    display: flex;
+    i {
+      background-color: #363b41;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px 0px 0px 5px;
+      padding-top: 5px;
+      padding-left: 5px;
+      color: #606468;
+    }
+    input {
+      border-radius: 0px 5px 5px 0px;
+      border-color: transparent;
+      background-color: #3b4148;
+      padding-left: 5px;
+      color: #FFF;
+    }
+  }
+  .passwordBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 20px;
+    i {
+      background-color: #363b41;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px 0px 0px 5px;
+      padding-top: 5px;
+      padding-left: 5px;
+      color: #606468;
+    }
+    input {
+      border-radius: 0px 5px 5px 0px;
+      border-color: transparent;
+      background-color: #3b4148;
+      padding-left: 5px;
+      color: #FFF;
+    }
+  }
+  .notMember {
+    display: flex;
+    padding-top: 15px;
+    font-family: cursive;
+    font-size: 13px;
+    span {
+      color: #b7b6b6;
+      padding-right: 15px;
+    }
+    .link {
+      padding: 0;
+      text-decoration: underline;
+      color: #FFF;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

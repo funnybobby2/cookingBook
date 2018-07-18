@@ -1,0 +1,65 @@
+.prepaStep {
+  margin: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+  .indexStep {
+    border-radius: 50%;
+    background: #202020;
+    color: whitesmoke;
+    border: 3px solid #009ee0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    text-align: center;
+    align-items: center;
+    margin-right: 5px;
+    align-items: center;
+    cursor: pointer;
+    &.checked {
+      background: #97c224;
+      border: 3px solid #101010;
+      color: black;
+    }
+  }
+  .elementText {
+    color: whitesmoke;
+    font-family: 'Indie Flower';
+  }
+  .stepInput {
+    display: none;
+    width: 100%;
+    background: #424242;
+    border: 1px solid #545454;
+    color: #d2d0d0;
+    padding: 0 3px;
+    height: 28px;
+    border-radius: 5px;
+    font-style: italic;
+  }
+  .deleteStep{
+    display: none;
+    color: #d43322;
+    padding: 0 5px;
+    &:hover{
+      color: #009EE0;
+      cursor: pointer;
+    }
+  }
+
+  &.edition{
+    align-items: center;
+    
+    .elementText {
+      display: none;
+    }
+    .stepInput, .deleteStep{
+      display: block;
+    }
+  }
+}

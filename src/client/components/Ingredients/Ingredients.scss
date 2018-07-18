@@ -1,0 +1,129 @@
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  .ingredientsTitle {
+    font-weight: bolder;
+    color: whitesmoke;
+    padding: 10px;
+    font-size: 28px;
+    font-family: 'Amatic SC';
+    &:before, &:after {
+      content: " - ";
+      width: 100px;
+      height: 10px;
+    }
+  }
+  .ingredientList {
+    margin: 0;
+    max-width: 660px;
+    padding: 10px;
+    background-color: #191919;
+    border-radius: 6px;
+    li {
+      float: left;
+      width: 300px;
+      color: whitesmoke;
+      padding-right: 30px;
+      list-style-type: none;
+      font-family: 'Indie Flower';
+      white-space: nowrap;
+      &.edition{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .deleteIngredient{
+          color: #d43322;
+          padding: 0 5px;
+          &:hover{
+            color: #009EE0;
+            cursor: pointer;
+          }
+        }
+      }
+
+      input {
+        background: #424242;
+        border: 1px solid #545454;
+        color: #d2d0d0;
+        padding: 0 3px;
+        height: 20px;
+        border-radius: 5px;
+        font-style: italic;
+
+        &.ingredientInput.qte {
+          width: 25px;
+          margin-left: 5px;
+          margin-right: 5px;
+        }
+
+        &.ingredientInput.name {
+          flex: 1;
+          margin: 0 5px;
+        }
+      }
+    }
+  }
+}
+
+.ingredientAdd {
+  background: #eaeaea;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 4px;
+  color: #303030;
+  font-size: 12px;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+  padding: 1px 10px;
+  display: none;
+  cursor: default;
+  font-weight: bold;
+  transition: width 1s ease-in-out;
+  overflow: hidden;
+  input, .inputs{
+    display: none;
+  }
+  &.edition{
+    display: flex;
+    width: 20px;
+    justify-content: center;
+    border: 8px solid #191919;
+    border-radius: 0 0 5px 5px;
+    margin-top: -11px;
+
+    &:hover{
+      color: #FFFFFF;
+      cursor: pointer;
+      background: #009EE0;
+    }
+    &.show{
+      width: 655px;
+      .inputs{
+        display: flex;
+        flex: 1;
+        input{
+          display: block;
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(0,0,0,0.3);
+          border-radius: 5px;
+          padding: 0 5px;
+          color: #202020;
+          font-style: italic;
+          margin: 0 5px;
+          &.ingredientInput{
+            flex: 1;
+          }
+          &.quantityInput{
+            width: 50px;
+          }
+          &.unitInput{
+            width: 166px;
+          }
+        }
+      }
+    }
+  }
+}

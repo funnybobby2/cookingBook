@@ -1,0 +1,173 @@
+.foodImage {
+  text-align: center;
+  width: 300px;
+  position: relative;
+  img {
+    border: 3px solid white;
+    border-bottom: 6px solid white;
+  }
+  &:hover {
+    .deleter-recipe, .lover-recipe {
+      height: 25px;
+      width: 25px;
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  .deleter-recipe, .lover-recipe {
+    position: absolute;
+    transition: visibility 0s, opacity 0.5s linear;
+    height: 0px;
+    width: 0px;
+    background-color: #f15757;
+    color: #fff;
+    right: 72px;
+    border-top: 1px solid #ce0000;
+    border-right: 1px solid #ce0000;
+    border-bottom: 1px solid grey;
+    top: -1px;
+    line-height: 27px;
+    font-size: 23px;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.3s linear;
+  }
+  .deleter-recipe:hover, .lover-recipe:hover {
+    cursor: pointer;
+  }
+  .deleter-recipe:hover > i, .lover-recipe:hover > i {
+    color: #fff;
+  }
+  .deleter-recipe > i, .lover-recipe > i {
+    font-size: 20px;
+    margin-top: 0px;
+    margin-left: 4px;
+    color: #000;
+    position: absolute;
+    right: 0;
+  }
+  .deleter-recipe .corner {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 26px 0 0 26px;
+    border-color: transparent transparent transparent #f2f4f5;
+    position: absolute;
+    top: -1px;
+  }
+  .lover-recipe {
+    .corner {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 26px 0 0 26px;
+      border-color: transparent transparent transparent #f2f4f5;
+      position: absolute;
+      top: -1px;
+    }
+    background-color: #f773bc;
+    border-top: 1px solid #f00bff;
+    border-right: 1px solid #f00bff;
+  }
+
+  .times {
+    height: 160px;
+    display: inline-block;
+    width: 100px;
+    background: #1b1b1b;
+    position: absolute;
+  }
+  
+  .preparation, .cuisson, .repos, .nbPersonne {
+    height: 40px;
+    color: whitesmoke;
+    line-height: 40px;
+    padding-left: 30px;
+    font-family: 'Kavivanar';
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    span {
+      padding-left: 10px;
+    }
+  }
+  
+  .preparation i, .cuisson i, .repos i, .nbPersonne i {
+    display: none;
+  }
+  
+  .preparation {
+    border-bottom: 1px solid #202020;
+    position: relative;
+    img {
+      border: none;
+      position: absolute;
+      top: 7px;
+      left: 10px;
+    }
+  }
+  
+  .cuisson {
+    border-bottom: 1px solid #202020;
+    position: relative;
+  }
+  
+  .repos {
+    border-bottom: 1px solid #202020;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nbPersonne {
+    position: relative;
+    i {
+      border: none;
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      display: block;
+      font-size: 19px;
+    }
+  }
+
+  i.nbPersonUnit {
+    left: 77px;
+    color: whitesmoke;
+  }
+  
+  /************************ input ***********************/
+  
+  input.dureeInput {
+    background: #424242;
+    border: 1px solid #545454;
+    color: #d2d0d0;
+    padding: 0 3px;
+    height: 20px;
+    border-radius: 5px;
+    font-style: italic;
+    display: none;
+    width: 60px;
+    &#nbPerson{
+      width: 35px;
+    }
+  }
+
+  &.edition{
+    input.dureeInput {
+      display: block;
+    }
+
+    i.nbPersonUnit {
+      border: 1px solid #FFF;
+      &:hover{
+        color: #009EE0;
+        border: 1px solid #009EE0;
+        cursor: pointer;
+      }
+    }
+
+    .times span{
+      display: none;
+    }
+  }
+}

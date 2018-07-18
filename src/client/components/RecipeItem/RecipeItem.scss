@@ -1,0 +1,168 @@
+div.thumbnail {
+  height: 153px;
+  width: 156px;
+  position: relative;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: white;
+  &.animation-thumbnail {
+    -webkit-animation: jelly 1250ms linear both;
+    animation: jelly 1250ms linear both;
+  }
+  &:hover {
+    .deleter-recipe, .lover-recipe {
+      height: 25px;
+      width: 25px;
+      visibility: visible;
+      opacity: 1;
+    }
+    div.showRecipe {
+      height: 100px;
+      opacity: 0.7;
+      i, span {
+        opacity: 0.3;
+      }
+    }
+  }
+  &.checked:before {
+    content: url(../../assets/img/checked.png);
+    position: absolute;
+    right: -18px;
+    bottom: -14px;
+    z-index: 2;
+  }
+  > i {
+    position: absolute;
+    color: grey;
+    font-size: 100px !important;
+    padding: 25px;
+    z-index: -1;
+  }
+  div {
+    &.tape {
+      background: transparent url(../../assets/img/tape.png) no-repeat scroll 0 0;
+      height: 28px;
+      left: 50%;
+      margin-left: -37px;
+      position: absolute;
+      top: -11px;
+      width: 78px;
+      z-index: 1;
+    }
+    &.tape2 {
+      background: transparent url(../../assets/img/scotch.png) no-repeat scroll 0 0;
+      height: 28px;
+      left: 50%;
+      margin-left: -49px;
+      position: absolute;
+      top: 1px;
+      width: 103px;
+      z-index: 1;
+    }
+    &.nomPhoto {
+      height: 28px;
+      left: 50%;
+      margin-left: -78px;
+      padding: 2px 0;
+      position: absolute;
+      top: 153px;
+      width: 150px;
+      z-index: 1;
+      color: #524e65;
+      background: white;
+      font-weight: bold;
+      text-align: center;
+      padding-right: 3px;
+      padding-left: 3px;
+      font-family: 'Indie Flower', cursive;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .deleter-recipe, .lover-recipe {
+    position: absolute;
+    transition: visibility 0s, opacity 0.5s linear;
+    height: 0px;
+    width: 0px;
+    background-color: #f15757;
+    color: #fff;
+    right: -1px;
+    border-top: 1px solid #ce0000;
+    border-right: 1px solid #ce0000;
+    border-bottom: 1px solid grey;
+    top: 0px;
+    line-height: 27px;
+    font-size: 23px;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.3s linear;
+  }
+  .deleter-recipe:hover, .lover-recipe:hover {
+    cursor: pointer;
+  }
+  .deleter-recipe:hover > i, .lover-recipe:hover > i {
+    color: #fff;
+  }
+  .deleter-recipe > i, .lover-recipe > i {
+    font-size: 20px;
+    margin-top: 0px;
+    margin-left: 4px;
+    color: #000;
+    position: absolute;
+    right: 0;
+  }
+  .deleter-recipe .corner {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 26px 0 0 26px;
+    border-color: transparent transparent transparent #f2f4f5;
+    position: absolute;
+    top: -1px;
+  }
+  .lover-recipe {
+    .corner {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 26px 0 0 26px;
+      border-color: transparent transparent transparent #f2f4f5;
+      position: absolute;
+      top: -1px;
+    }
+    background-color: #f773bc;
+    border-top: 1px solid #f00bff;
+    border-right: 1px solid #f00bff;
+  }
+  div.showRecipe {
+    position: absolute;
+    width: 156px;
+    height: 1px;
+    background: #202020;
+    opacity: 0;
+    top: 30px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    span {
+      font-family: Raleway, Arial, Helvetica, sans-serif;
+    }
+    &:hover {
+      cursor: pointer;
+      i, span {
+        opacity: 1;
+      }
+    }
+  }
+}

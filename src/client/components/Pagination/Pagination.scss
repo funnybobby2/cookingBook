@@ -1,0 +1,57 @@
+#pagination {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  .pagination {
+    color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    div {
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .currentPage, .totalPages, input {
+      width: 40px;
+      border: 1px solid transparent;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .currentPage {
+    &:hover {
+      cursor: pointer;
+      border: 1px dashed #fff;
+    }
+    font-family: cursive;
+  }
+  .totalPages {
+    font-family: cursive;
+  }
+  .slash > i {
+    transform: rotate(-50deg);
+  }
+  #previous, #next, #firstPage, #lastPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  #previous > i, #next > i, #firstPage > i, #lastPage > i {
+    color: grey;
+    font-size: 36px;
+  }
+  #previous:hover > i, #next:hover > i, #firstPage:hover > i, #lastPage:hover > i {
+    color: #009ee0 !important;
+  }
+  &.showInput .pagination .currentPage, &.hideInput .pagination input {
+    display: none;
+  }
+}

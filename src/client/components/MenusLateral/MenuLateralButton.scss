@@ -1,0 +1,17 @@
+.menuLateralItem {
+  text-align: center;
+  height: 20px;
+  line-height: 20px;
+  padding: 10px 5px;
+  width: 120px;
+  margin-top: 10px;
+  color: whitesmoke;
+  background: #383838;
+  border-radius: 5px;
+  font-family: lobster;
+  flex: 1;
+  &:hover {
+    background: #009EE0;
+    cursor: pointer;
+  }
+}

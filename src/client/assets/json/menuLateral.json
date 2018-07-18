@@ -1,0 +1,52 @@
+{
+	"menus": [{
+		"title": "Apéro au hasard",
+		"actionKey": "aperitif"
+	}, {
+		"title": "Entrée au hasard",
+		"actionKey": "entree"
+	}, {
+		"title": "Plat au hasard",
+		"actionKey": "plat"
+	}, {
+		"title": "Dessert au hasard",
+		"actionKey": "dessert"
+	}, {
+		"title": "Boisson au hasard",
+		"actionKey": "boisson"
+	}, {
+		"title": "Liste des courses",
+		"actionKey": "courseListe"
+	}],
+	"filters":[{
+		"classe": "validate",
+		"title": "Toutes les recettes validées",
+		"type": "check_box",
+		"restricted": "recipesList"
+	},{
+		"classe": "new",
+		"title": "Toutes les nouvelles recettes",
+		"type": "fiber_new",
+		"restricted": "recipesList"
+	},{
+		"classe": "dislike",
+		"title": "Toutes les recettes jetées à la poubelle",
+		"type": "block",
+		"restricted": "recipesList"
+	},{
+		"classe": "print",
+		"title": "Imprimer la recette",
+		"type": "print",
+		"restricted": "oneRecipe"
+	},{
+		"classe": "validator",
+		"title": "Valider/invalider la recette",
+		"type": "done",
+		"restricted": "oneRecipe"
+	},{
+		"classe": "cart",
+		"title": "Ajouter à la liste des courses",
+		"type": "add_shopping_cart",
+		"restricted": "oneRecipe"
+	}]
+}
