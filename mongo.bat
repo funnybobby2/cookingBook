@@ -1,2 +1,2 @@
 TITLE MongoDB
-"C:\MongoDB\Server\3.4\bin\mongod.exe" --dbpath "C:\cookingBook\dataBase"
+"C:\mongodb\bin\mongod.exe" --dbpath "C:\Users\fmadene.KRONO64-PC\Desktop\perso\cookingBook\dataBase"
