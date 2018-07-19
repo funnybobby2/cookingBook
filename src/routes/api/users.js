@@ -7,7 +7,7 @@ module.exports = function (app) {
   app.get('/api/users', (req, res, next) => {
     User.find()
       .exec()
-      .then(users => res.json(users)) // return users in JSON format
+      .then(user => res.json(user))
       .catch(err => next(err));
   });
 

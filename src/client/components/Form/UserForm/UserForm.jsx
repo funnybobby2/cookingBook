@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // Import style
 import './UserForm.scss';
-// Import images
-import logo from '../../../assets/img/logoUser.png';
 
 
 class UserForm extends React.Component {
@@ -12,22 +10,25 @@ class UserForm extends React.Component {
 
     this.focusPassword = this.focusPassword.bind(this);
     this.focusEmail = this.focusEmail.bind(this);
+    this.valideUser = this.valideUser.bind(this);
+    this.closeForm = this.closeForm.bind(this);
   }
 
   valideUser() {
     // check if the login / password / email is not empty
     if ((this.userLogin.value === '') || (this.userPassword.value === '') || (this.userMail.value === '')) {
-      this.props.maestro.dataRefresh('addNotif', 'Vous devez remplir les champs Login / password et Email', 'error');
+      this.props.maestro.dataRefresh('addNotif', 'Vous devez remplir les champs Login, password et Email', 'error');
       return;
     }
     // check if the login always exist
-    if (this.props.usersLogin.include(this.userLogin.value)) {
+    if (this.props.usersLogin.includes(this.userLogin.value)) {
       this.props.maestro.dataRefresh('addNotif', 'Nous avons déjà un compte avec ce login veuillez choisir un autre login', 'error');
       return;
     }
 
     // check the email format
-    if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.userMail.value)) {
+    const regMail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regMail.test(this.userMail.value)) {
       this.props.maestro.dataRefresh('addNotif', 'Votre email est suspect, essayez un vrai pour voir !', 'error');
       return;
     }
@@ -53,36 +54,36 @@ class UserForm extends React.Component {
   }
 
   render() {
+    const containerClass = this.props.open ? 'formContainer show' : 'formContainer';
     return (
-      <div className="formContainer">
+      <div className={containerClass}>
         <div className="userForm">
-          <div className="logo">
-            <img alt="logoUser" src={logo} />
+          <div className="formTitle">Création de votre compte</div>
+          <div className="inputs">
+            <input
+              type="text"
+              name="login"
+              className="userInput"
+              placeholder="Login"
+              ref={input => this.userLogin = input}
+              onKeyPress={this.focusPassword}
+            />
+            <input
+              type="text"
+              name="password"
+              className="userInput"
+              placeholder="Password"
+              ref={input => this.userPassword = input}
+              onKeyPress={this.focusEmail}
+            />
+            <input
+              type="text"
+              name="email"
+              className="userInput"
+              placeholder="Email"
+              ref={input => this.userMail = input}
+            />
           </div>
-          <div>Création de votre compte</div>
-          <input
-            type="text"
-            name="login"
-            className="userInput"
-            placeholder="Login"
-            ref={input => this.userLogin = input}
-            onKeyPress={this.focusPassword}
-          />
-          <input
-            type="text"
-            name="password"
-            className="userInput"
-            placeholder="Password"
-            ref={input => this.userPassword = input}
-            onKeyPress={this.focusEmail}
-          />
-          <input
-            type="text"
-            name="email"
-            className="userInput"
-            placeholder="Email"
-            ref={input => this.userMail = input}
-          />
           <div className="buttons">
             <button className="validUser" onClick={this.valideUser}>Valider</button>
             <button className="closeUser" onClick={this.closeForm}>Annuler</button>
@@ -93,11 +94,13 @@ class UserForm extends React.Component {
 }
 
 UserForm.propTypes = {
+  open: PropTypes.bool,
   usersLogin: PropTypes.arrayOf(PropTypes.string),
   maestro: PropTypes.object
 };
 
 UserForm.defaultProps = { // define the default props
+  open: false,
   usersLogin: [],
   maestro: { dataRefresh: () => {} }
 };
