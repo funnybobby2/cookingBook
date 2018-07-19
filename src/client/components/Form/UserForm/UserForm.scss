@@ -1,0 +1,22 @@
+.formContainer{
+  display: none;
+  &.show {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .userForm{
+      z-index: 1;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      width: 350px;
+      height: 350px;
+      background: #c3e2e5;
+      border-radius: 10px;
+      padding: 30px;
+    }
+  }
+}
