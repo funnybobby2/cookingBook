@@ -1,0 +1,33 @@
+.notif {
+  position: absolute;
+  height: 0px;
+  overflow: hidden;
+  width: calc(100% - 15px);
+  background: transparent;
+  bottom: 0;
+  z-index: 1;
+  color: #FFFFFF;
+  transition:all 1s ease;
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  font-family: Indie Flower,cursive;
+  &.showNotif{
+    height: 35px;
+  }
+  &.info{
+    background: #47a8f5;
+  }
+  &.success{
+    background: #6bbd6e;
+  }
+  &.warning{
+    background: #ffaa2c;
+  }
+  &.error{
+    background: #f66359;
+  }
+}

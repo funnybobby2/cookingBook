@@ -4,6 +4,7 @@ import axios from 'axios'; // to manage REST API
 // Import react components
 import LeftPart from './components/LeftPart/LeftPart';
 import Content from './components/Content/Content';
+import Notification from './components/Notification/Notification';
 // import services
 import { maestro } from './js/services/maestro';
 // Import style
@@ -60,20 +61,26 @@ export default class App extends Component {
   }
 
   componentWillMount() {
+    // users
+    maestro.addListener('createUserRequest', 'app', this.createUserRequest.bind(this));
     maestro.addListener('connect', 'app', this.connect.bind(this));
+    maestro.addListener('unconnect', 'app', this.unconnect.bind(this));
+    // recipes
     maestro.addListener('deleteRecipe', 'app', this.deleteRecipe.bind(this));
-    maestro.addListener('goTo', 'app', this.goTo.bind(this));
     maestro.addListener('randomRecipeOrCart', 'app', this.randomRecipeOrCart.bind(this));
     maestro.addListener('selectCategory', 'app', this.selectCategory.bind(this));
     maestro.addListener('searchRecipes', 'app', this.searchRecipes.bind(this));
     maestro.addListener('showRecipe', 'app', this.showRecipe.bind(this));
     maestro.addListener('toggleFilter', 'app', this.toggleFilter.bind(this));
-    maestro.addListener('unconnect', 'app', this.unconnect.bind(this));
     maestro.addListener('updateSimpleField', 'app', this.updateSimpleField.bind(this));
     maestro.addListener('updateArrayField', 'app', this.updateArrayField.bind(this));
     maestro.addListener('deleteArrayField', 'app', this.deleteArrayField.bind(this));
-    maestro.addListener('addNotif', 'app', this.addNotif.bind(this));
     maestro.addListener('addArrayField', 'app', this.addArrayField.bind(this));
+    // navigations
+    maestro.addListener('goTo', 'app', this.goTo.bind(this));
+    // notifications
+    maestro.addListener('addNotif', 'app', this.addNotif.bind(this));
+    // comments
     maestro.addListener('addComment', 'app', this.addComment.bind(this));
     maestro.addListener('deleteComment', 'app', this.deleteComment.bind(this));
 
@@ -93,6 +100,8 @@ export default class App extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
+  // -------------------------- Comments --------------------------------
+
   addComment(recipeID, comment, user) {
     axios.put(`/api/recipes/addComment/${recipeID}`, { comment, user }, { upsert: true })
       .then((res) => {
@@ -106,6 +115,8 @@ export default class App extends Component {
         this.setState({ currentRecipe: res.data });
       });
   }
+
+  // -------------------------- Notifications --------------------------------
 
   clearNotif() {
     this.setState({
@@ -127,6 +138,12 @@ export default class App extends Component {
   closeNotifByEsc(e) {
     if (e.key !== 'Esc') return;
     this.setState({ notif: { text: '', state: 'info' } });
+  }
+
+  // -------------------------- Users --------------------------------
+
+  createUserRequest() {
+    this.addNotif('En cours de développement !', 'info');
   }
 
   connect(login, password) {
@@ -153,6 +170,26 @@ export default class App extends Component {
         }
       })
       .catch(() => { this.addNotif(`Utilisateur ${login} je suis désolé mais vous n'existez pas, du moins avec ce login/mot de passe !`, 'error'); });
+  }
+
+  // UNCONNECT the user
+  async unconnect() {
+    this.setState({
+      user: undefined,
+      filters: {
+        validated: false,
+        new: false,
+        dislike: false
+      },
+      recipes: await getFilteredRecipes(
+        this.state.category,
+        false,
+        false,
+        false,
+        this.state.query,
+        undefined
+      )
+    });
   }
 
   async updateDimensions() {
@@ -420,26 +457,6 @@ export default class App extends Component {
       });
   }
 
-  // UNCONNECT the user
-  async unconnect() {
-    this.setState({
-      user: undefined,
-      filters: {
-        validated: false,
-        new: false,
-        dislike: false
-      },
-      recipes: await getFilteredRecipes(
-        this.state.category,
-        false,
-        false,
-        false,
-        this.state.query,
-        undefined
-      )
-    });
-  }
-
   render() {
     const currentUser = this.state.user;
     const recips = this.state.recipes;
@@ -449,7 +466,6 @@ export default class App extends Component {
     const curPage = this.state.currentPage;
     const totPages = this.state.nbTotalPages;
     const numberOfItems = getNbTotalPages(recips.length).nbItems;
-    const notifShow = (this.state.notif.text !== '') ? `showNotif notif ${this.state.notif.state}` : 'notif';
 
     return (
       <div className="cookingBook">
@@ -470,9 +486,7 @@ export default class App extends Component {
           nbItemPerPage={numberOfItems}
           maestro={maestro}
         />
-        <div className={notifShow}>
-          <span>{this.state.notif.text}</span>
-        </div>
+        <Notification text={this.state.notif.text} state={this.state.notif.state} />
       </div>
     );
   }

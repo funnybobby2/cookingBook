@@ -8,12 +8,16 @@ class LoggingFace extends React.Component {
     super(props);
     this.tapePassword = this.tapePassword.bind(this);
     this.connect = this.connect.bind(this);
+    this.createUserRequest = this.createUserRequest.bind(this);
   }
 
   tapePassword(e) {
     if (e.key === 'Enter') {
       this.password.focus();
     }
+  }
+  createUserRequest() {
+    this.props.maestro.dataRefresh('createUserRequest');
   }
 
   connect(e) {
@@ -47,7 +51,7 @@ class LoggingFace extends React.Component {
         </div>
         <div className="notMember">
           <span>Pas membres ?</span>
-          <span className="link"> Créer un compte </span>
+          <span className="link" onClick={this.createUserRequest}> Créer un compte </span>
         </div>
       </div>);
   }
