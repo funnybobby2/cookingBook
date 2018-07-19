@@ -3,6 +3,14 @@ const User = require('../../models/User');
 // ///////////////// USERS API //////////////////// //
 
 module.exports = function (app) {
+  // get users
+  app.get('/api/users', (req, res, next) => {
+    User.find()
+      .exec()
+      .then(user => res.json(user))
+      .catch(err => next(err));
+  });
+
   // get a user
   app.get('/api/users/:login/:password', (req, res, next) => {
     // Pour récupérer le user avec ce login et ce password

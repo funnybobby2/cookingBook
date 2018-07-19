@@ -5,6 +5,7 @@ import axios from 'axios'; // to manage REST API
 import LeftPart from './components/LeftPart/LeftPart';
 import Content from './components/Content/Content';
 import Notification from './components/Notification/Notification';
+import UserForm from './components/Form/UserForm/UserForm';
 // import services
 import { maestro } from './js/services/maestro';
 // Import style
@@ -45,6 +46,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       user: undefined,
+      usersLogin: [],
+      openUserForm: false,
       currentRecipe: undefined,
       recipes: [],
       searchQuery: '',
@@ -63,6 +66,8 @@ export default class App extends Component {
   componentWillMount() {
     // users
     maestro.addListener('createUserRequest', 'app', this.createUserRequest.bind(this));
+    maestro.addListener('createUser', 'app', this.createUser.bind(this));
+    maestro.addListener('closeUserCreation', 'app', this.closeUserCreation.bind(this));
     maestro.addListener('connect', 'app', this.connect.bind(this));
     maestro.addListener('unconnect', 'app', this.unconnect.bind(this));
     // recipes
@@ -85,12 +90,16 @@ export default class App extends Component {
     maestro.addListener('deleteComment', 'app', this.deleteComment.bind(this));
 
     axios.get('/api/recipes')
-      .then((res) => {
-        this.setState({
-          recipes: res.data,
-          nbTotalPages: getNbTotalPages(res.data.length).nbPages,
-          currentPage: 1
-        });
+      .then((resRecipes) => {
+        axios.get('/api/users')
+          .then((resUsers) => {
+            this.setState({
+              recipes: resRecipes.data,
+              nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
+              currentPage: 1,
+              usersLogin: resUsers.data.map(u => u.login)
+            });
+          });
       });
 
     window.addEventListener('resize', this.updateDimensions.bind(this));
@@ -143,7 +152,17 @@ export default class App extends Component {
   // -------------------------- Users --------------------------------
 
   createUserRequest() {
+    this.setState({ openUserForm: true });
+  }
+
+  createUser(login, password, email) {
+    console.log(login, password, email);
     this.addNotif('En cours de développement !', 'info');
+    this.setState({ openUserForm: false });
+  }
+
+  closeUserCreation() {
+    this.setState({ openUserForm: false });
   }
 
   connect(login, password) {
@@ -165,6 +184,8 @@ export default class App extends Component {
             nbTotalPages: getNbTotalPages(recipes.length).nbPages,
             currentPage: 1
           });
+
+          this.addNotif(`Connexion réussie ${login} !`, 'success');
         } else {
           this.addNotif(`Utilisateur ${login} je suis désolé mais vous n'existez pas, du moins avec ce login/mot de passe !`, 'error');
         }
@@ -466,6 +487,7 @@ export default class App extends Component {
     const curPage = this.state.currentPage;
     const totPages = this.state.nbTotalPages;
     const numberOfItems = getNbTotalPages(recips.length).nbItems;
+    const users = this.state.usersLogin;
 
     return (
       <div className="cookingBook">
@@ -487,6 +509,7 @@ export default class App extends Component {
           maestro={maestro}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
+        <UserForm usersLogin={users} open={this.state.openUserForm} maestro={maestro} />
       </div>
     );
   }
