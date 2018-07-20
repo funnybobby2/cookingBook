@@ -30,6 +30,12 @@
     font-weight: bolder;
     font-size: 22px;
     font-family: 'Indie Flower', cursive;
+    mark {
+      border-radius: 3px;
+      background-color: #ffa200;
+      font-weight: bold;
+      padding: 0 2px;
+    }
   }
   .recipeEditor {
     background: #636262;

@@ -48,10 +48,10 @@ class Ingredients extends React.Component {
     const ingredients = this.state.inputIngredientsValue;
 
     ingredients.forEach((ingr, index) => {
+      const ingredientAfterSearch = (this.props.query.length > 2) ? ingr.ingredient.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : ingr.ingredient;
+      const ingrTextAfterSearch = ((ingr.quantity !== '') || (ingr.unit !== '')) ? `- ${ingredientAfterSearch} : ${ingr.quantity} ${ingr.unit}` : `- ${ingredientAfterSearch}`;
       if (!this.props.edition) {
-        if ((ingr.quantity !== '') || (ingr.unit !== '')) {
-          ingredientList.push(<li key={index}>- {ingr.ingredient} : {ingr.quantity} {ingr.unit} </li>);
-        } else ingredientList.push(<li key={index}>- {ingr.ingredient}</li>);
+        ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
         ingredientList.push(<li key={index} className="edition">- <input
           className="ingredientInput name"
@@ -76,7 +76,7 @@ class Ingredients extends React.Component {
             onKeyPress={this.editFieldByEnter.bind(this, 'unit', index)}
           />
           <i className="deleteIngredient material-icons" onClick={() => { this.deleteIngredient(index, ingr.index); }}>delete_forever</i>
-        </li>);
+                            </li>);
       }
     });
 
@@ -95,6 +95,7 @@ Ingredients.propTypes = {
   ingredientList: PropTypes.array,
   recipeID: PropTypes.number,
   edition: PropTypes.bool,
+  query: PropTypes.string,
   maestro: PropTypes.object
 };
 
@@ -102,6 +103,7 @@ Ingredients.defaultProps = { // define the default props
   ingredientList: [],
   recipeID: 1,
   edition: false,
+  query: '',
   maestro: { dataRefresh: () => {} }
 };
 

@@ -70,6 +70,8 @@ class TopRecipe extends React.Component {
           </div>))
       : <span />;
 
+    const titleAfterSearch = (this.props.query.length > 2) ? this.props.recipeTitle.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : this.props.recipeTitle;
+
     const titleRecipe = (edition
       ? (<input
         onKeyPress={this.editTitleByEnter}
@@ -82,7 +84,7 @@ class TopRecipe extends React.Component {
         type="text"
         value={this.state.inputValue}
       />)
-      : (<div className="recipeTitle">{this.props.recipeTitle}</div>));
+      : (<div className="recipeTitle" dangerouslySetInnerHTML={{ __html: titleAfterSearch }} />));
 
     return (
       <div className="topRecipe">
@@ -108,6 +110,7 @@ TopRecipe.propTypes = {
     role: PropTypes.oneOf(['admin', 'user']),
     email: PropTypes.string
   }),
+  query: PropTypes.string,
   maestro: PropTypes.object
 };
 
@@ -119,6 +122,7 @@ TopRecipe.defaultProps = { // define the default props
   user: {
     _id: '', login: '', password: '', role: 'user', email: ''
   },
+  query: '',
   maestro: { dataRefresh: () => {} }
 };
 

@@ -24,6 +24,12 @@
     align-self: flex-start;
     margin-left: 20px;
     width: calc(100% - 40px);
+    mark {
+      border-radius: 3px;
+      background-color: #ffa200;
+      font-weight: bold;
+      padding: 0 2px;
+    }
     input {
       display: none;
     }
