@@ -48,13 +48,14 @@ class Step extends React.Component {
   render() {
     const checkClass = this.state.checked ? 'indexStep checked' : 'indexStep';
     const editionClass = this.props.edition ? 'prepaStep edition' : 'prepaStep';
+    const stepAfterSearch = (this.props.query.length > 2) ? this.props.text.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : this.props.text;
 
     return (
       <div className={editionClass}>
         <div className={checkClass} onClick={this.toggleCheck}>
           {this.props.index}
         </div>
-        <span className="elementText">{this.props.text}</span>
+        <span className="elementText" dangerouslySetInnerHTML={{ __html: stepAfterSearch }} />
         <input
           className="stepInput"
           name="step"
@@ -74,6 +75,7 @@ Step.propTypes = {
   text: PropTypes.string,
   edition: PropTypes.bool,
   recipeID: PropTypes.number,
+  query: PropTypes.string,
   maestro: PropTypes.object
 };
 
@@ -82,6 +84,7 @@ Step.defaultProps = { // define the default props
   text: '',
   edition: false,
   recipeID: 1,
+  query: '',
   maestro: { dataRefresh: () => {} }
 };
 

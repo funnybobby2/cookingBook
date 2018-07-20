@@ -30,6 +30,12 @@
   .elementText {
     color: whitesmoke;
     font-family: 'Indie Flower';
+    mark {
+      border-radius: 3px;
+      background-color: #ffa200;
+      font-weight: bold;
+      padding: 0 2px;
+    }
   }
   .stepInput {
     display: none;
@@ -54,7 +60,7 @@
 
   &.edition{
     align-items: center;
-    
+
     .elementText {
       display: none;
     }

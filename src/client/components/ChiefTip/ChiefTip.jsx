@@ -26,12 +26,13 @@ class ChiefTip extends React.Component {
 
   render() {
     const editClass = this.props.edition ? 'chiefTipContent isEdited' : 'chiefTipContent';
+    const tipAfterSearch = (this.props.query.length > 2) ? this.props.tip.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : this.props.tip;
 
     return (
       <div className="chiefTip">
         <div className="chiefTipTitle">L{'\''}astuce du chef</div>
         <div className={editClass}>
-          <span>{this.props.tip}</span>
+          <span dangerouslySetInnerHTML={{ __html: tipAfterSearch }} />
           <input
             name="tip"
             id="tip"
@@ -51,6 +52,7 @@ ChiefTip.propTypes = {
   tip: PropTypes.string,
   edition: PropTypes.bool,
   recipeID: PropTypes.number,
+  query: PropTypes.string,
   maestro: PropTypes.object
 };
 
@@ -58,6 +60,7 @@ ChiefTip.defaultProps = { // define the default props
   tip: 'L\'astuce du chef',
   edition: false,
   recipeID: 1,
+  query: '',
   maestro: { dataRefresh: () => {} }
 };
 

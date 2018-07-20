@@ -37,10 +37,11 @@ class Tag extends React.Component {
 
   render() {
     const editionClass = this.props.edition ? 'tag edition' : 'tag';
+    const tagAfterSearch = (this.props.query.length > 2) ? this.props.text.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : this.props.text;
 
     return (
       <div className={editionClass}>
-        <span>{this.props.text}</span>
+        <span dangerouslySetInnerHTML={{ __html: tagAfterSearch }} />
         <input
           className="tagInput"
           name="tag"
@@ -59,6 +60,7 @@ Tag.propTypes = {
   index: PropTypes.number,
   edition: PropTypes.bool,
   recipeID: PropTypes.number,
+  query: PropTypes.string,
   maestro: PropTypes.object,
   text: PropTypes.string
 };
@@ -67,6 +69,7 @@ Tag.defaultProps = { // define the default props
   index: 0,
   edition: false,
   recipeID: 1,
+  query: '',
   maestro: { dataRefresh: () => {} },
   text: ''
 };

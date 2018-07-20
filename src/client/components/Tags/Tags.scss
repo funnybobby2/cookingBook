@@ -73,10 +73,16 @@
         i{
           display: block;
           &:hover{
-            color: #FFFFFF;
+            color: #FFF;
             cursor: pointer;
           }
         }
+      }
+      mark {
+        border-radius: 3px;
+        background-color: #EEE;
+        font-weight: bold;
+        padding: 0 2px;
       }
     }
 
