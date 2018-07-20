@@ -157,8 +157,13 @@ export default class App extends Component {
 
   createUser(login, password, email) {
     console.log(login, password, email);
-    this.addNotif('En cours de développement !', 'info');
-    this.setState({ openUserForm: false });
+    // this.addNotif('En cours de développement !', 'info');
+    axios.post('/api/users/', { login, password, email })
+      .then(async (res) => {
+        if (res.status === 200) { // insert ok
+          this.connect(login, password);
+        }
+      });
   }
 
   closeUserCreation() {
@@ -182,7 +187,8 @@ export default class App extends Component {
             recipes,
             user: res.data,
             nbTotalPages: getNbTotalPages(recipes.length).nbPages,
-            currentPage: 1
+            currentPage: 1,
+            openUserForm: false
           });
 
           this.addNotif(`Connexion réussie ${login} !`, 'success');
