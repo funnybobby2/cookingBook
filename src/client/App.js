@@ -110,7 +110,19 @@ export default class App extends Component {
     this.history.listen((location, action) => {
       if (action === 'POP') {
         if (location.hash === '') this.selectCategory('all');
-        if (location.hash.startsWith('#recipes/page/')) this.goTo(location.hash.slice(14), false);
+        if (location.hash.startsWith('#recipes/page/')) {
+          // console.log(location.state);
+          // this.goTo(location.hash.slice(14), false);
+          this.setState({
+            currentPage: Number(location.hash.slice(14)),
+            category: location.state.category,
+            filters: location.state.filters,
+            nbTotalPages: location.state.nbTotalPages,
+            recipes: location.state.recipes,
+            searchQuery: location.state.searchQuery,
+            user: location.state.user
+          });
+        }
         if (location.hash.startsWith('#recipes/id/')) this.showRecipe(location.hash.slice(12), false);
       }
     });
@@ -288,7 +300,14 @@ export default class App extends Component {
           currentPage: 1,
           currentRecipe: undefined
         });
-        this.history.push('#recipes/page/1');
+        this.history.push('#recipes/page/1', {
+          category: this.state.category,
+          filters: this.state.filters,
+          nbTotalPages: this.state.nbTotalPages,
+          recipes: this.state.recipes,
+          searchQuery: this.state.searchQuery,
+          user: this.state.user
+        });
         break;
       }
       case 'previous': {
@@ -296,7 +315,14 @@ export default class App extends Component {
           currentPage: ((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1),
           currentRecipe: undefined
         });
-        this.history.push(`#recipes/page/${((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1)}`);
+        this.history.push(`#recipes/page/${((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1)}`, {
+          category: this.state.category,
+          filters: this.state.filters,
+          nbTotalPages: this.state.nbTotalPages,
+          recipes: this.state.recipes,
+          searchQuery: this.state.searchQuery,
+          user: this.state.user
+        });
         break;
       }
       case 'next': {
@@ -305,7 +331,14 @@ export default class App extends Component {
           currentPage: ((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1),
           currentRecipe: undefined
         });
-        this.history.push(`#recipes/page/${((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1)}`);
+        this.history.push(`#recipes/page/${((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1)}`, {
+          category: this.state.category,
+          filters: this.state.filters,
+          nbTotalPages: this.state.nbTotalPages,
+          recipes: this.state.recipes,
+          searchQuery: this.state.searchQuery,
+          user: this.state.user
+        });
         break;
       }
       case 'last': {
@@ -313,7 +346,14 @@ export default class App extends Component {
           currentPage: this.state.nbTotalPages,
           currentRecipe: undefined
         });
-        this.history.push(`#recipes/page/${this.state.nbTotalPages}`);
+        this.history.push(`#recipes/page/${this.state.nbTotalPages}`, {
+          category: this.state.category,
+          filters: this.state.filters,
+          nbTotalPages: this.state.nbTotalPages,
+          recipes: this.state.recipes,
+          searchQuery: this.state.searchQuery,
+          user: this.state.user
+        });
         break;
       }
       default: {
@@ -324,7 +364,16 @@ export default class App extends Component {
           currentPage: page,
           currentRecipe: undefined
         });
-        if (recordInHistory) this.history.push(`#recipes/page/${page}`);
+        if (recordInHistory) {
+          this.history.push(`#recipes/page/${page}`, {
+            category: this.state.category,
+            filters: this.state.filters,
+            nbTotalPages: this.state.nbTotalPages,
+            recipes: this.state.recipes,
+            searchQuery: this.state.searchQuery,
+            user: this.state.user
+          });
+        }
       }
     }
   }
@@ -393,6 +442,15 @@ export default class App extends Component {
         currentRecipe: undefined,
         nbTotalPages: getNbTotalPages(recipes.length).nbPages,
         currentPage: 1
+      });
+
+      this.history.push('#recipes/page/1', {
+        category: categoryName,
+        filters: this.state.filters,
+        nbTotalPages: this.state.nbTotalPages,
+        recipes,
+        searchQuery: this.state.searchQuery,
+        user: this.state.user
       });
     }
   }
