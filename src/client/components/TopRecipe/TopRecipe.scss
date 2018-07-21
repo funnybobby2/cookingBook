@@ -5,16 +5,6 @@
   justify-content: space-between;
   color: whitesmoke;
   padding: 5px;
-  .recipeBack .back_button {
-    transform: rotate(180deg);
-    color: #808080;
-    font-size: 31px;
-    cursor: default;
-    &:hover {
-      color: #009ee0;
-      cursor: pointer;
-    }
-  }
   .titleInput {
     width: 250px;
     height: 28px;
