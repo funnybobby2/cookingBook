@@ -9,14 +9,9 @@ class TopRecipe extends React.Component {
     this.state = {
       inputValue: this.props.recipeTitle
     };
-    this.back = this.back.bind(this);
     this.editTitle = this.editTitle.bind(this);
     this.editTitleByEnter = this.editTitleByEnter.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
-  }
-
-  back() {
-    this.props.maestro.dataRefresh('TODO: back à implémenter', 'info');
   }
 
   editTitle(e) {
@@ -88,9 +83,7 @@ class TopRecipe extends React.Component {
 
     return (
       <div className="topRecipe">
-        <div className="recipeBack" onClick={this.back}>
-          <i className="material-icons back_button">forward</i>
-        </div>
+        <span />
         {titleRecipe}
         {image}
         {validationItem}

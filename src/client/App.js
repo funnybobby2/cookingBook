@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import axios from 'axios'; // to manage REST API
+import createHistory from 'history/createBrowserHistory'; // to manage history
 // Import react components
 import LeftPart from './components/LeftPart/LeftPart';
 import Content from './components/Content/Content';
@@ -61,6 +62,7 @@ export default class App extends Component {
       currentPage: 1,
       notif: { text: '', state: 'info' }
     };
+    this.history = createHistory();
   }
 
   componentWillMount() {
@@ -103,6 +105,15 @@ export default class App extends Component {
       });
 
     window.addEventListener('resize', this.updateDimensions.bind(this));
+
+    // Listen for changes to the current location.
+    this.history.listen((location, action) => {
+      if (action === 'POP') {
+        if (location.hash === '') this.selectCategory('all');
+        if (location.hash.startsWith('#recipes/page/')) this.goTo(location.hash.slice(14), false);
+        if (location.hash.startsWith('#recipes/id/')) this.showRecipe(location.hash.slice(12), false);
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -270,32 +281,39 @@ export default class App extends Component {
       });
   }
 
-  // NAVIGATION
-  goTo(where) {
+  goTo(where, recordInHistory = true) {
     switch (where) {
       case 'first': {
         this.setState({
-          currentPage: 1
+          currentPage: 1,
+          currentRecipe: undefined
         });
+        this.history.push('#recipes/page/1');
         break;
       }
       case 'previous': {
         this.setState({
-          currentPage: ((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1)
+          currentPage: ((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1),
+          currentRecipe: undefined
         });
+        this.history.push(`#recipes/page/${((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1)}`);
         break;
       }
       case 'next': {
         const pages = this.state.nbTotalPages;
         this.setState({
-          currentPage: ((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1)
+          currentPage: ((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1),
+          currentRecipe: undefined
         });
+        this.history.push(`#recipes/page/${((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1)}`);
         break;
       }
       case 'last': {
         this.setState({
-          currentPage: this.state.nbTotalPages
+          currentPage: this.state.nbTotalPages,
+          currentRecipe: undefined
         });
+        this.history.push(`#recipes/page/${this.state.nbTotalPages}`);
         break;
       }
       default: {
@@ -303,8 +321,10 @@ export default class App extends Component {
         if (Number(where) > Number(this.state.nbTotalPages)) page = this.state.nbTotalPages;
         else if (Number(where) > 1) page = Number(where);
         this.setState({
-          currentPage: page
+          currentPage: page,
+          currentRecipe: undefined
         });
+        if (recordInHistory) this.history.push(`#recipes/page/${page}`);
       }
     }
   }
@@ -378,11 +398,12 @@ export default class App extends Component {
   }
 
   // SHOW a recipe by its ID
-  showRecipe(recipeId) {
+  showRecipe(recipeId, recordInHistory = true) {
     axios.get(`/api/recipes/${recipeId}`)
       .then((res) => {
         this.setState({ currentRecipe: res.data });
       });
+    if (recordInHistory) this.history.push(`#recipes/id/${recipeId}`);
   }
 
   // TOGGLE filters new/deleted/validated
