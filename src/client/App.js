@@ -111,8 +111,6 @@ export default class App extends Component {
       if (action === 'POP') {
         if (location.hash === '') this.selectCategory('all');
         if (location.hash.startsWith('#recipes/page/')) {
-          // console.log(location.state);
-          // this.goTo(location.hash.slice(14), false);
           this.setState({
             currentPage: Number(location.hash.slice(14)),
             category: location.state.category,

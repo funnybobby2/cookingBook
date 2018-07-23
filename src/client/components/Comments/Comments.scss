@@ -74,6 +74,15 @@
           width: 30px;
           background-size: 30px;
         }
+
+        nav a i {
+          width: 27px;
+          background-size: 25px auto;
+        }
+
+        .emoji-picker .diversity-picker {
+          height: 40px;
+        }
       }
 
       &.close .emoji-picker {
