@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import EmojiConvertor from 'emoji-js';
 // import style
 import './Comment.scss';
 
@@ -8,10 +9,27 @@ class Comment extends React.Component {
     super(props);
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
+    this.emoji = new EmojiConvertor();
+  }
+
+  componentWillMount() {
+    // set the style to emojione (default - apple)
+    this.emoji.img_set = 'emojione';
+    // set the storage location for all emojis
+    this.emoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+
+    // some more settings...
+    this.emoji.supports_css = false;
+    this.emoji.allow_native = false;
+    this.emoji.replace_mode = 'unified';
   }
 
   edit() {
     console.log('edit', this);
+  }
+
+  transform(text) {
+    return this.emoji.replace_colons(text);
   }
 
   delete() {
@@ -28,7 +46,7 @@ class Comment extends React.Component {
           <i className={itsMyComment} title="Edition" onClick={this.edit}>create</i>
           <i className={itsMyComment} title="Effacer" onClick={this.delete}>delete_forever</i>
         </div>
-        <div className="comment">{this.props.text}</div>
+        <div className="comment" dangerouslySetInnerHTML={{ __html: this.transform(this.props.text) }} />
       </div>);
   }
 }
