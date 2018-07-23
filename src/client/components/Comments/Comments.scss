@@ -24,33 +24,60 @@
   .commentForm{
     padding: 0px 30px 30px 30px;
     display: flex;
-    flex-direction: row;
-    textarea {
-      width: 600px;
-      border: none;
-      padding: 10px 20px;
-      font: 15px Arial;
-      margin-bottom: 10px;
-      border-radius: 5px 0 0 5px;
-      resize: none;
-      height: 51px;
+    flex-direction: column;
+    .textPart{
+      display: flex;
+      flex-direction: row;
+
+      textarea {
+        width: 600px;
+        border: none;
+        padding: 10px 20px;
+        font: 15px Arial;
+        margin-bottom: 10px;
+        border-radius: 5px 0 0 5px;
+        resize: none;
+        height: 51px;
+      }
+      button {
+        float: right;
+        color: #303030;
+        border: none;
+        cursor: pointer;
+        background: #eaeaea;
+        padding: 5px 5px 2px;
+        border-radius: 0 5px 5px 0;
+        height: 71px;
+        i{
+          font-size: 30px;
+        }
+
+        &:hover{
+          background: #009ee0;
+          color: #FFF;
+        }
+      }
     }
-    button {
-      float: right;
-      color: #303030;
-      border: none;
-      cursor: pointer;
-      background: #eaeaea;
-      padding: 5px 5px 2px;
-      border-radius: 0 5px 5px 0;
-      height: 71px;
-      i{
-        font-size: 30px;
+    .emojiPart{
+      display: flex;
+      flex-direction: row;
+
+      img {
+        margin-right: 6px;
+        cursor: pointer;
       }
 
-      &:hover{
-        background: #009ee0;
-        color: #FFF;
+      .emoji-picker {
+        width: 640px;
+        .emoji {
+          height: 30px;
+          width: 30px;
+          background-size: 30px;
+        }
+      }
+
+      &.close .emoji-picker {
+        opacity: 0;
       }
     }
   }

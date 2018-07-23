@@ -1,4 +1,5 @@
 import React from 'react';
+import EmojiPicker from 'emoji-picker-react';
 import PropTypes from 'prop-types';
 // import react component
 import Comment from './Comment';
@@ -8,7 +9,14 @@ import './Comments.scss';
 class Comments extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      emojiOpen: false
+    };
+
     this.addComment = this.addComment.bind(this);
+    this.addEmoji = this.addEmoji.bind(this);
+    this.toggleEmojiPicker = this.toggleEmojiPicker.bind(this);
   }
 
   addComment() {
@@ -17,15 +25,32 @@ class Comments extends React.Component {
     this.commentForm.value = '';
   }
 
+  addEmoji(emojiCode, emojiObject) {
+    this.commentForm.value = `${this.commentForm.value} :${emojiObject.name}:`;
+  }
+
+  toggleEmojiPicker() {
+    this.setState({
+      emojiOpen: !this.state.emojiOpen
+    });
+  }
+
   render() {
+    const emojiClass = this.state.emojiOpen ? 'emojiPart' : 'emojiPart close';
     const commentForm = (this.props.user === undefined) ?
       '' :
       (
         <div className="commentForm">
-          <textarea name="comment-to-send" id="comment-to-send" ref={textarea => this.commentForm = textarea} placeholder="Tapez votre commentaire" rows="3" />
-          <button onClick={this.addComment}>
-            <i className="material-icons">add_comment</i>
-          </button>
+          <div className="textPart">
+            <textarea name="comment-to-send" id="comment-to-send" ref={textarea => this.commentForm = textarea} placeholder="Tapez votre commentaire" rows="3" />
+            <button onClick={this.addComment}>
+              <i className="material-icons">add_comment</i>
+            </button>
+          </div>
+          <div className={emojiClass}>
+            <img alt="emoji" width="32px" height="32px" src={require('../../assets/img/happy.svg')} onClick={this.toggleEmojiPicker} />
+            <EmojiPicker preload onEmojiClick={this.addEmoji} />
+          </div>
         </div>);
 
     return (
