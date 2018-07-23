@@ -29,7 +29,11 @@ class Comment extends React.Component {
   }
 
   transform(text) {
-    return this.emoji.replace_colons(text);
+    return this.emoji.replace_colons(text)
+      .replace(/-fe0f|-200d-2642|-200d-2640/g, '')
+      .replace('1f469-200d-2764-200d-1f468.png', '1f491.png')
+      .replace('1f469-200d-2764-200d-1f48b-200d-1f468.png', '1f48f.png')
+      .replace('1f468-200d-1f469-200d-1f466.png', '1f46a.png');
   }
 
   delete() {

@@ -48,8 +48,8 @@ class Comments extends React.Component {
             </button>
           </div>
           <div className={emojiClass}>
-            <img alt="emoji" width="32px" height="32px" src={require('../../assets/img/happy.svg')} onClick={this.toggleEmojiPicker} />
-            <EmojiPicker preload onEmojiClick={this.addEmoji} />
+            <img alt="emoji" width="32px" height="32px" src={require('../../assets/img/happy.png')} onClick={this.toggleEmojiPicker} />
+            <EmojiPicker onEmojiClick={this.addEmoji} />
           </div>
         </div>);
 
