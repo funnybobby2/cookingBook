@@ -34,6 +34,20 @@ const recipeSchema = new mongoose.Schema({
     enum: ['Pers.', 'Pièces'],
     default: 'Pers.'
   },
+  mark: {
+    type: Number,
+    default: 0
+  },
+  nbMark: {
+    type: Number,
+    default: 0
+  },
+  spicy: {
+    type: Number,
+    min: 0,
+    max: 3,
+    default: 0
+  },
   meatClass: {
     type: String,
     enum: ['', 'boeuf', 'boeufporc', 'canard', 'crustace', 'moutonpoulet', 'poisson', 'porc', 'porccrustace', 'porcpoisson', 'poulet', 'pouletcrustace', 'pouletporc', 'vegetable'],

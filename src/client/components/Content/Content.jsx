@@ -78,8 +78,10 @@ class Content extends React.Component {
               nbPersonUnit={currentRecipe.nbPeopleUnit}
               edition={edit}
             />
-            <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
-            <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+            <div className="ingredientsAndSteps">
+              <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+              <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+            </div>
             <ChiefTip tip={currentRecipe.chiefTrick} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
             <Tags tags={currentRecipe.tags} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
             <Comments comments={currentRecipe.comments} edition={edit} recipeID={currentRecipe.recipeID} user={this.props.user} maestro={this.props.maestro} />
