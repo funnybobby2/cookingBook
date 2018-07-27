@@ -67,6 +67,18 @@ class TopRecipe extends React.Component {
 
     const titleAfterSearch = (this.props.query.length > 2) ? this.props.recipeTitle.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : this.props.recipeTitle;
 
+    const nbStars = (this.props.nbMark > 0) ? Math.round(this.props.mark / this.props.nbMark) : 0;
+    const stars = (
+      <div className="stars">
+        {(nbStars === 5) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
+        {(nbStars === 4) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
+        {(nbStars === 3) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
+        {(nbStars === 2) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
+        {(nbStars === 1) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
+        <span> ({(this.props.nbMark > 0) ? (this.props.mark / this.props.nbMark).toFixed(2) : 0 } votes)</span>
+      </div>
+    );
+
     const titleRecipe = (edition
       ? (<input
         onKeyPress={this.editTitleByEnter}
@@ -82,11 +94,14 @@ class TopRecipe extends React.Component {
       : (<div className="recipeTitle" dangerouslySetInnerHTML={{ __html: titleAfterSearch }} />));
 
     return (
-      <div className="topRecipe">
-        <span />
-        {titleRecipe}
-        {image}
-        {validationItem}
+      <div className="topRecipeWrap">
+        <div className="topRecipe">
+          <span />
+          {titleRecipe}
+          {image}
+          {validationItem}
+        </div>
+        {stars}
       </div>);
   }
 }
@@ -104,7 +119,9 @@ TopRecipe.propTypes = {
     email: PropTypes.string
   }),
   query: PropTypes.string,
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  mark: PropTypes.number,
+  nbMark: PropTypes.number
 };
 
 TopRecipe.defaultProps = { // define the default props
@@ -116,7 +133,9 @@ TopRecipe.defaultProps = { // define the default props
     _id: '', login: '', password: '', role: 'user', email: ''
   },
   query: '',
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  mark: 0,
+  nbMark: 0
 };
 
 export default TopRecipe;
