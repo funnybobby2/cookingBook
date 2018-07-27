@@ -59,6 +59,8 @@ class Content extends React.Component {
             <TopRecipe
               recipeTitle={currentRecipe.title}
               validatedBy={currentRecipe.validatedBy}
+              mark={currentRecipe.mark}
+              nbMark={currentRecipe.nbMark}
               user={this.props.user}
               recipeID={currentRecipe.recipeID}
               edition={edit}

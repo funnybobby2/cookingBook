@@ -1,85 +1,105 @@
-.topRecipe {
+
+.topRecipeWrap{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-shrink: 0;
-  justify-content: space-between;
-  color: whitesmoke;
-  padding: 5px;
-  .titleInput {
-    width: 250px;
-    height: 28px;
-    padding: 0 7px;
-    font-size: 18px;
-    background: #424242;
-    border: 1px solid #545454;
+
+  .topRecipe {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    justify-content: space-between;
     color: whitesmoke;
-    border-radius: 5px;
-    font-style: italic;
-  }
-  .recipeTitle {
-    font-weight: bolder;
-    font-size: 22px;
-    font-family: 'Indie Flower', cursive;
-    mark {
-      border-radius: 3px;
-      background-color: #ffa200;
-      font-weight: bold;
-      padding: 0 2px;
+    padding: 7px 7px 4px 7px;
+    .titleInput {
+      width: 250px;
+      height: 28px;
+      padding: 0 7px;
+      font-size: 18px;
+      background: #424242;
+      border: 1px solid #545454;
+      color: whitesmoke;
+      border-radius: 5px;
+      font-style: italic;
     }
-  }
-  .recipeEditor {
-    background: #636262;
-    border-radius: 50%;
-    border: 2px solid #636262;
-    height: 32px;
-    &:hover, &.isEdited {
-      background: #009ee0;
-      border: 2px solid #009ee0;
-      cursor: pointer;
-    }
-  }
-  .ribbon, .notValidated {
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    pointer-events: none;
-  }
-  .ribbon {
-    &:before, &:after {
-      position: absolute;
-      z-index: -1;
-      content: '';
-      display: block;
-      border: 5px solid #bf392a;
-      border-top-color: transparent;
-      border-right-color: transparent;
-    }
-    &:before {
-      top: 0;
-      left: 9px;
-    }
-    &:after {
-      bottom: 9px;
-      right: 0;
-    }
-    span {
-      position: absolute;
-      display: block;
-      width: 225px;
-      padding: 5px 0;
-      background-color: #e74c3d;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-      color: #fff;
-      font: 700 24px 'Lobster', sans-serif;
+    .recipeTitle {
       font-weight: bolder;
-      -webkit-font-smoothing: antialiased;
-      text-align: center;
-      left: -30px;
-      top: 32px;
-      transform: rotate(45deg);
+      font-size: 22px;
+      font-family: 'Indie Flower', cursive;
+      mark {
+        border-radius: 3px;
+        background-color: #ffa200;
+        font-weight: bold;
+        padding: 0 2px;
+      }
+    }
+    .recipeEditor {
+      background: #636262;
+      border-radius: 50%;
+      border: 2px solid #636262;
+      height: 32px;
+      &:hover, &.isEdited {
+        background: #009ee0;
+        border: 2px solid #009ee0;
+        cursor: pointer;
+      }
+    }
+    .ribbon, .notValidated {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      pointer-events: none;
+    }
+    .ribbon {
+      &:before, &:after {
+        position: absolute;
+        z-index: -1;
+        content: '';
+        display: block;
+        border: 5px solid #bf392a;
+        border-top-color: transparent;
+        border-right-color: transparent;
+      }
+      &:before {
+        top: 0;
+        left: 9px;
+      }
+      &:after {
+        bottom: 9px;
+        right: 0;
+      }
+      span {
+        position: absolute;
+        display: block;
+        width: 225px;
+        padding: 5px 0;
+        background-color: #e74c3d;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        color: #fff;
+        font: 700 24px 'Lobster', sans-serif;
+        font-weight: bolder;
+        -webkit-font-smoothing: antialiased;
+        text-align: center;
+        left: -30px;
+        top: 32px;
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  .stars{
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    justify-content: center;
+    align-content: center;
+    padding: 0 0 10px 0;
+    color: #FFF;
+    img{
+      padding-right: 4px;
     }
   }
 }
