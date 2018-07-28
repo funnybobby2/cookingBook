@@ -75,6 +75,23 @@
   }
 }
 
+@media screen and (min-width: 1300px) {
+  .ingredients {
+    margin-left: 15px;
+    .ingredientList {
+      width: 350px;
+      ul {
+        padding: 15px;
+        li{
+          white-space: normal;
+          width: 335px;
+          padding-right: 0;
+        }
+      }
+    }
+  }
+}
+
 .ingredientAdd {
   background: #eaeaea;
   height: 24px;

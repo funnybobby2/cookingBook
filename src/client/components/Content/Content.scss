@@ -25,4 +25,16 @@
   overflow-y: auto;
   position: relative;
   overflow-x: hidden;
+
+  .ingredientsAndSteps {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+@media screen and (min-width: 1300px) {
+  .recipe .ingredientsAndSteps {
+    flex-direction: row;
+  }
 }
