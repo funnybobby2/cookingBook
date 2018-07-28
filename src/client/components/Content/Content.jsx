@@ -118,7 +118,8 @@ Content.propTypes = {
     login: PropTypes.string,
     password: PropTypes.string,
     role: PropTypes.oneOf(['admin', 'user']),
-    email: PropTypes.string
+    email: PropTypes.string,
+    votedFor: PropTypes.arrayOf(PropTypes.number)
   })
 };
 

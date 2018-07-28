@@ -34,6 +34,17 @@ module.exports = function (app) {
       .catch(err => next(err));
   });
 
+  // update mark
+  app.put('/api/users/mark/:id', (req, res) => {
+    User.findOne({ _id: req.body.user })
+      .then((user) => {
+        user.votedFor.push(req.params.id);
+        user.save(() => {
+          res.json(user);
+        });
+      });
+  });
+
   // update a user
   app.put('/api/user/:login/:password', (req, res, next) => {
     // on cherche l'utilisateur concernée

@@ -62,7 +62,8 @@ Comment.propTypes = {
     login: PropTypes.string,
     password: PropTypes.string,
     role: PropTypes.oneOf(['admin', 'user']),
-    email: PropTypes.string
+    email: PropTypes.string,
+    votedFor: PropTypes.arrayOf(PropTypes.number)
   }),
   commentUser: PropTypes.string,
   text: PropTypes.string,
@@ -73,7 +74,7 @@ Comment.propTypes = {
 Comment.defaultProps = { // define the default props
   date: new Date().toLocaleString(),
   user: {
-    _id: '', login: '', password: '', role: 'user', email: ''
+    _id: '', login: '', password: '', role: 'user', email: '', votedFor: []
   },
   commentUser: '',
   text: '',

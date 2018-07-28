@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-z]{2,6}$/
-  }
+  },
+  votedFor: [{ type: Number, default: [] }],
 });
 
 // //////////////////////////////  MODELS   ////////////////////////////////
