@@ -26,7 +26,7 @@ const Recipes = ({
     }
 
     const recipeItem = { title: recipe.title, id: recipe.recipeID, valid: isValid };
-    recipeItems.push(<RecipeItem recipe={recipeItem} key={recipeItem.id} user={user} maestro={maestro} />);
+    recipeItems.push(<RecipeItem recipe={recipeItem} key={recipeItem.id} maestro={maestro} />);
   });
 
   return (
@@ -43,7 +43,8 @@ Recipes.propTypes = {
     login: PropTypes.string,
     password: PropTypes.string,
     role: PropTypes.oneOf(['admin', 'user']),
-    email: PropTypes.string
+    email: PropTypes.string,
+    votedFor: PropTypes.arrayOf(PropTypes.number)
   }),
   currentPage: PropTypes.number,
   nbItemPerPage: PropTypes.number,
@@ -53,7 +54,7 @@ Recipes.propTypes = {
 Recipes.defaultProps = { // define the default props
   recipes: [],
   user: {
-    _id: '', login: '', password: '', role: 'user', email: ''
+    _id: '', login: '', password: '', role: 'user', email: '', votedFor: []
   },
   currentPage: 1,
   nbItemPerPage: 1,

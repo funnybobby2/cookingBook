@@ -283,4 +283,18 @@ module.exports = function (app) {
         });
     }
   });
+
+  app.put('/api/recipes/mark/:id', (req, res) => {
+    Recipe.findOne({ recipeID: Number(req.params.id) })
+      .populate('validatedBy') // pour peupler les users en ref
+      .populate('deletedBy') // pour peupler les users en ref
+      .populate('comments.author') // pour peupler les users en ref
+      .then((recipe) => {
+        recipe.mark = Number(req.body.mark);
+        recipe.nbMark += 1;
+        recipe.save(() => {
+          res.json(recipe);
+        });
+      });
+  });
 };

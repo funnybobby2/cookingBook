@@ -47,7 +47,7 @@ class Content extends React.Component {
         <div className="content">
           <TopBar query={q} category={this.props.category} maestro={this.props.maestro} />
           <div className="recipesZone">
-            <Recipes recipes={recipesList} currentPage={currentPage} nbItemPerPage={this.props.nbItemPerPage} user={this.props.user} maestro={this.props.maestro} />
+            <Recipes recipes={recipesList} currentPage={currentPage} nbItemPerPage={this.props.nbItemPerPage} maestro={this.props.maestro} />
             <Pagination currentPage={currentPage} nbTotalPages={nbTotalPages} maestro={this.props.maestro} />
           </div>
           <Foot />
@@ -118,7 +118,8 @@ Content.propTypes = {
     login: PropTypes.string,
     password: PropTypes.string,
     role: PropTypes.oneOf(['admin', 'user']),
-    email: PropTypes.string
+    email: PropTypes.string,
+    votedFor: PropTypes.arrayOf(PropTypes.number)
   })
 };
 
