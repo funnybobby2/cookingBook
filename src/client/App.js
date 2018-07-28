@@ -83,6 +83,7 @@ export default class App extends Component {
     maestro.addListener('updateArrayField', 'app', this.updateArrayField.bind(this));
     maestro.addListener('deleteArrayField', 'app', this.deleteArrayField.bind(this));
     maestro.addListener('addArrayField', 'app', this.addArrayField.bind(this));
+    maestro.addListener('updateMark', 'app', this.updateMark.bind(this));
     // navigations
     maestro.addListener('goTo', 'app', this.goTo.bind(this));
     // notifications
@@ -558,6 +559,16 @@ export default class App extends Component {
     axios.put(`/api/recipes/addArray/${fieldName}/${recipeID}/${isObject}`, { field: isObject ? JSON.stringify(fieldValue) : fieldValue }, { upsert: true })
       .then((res) => {
         this.setState({ currentRecipe: res.data });
+      });
+  }
+
+  updateMark(recipeID, mark, userID) {
+    axios.put(`/api/recipes/mark/${recipeID}`, { mark }, { upsert: true })
+      .then((resRecipe) => {
+        axios.put(`/api/users/mark/${recipeID}`, { user: userID }, { upsert: true })
+          .then((resUser) => {
+            this.setState({ currentRecipe: resRecipe.data, user: resUser.data });
+          });
       });
   }
 
