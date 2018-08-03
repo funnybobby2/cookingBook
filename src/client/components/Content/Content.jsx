@@ -73,6 +73,7 @@ class Content extends React.Component {
               maestro={this.props.maestro}
               recipeID={currentRecipe.recipeID}
               recipeTitle={currentRecipe.title}
+              spicy={currentRecipe.spicy}
               preparationTime={currentRecipe.prepPeriod}
               cuissonTime={currentRecipe.cookPeriod}
               reposTime={currentRecipe.restPeriod}

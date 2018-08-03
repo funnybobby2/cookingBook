@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// Import react components
+import Stars from '../Stars/Stars';
 // import styles
 import './TopRecipe.scss';
 
@@ -12,13 +14,6 @@ class TopRecipe extends React.Component {
     this.editTitle = this.editTitle.bind(this);
     this.editTitleByEnter = this.editTitleByEnter.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
-    this.addMark = this.addMark.bind(this);
-  }
-
-  addMark(e) {
-    if (e.key === 'Enter') {
-      this.props.maestro.dataRefresh('updateMark', this.props.recipeID, this.mark.value, this.props.user._id);
-    }
   }
 
   editTitle(e) {
@@ -74,19 +69,6 @@ class TopRecipe extends React.Component {
 
     const titleAfterSearch = (this.props.query.length > 2) ? this.props.recipeTitle.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : this.props.recipeTitle;
 
-    const nbStars = (this.props.nbMark > 0) ? Math.round(this.props.mark / this.props.nbMark) : 0;
-    const stars = (
-      <div className="stars">
-        {(nbStars >= 1) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
-        {(nbStars >= 2) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
-        {(nbStars >= 3) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
-        {(nbStars >= 4) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
-        {(nbStars === 5) ? <img alt="star" width="16px" height="16px" src={require('../../assets/img/star.svg')} /> : <img alt="star_off" width="16px" height="16px" src={require('../../assets/img/star_off.svg')} />}
-        <span className="average"> ({this.props.nbMark} votes)</span>
-        {(this.props.user._id === '') ? '' : <span className="vote"> {(this.props.user.votedFor.includes(this.props.recipeID)) ? 'Je RE-note !' : 'Je note !'} <input type="number" min="0" max="5" ref={input => this.mark = input} onKeyPress={this.addMark} /></span>}
-      </div>
-    );
-
     const titleRecipe = (edition
       ? (<input
         onKeyPress={this.editTitleByEnter}
@@ -109,7 +91,7 @@ class TopRecipe extends React.Component {
           {image}
           {validationItem}
         </div>
-        {stars}
+        <Stars mark={this.props.mark} nbMark={this.props.nbMark} recipeID={this.props.recipeID} user={this.props.user} maestro={this.props.maestro} />
       </div>);
   }
 }

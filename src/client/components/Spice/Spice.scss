@@ -1,0 +1,78 @@
+.spices{
+  width: 120px;
+  height: 20px;
+  display: block;
+  border-radius: 0 17px 17px 0;
+  position: relative;
+  box-shadow: inset 0 0 0 2px #fff;
+  margin-left: 38px;
+  margin-top: -16px;
+  z-index: 1;
+
+  &:after, &:before {
+    content: " ";
+    display: block;
+    position: absolute;
+}
+
+  &:before {
+    width: 44px;
+    height: 44px;
+    top: -12px;
+    left: -39px;
+    z-index: -1;
+    border-radius: 44px;
+    box-shadow: inset 0 0 0 4px #fff;
+  }
+
+  &:after {
+    width: 11px;
+    height: 16px;
+    top: 2px;
+    left: -6px;
+  }
+  &.level0{
+    opacity: 0;
+  }
+
+  &.level1{
+    &:before{
+      background: #ffcd00;
+    }
+    &:after {
+      width: 40px;
+      background: #ffcd00;
+    }
+  }
+
+  &.level2{
+    &:before{
+      background: #f58220;
+    }
+    &:after {
+      width: 90px;
+      background: #f58220;
+    }
+  }
+
+  &.level3{
+    &:before{
+      background: #de3f3e;
+    }
+    &:after {
+      width: 124px;
+      background: #de3f3e;
+      border-radius: 0 7px 7px 0;
+    }
+  }
+
+  .spiceIcon{
+    width: 50px;
+    height: 50px;
+    z-index: 2;
+    position: absolute;
+    top: -15px;
+    left: -41px;
+    background: transparent url(../../assets/img/spicy.png) no-repeat center center;
+  }
+}
