@@ -2,16 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import react component
 import MeatSelector from '../MeatSelector/MeatSelector';
+import Spice from '../Spice/Spice';
 import Category from '../Category/Category';
 import PhotoWithDuration from '../PhotoWithDuration/PhotoWithDuration';
 // import styles
 import './HeaderRecipe.scss';
 
 const HeaderRecipe = ({
-  meatClass, edition, recipeID, maestro, recipeTitle, preparationTime, cuissonTime, restPeriod, nbPerson, nbPersonUnit, category
+  meatClass, edition, recipeID, maestro, recipeTitle, preparationTime, cuissonTime, restPeriod, nbPerson, nbPersonUnit, category, spicy
 }) => (
   <div className="headerRecipe">
-    <MeatSelector meat={meatClass} edition={edition} recipeID={recipeID} maestro={maestro} />
+    <div className="meatAndSpice">
+      <MeatSelector meat={meatClass} edition={edition} recipeID={recipeID} maestro={maestro} />
+      <Spice spicy={spicy} />
+    </div>
     <PhotoWithDuration
       maestro={maestro}
       recipeID={recipeID}
@@ -37,6 +41,7 @@ HeaderRecipe.propTypes = {
   nbPersonUnit: PropTypes.oneOf(['Pers.', 'Pièces']),
   edition: PropTypes.bool,
   recipeID: PropTypes.number,
+  spicy: PropTypes.number,
   maestro: PropTypes.object,
   category: PropTypes.string
 };
@@ -51,6 +56,7 @@ HeaderRecipe.defaultProps = { // define the default props
   nbPersonUnit: 'Pers.',
   edition: false,
   recipeID: 1,
+  spicy: 0,
   maestro: { dataRefresh: () => {} },
   category: 'plat'
 };

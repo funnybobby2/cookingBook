@@ -3,4 +3,12 @@
   flex-shrink: 0;
   flex-direction: row;
   justify-content: space-between;
+
+  .meatAndSpice{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    flex: 1;
+  }
 }
