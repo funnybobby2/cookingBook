@@ -14,6 +14,13 @@ class TopRecipe extends React.Component {
     this.editTitle = this.editTitle.bind(this);
     this.editTitleByEnter = this.editTitleByEnter.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.addMark = this.addMark.bind(this);
+  }
+
+  addMark(e) {
+    if (e.key === 'Enter') {
+      this.props.maestro.dataRefresh('updateMark', this.props.recipeID, this.mark.value, this.props.user._id);
+    }
   }
 
   editTitle(e) {
