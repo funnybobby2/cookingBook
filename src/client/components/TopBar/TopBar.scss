@@ -10,3 +10,9 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media print {
+  .topBar{
+    display: none;
+  }
+}

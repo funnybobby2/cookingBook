@@ -115,3 +115,12 @@
     }
   }
 }
+
+@media print {
+  .ribbon{
+    -webkit-print-color-adjust: exact;
+  }
+  .topRecipeWrap .topRecipe {
+    color: #191919;
+  }
+}

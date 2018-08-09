@@ -182,3 +182,14 @@
   animation-iteration-count: infinite;
   animation-fill-mode: both;
 }
+
+@media print {
+  .fire{
+    -webkit-print-color-adjust: exact;
+    fire-main {
+      .main-fire {
+        background: transparent;
+      }
+    }
+  }
+}

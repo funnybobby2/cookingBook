@@ -69,3 +69,18 @@
     }
   }
 }
+
+@media print {
+  .prepaStep {
+    .indexStep {
+      color: #191919;
+      &.checked {
+        background: transparent;
+        color: #191919;
+      }
+    }
+    .elementText {
+      color: #191919;;
+    }
+  }
+}

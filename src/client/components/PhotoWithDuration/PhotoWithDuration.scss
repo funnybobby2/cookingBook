@@ -170,3 +170,11 @@
     }
   }
 }
+
+@media print {
+  .foodImage {
+    .preparation, .cuisson, .repos, .nbPersonne, i.nbPersonUnit {
+      color: #191919;;
+    }
+  }
+}

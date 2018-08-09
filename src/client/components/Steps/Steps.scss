@@ -80,3 +80,11 @@
     width: calc(100% - 390px);
   }
 }
+
+@media print {
+  .steps {
+    .stepsTitle {
+      color: #191919;;
+    }
+  }
+}
