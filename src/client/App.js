@@ -506,7 +506,22 @@ export default class App extends Component {
         }
         break;
       }
-      case 'cart': { // TODO add to the cart the ingredients
+      case 'cart': {
+        this.state.currentRecipe.ingredients.forEach((ingredient) => {
+          let ingr = sessionStorage.getItem(ingredient.ingredient);
+          if (!_.isNil(ingr)) { // the key exist, need to update the quantity
+            ingr = JSON.parse(ingr);
+            if (Array.isArray(ingr)) {
+              ingr.push({ quantity: ingredient.quantity, unit: ingredient.unit });
+              sessionStorage.removeItem(ingredient.ingredient);
+              sessionStorage.setItem(`${ingredient.ingredient}`, JSON.stringify(ingr));
+            } else {
+              sessionStorage.removeItem(ingredient.ingredient);
+              sessionStorage.setItem(`${ingredient.ingredient}`, JSON.stringify([{ quantity: ingredient.quantity, unit: ingredient.unit }, { quantity: ingr.quantity, unit: ingr.unit }]));
+            }
+          } else sessionStorage.setItem(ingredient.ingredient, JSON.stringify({ quantity: ingredient.quantity, unit: ingredient.unit }));
+        });
+        this.addNotif('Les ingrédients de la recette ont été ajouté à votre liste de course', 'success');
         break;
       }
       default:
