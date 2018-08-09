@@ -51,3 +51,11 @@
     }
   }
 }
+
+@media print {
+  .chiefTip {
+    .chiefTipTitle, .chiefTipContent {
+      color: #191919;;
+    }
+  }
+}

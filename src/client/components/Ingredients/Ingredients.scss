@@ -150,3 +150,11 @@
     }
   }
 }
+
+@media print {
+  .ingredients {
+    .ingredientsTitle, .ingredientList li {
+      color: #191919;;
+    }
+  }
+}

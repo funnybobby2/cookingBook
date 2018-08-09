@@ -88,3 +88,9 @@ a.add {
     }
   }
 }
+
+@media print {
+  a.add{
+    display: none;
+  }
+}

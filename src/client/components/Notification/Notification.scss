@@ -31,3 +31,9 @@
     background: #f66359;
   }
 }
+
+@media print {
+  .notif{
+    display: none;
+  }
+}

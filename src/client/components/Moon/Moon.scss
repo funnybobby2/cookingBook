@@ -77,3 +77,9 @@
     }
   }
 }
+
+@media print {
+  .moon{
+    -webkit-print-color-adjust: exact;
+  }
+}

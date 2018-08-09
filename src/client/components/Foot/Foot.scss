@@ -10,3 +10,9 @@
   margin-top: 10px;
   font-family: 'Indie Flower',cursive;
 }
+
+@media print {
+  .foot{
+    display: none;
+  }
+}
