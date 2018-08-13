@@ -60,7 +60,10 @@ export default class App extends Component {
       },
       nbTotalPages: 1,
       currentPage: 1,
-      notif: { text: '', state: 'info' }
+      notif: { text: '', state: 'info' },
+      showCart: false,
+      nbItemsInCart: 0,
+      nbItemsInCartChecked: 0
     };
     this.history = createHistory();
   }
@@ -91,6 +94,8 @@ export default class App extends Component {
     // comments
     maestro.addListener('addComment', 'app', this.addComment.bind(this));
     maestro.addListener('deleteComment', 'app', this.deleteComment.bind(this));
+    // cart
+    maestro.addListener('ingredientBought', 'app', this.updateNbItemsCheckedInCart.bind(this));
 
     axios.get('/api/recipes')
       .then((resRecipes) => {
@@ -145,6 +150,12 @@ export default class App extends Component {
       .then((res) => {
         this.setState({ currentRecipe: res.data });
       });
+  }
+
+  // ------------------------------- Cart ------------------------------------
+
+  updateNbItemsCheckedInCart(value) {
+    this.setState({ nbItemsInCartChecked: this.state.nbItemsInCartChecked + value });
   }
 
   // -------------------------- Notifications --------------------------------
@@ -379,8 +390,11 @@ export default class App extends Component {
 
   // SELECT a random recipe by category
   async randomRecipeOrCart(category) {
-    if (category === 'courseListe') this.addNotif('La partie \'liste de course\' est a développer', 'info');
-    else {
+    if (category === 'courseListe') {
+      this.setState({
+        showCart: !this.state.showCart
+      });
+    } else {
       // filter by this category
       const recipesFiltered = await getFilteredRecipes(
         category,
@@ -507,20 +521,25 @@ export default class App extends Component {
         break;
       }
       case 'cart': {
+        let needRemove = false;
+        let count = 0;
+        const ingr = _.isNil(sessionStorage.getItem('menu-ingredients')) ? {} : JSON.parse(sessionStorage.getItem('menu-ingredients'));
         this.state.currentRecipe.ingredients.forEach((ingredient) => {
-          let ingr = sessionStorage.getItem(ingredient.ingredient);
-          if (!_.isNil(ingr)) { // the key exist, need to update the quantity
-            ingr = JSON.parse(ingr);
-            if (Array.isArray(ingr)) {
-              ingr.push({ quantity: ingredient.quantity, unit: ingredient.unit });
-              sessionStorage.removeItem(ingredient.ingredient);
-              sessionStorage.setItem(`${ingredient.ingredient}`, JSON.stringify(ingr));
+          count += 1;
+          if (_.isEmpty(ingr)) ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit };
+          else {
+            needRemove = true;
+            if (!_.isNil(ingr[ingredient.ingredient])) { // the key exist, need to update the quantity
+              if (Array.isArray(ingr[ingredient.ingredient])) ingr[ingredient.ingredient].push({ quantity: ingredient.quantity, unit: ingredient.unit });
+              else ingr[ingredient.ingredient] = [ingr[ingredient.ingredient], { quantity: ingredient.quantity, unit: ingredient.unit }];
             } else {
-              sessionStorage.removeItem(ingredient.ingredient);
-              sessionStorage.setItem(`${ingredient.ingredient}`, JSON.stringify([{ quantity: ingredient.quantity, unit: ingredient.unit }, { quantity: ingr.quantity, unit: ingr.unit }]));
+              ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit };
             }
-          } else sessionStorage.setItem(ingredient.ingredient, JSON.stringify({ quantity: ingredient.quantity, unit: ingredient.unit }));
+            if (needRemove) sessionStorage.removeItem('menu-ingredients');
+            sessionStorage.setItem('menu-ingredients', JSON.stringify(ingr));
+          }
         });
+        this.setState({ nbItemsInCart: this.state.nbItemsInCart + count });
         this.addNotif('Les ingrédients de la recette ont été ajouté à votre liste de course', 'success');
         break;
       }
@@ -588,37 +607,33 @@ export default class App extends Component {
   }
 
   render() {
-    const currentUser = this.state.user;
-    const recips = this.state.recipes;
-    const recipe = this.state.currentRecipe;
-    const curQuery = this.state.searchQuery;
-    const curCategory = this.state.category;
-    const curPage = this.state.currentPage;
-    const totPages = this.state.nbTotalPages;
-    const numberOfItems = getNbTotalPages(recips.length).nbItems;
-    const users = this.state.usersLogin;
+    const numberOfItems = getNbTotalPages(this.state.recipes.length).nbItems;
 
     return (
       <div className="cookingBook">
         <LeftPart
-          user={currentUser}
+          user={this.state.user}
           maestro={maestro}
-          aRecipeIsSelected={!_.isEmpty(recipe)}
+          aRecipeIsSelected={!_.isEmpty(this.state.currentRecipe)}
           filters={this.state.filters}
+          showCart={this.state.showCart}
         />
         <Content
-          recipeList={recips}
-          recipeSelected={recipe}
-          category={curCategory}
-          user={currentUser}
-          query={curQuery}
-          totalPages={totPages}
-          curPage={curPage}
+          recipeList={this.state.recipes}
+          recipeSelected={this.state.currentRecipe}
+          category={this.state.category}
+          user={this.state.user}
+          query={this.state.searchQuery}
+          totalPages={this.state.nbTotalPages}
+          curPage={this.state.currentPage}
           nbItemPerPage={numberOfItems}
+          showCart={this.state.showCart}
           maestro={maestro}
+          nbItemsInCart={this.state.nbItemsInCart}
+          nbItemsInCartChecked={this.state.nbItemsInCartChecked}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
-        <UserForm usersLogin={users} open={this.state.openUserForm} maestro={maestro} />
+        <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} />
       </div>
     );
   }
