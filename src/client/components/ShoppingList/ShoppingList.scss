@@ -27,18 +27,15 @@
       margin-bottom: 0;
     }
 
-    progress#progressbar {
+    .progressbar {
       border: 0;
       width: 80%;
-      height: 4px;
       margin-bottom: 10px;
-      background: #F3F3F3;
+      background: #ececec;
 
-      &::-webkit-progress-value, &::-moz-progress-bar {
-        background: #009EE0 !important;
-      }
-      &::-webkit-progress-bar {
-          background: #F3F3F3 !important;
+      .progresser{
+        background: #009EE0;
+        height: 4px;
       }
     }
 
