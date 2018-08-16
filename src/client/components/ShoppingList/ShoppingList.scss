@@ -18,27 +18,47 @@
     font-family: ubuntu;
     margin-bottom: 20px;
 
-    h2{
-      color: #343539;
-      width: 275px;
-      margin-top: 5px;
-      line-height: 33px;
-      text-align: center;
-      margin-bottom: 0;
+    .titleBar{
+      position: relative;
+
+      h2{
+        color: #343539;
+        width: 275px;
+        margin-top: 5px;
+        line-height: 33px;
+        text-align: center;
+        margin-bottom: 0;
+      }
+
+      .tools{
+        position: absolute;
+        top: 10px;
+        right: -31px;
+        i {
+          font-size: 21px;
+          font-weight: bold;
+          
+          &:first-child{
+            margin-right: 3px;
+          }
+
+          &:hover{
+            cursor: pointer;
+            color: #009EE0;
+          }
+        }
+      }
     }
 
-    progress#progressbar {
+    .progressbar {
       border: 0;
       width: 80%;
-      height: 4px;
       margin-bottom: 10px;
-      background: #F3F3F3;
+      background: #ececec;
 
-      &::-webkit-progress-value, &::-moz-progress-bar {
-        background: #009EE0 !important;
-      }
-      &::-webkit-progress-bar {
-          background: #F3F3F3 !important;
+      .progresser{
+        background: #009EE0;
+        height: 4px;
       }
     }
 

@@ -96,6 +96,8 @@ export default class App extends Component {
     maestro.addListener('deleteComment', 'app', this.deleteComment.bind(this));
     // cart
     maestro.addListener('ingredientBought', 'app', this.updateNbItemsCheckedInCart.bind(this));
+    maestro.addListener('cleanCart', 'app', this.cleanCart.bind(this));
+    maestro.addListener('clearCart', 'app', this.clearCart.bind(this));
 
     axios.get('/api/recipes')
       .then((resRecipes) => {
@@ -130,6 +132,30 @@ export default class App extends Component {
         if (location.hash.startsWith('#recipes/id/')) this.showRecipe(location.hash.slice(12), false);
       }
     });
+
+    // restore the cart
+    let ingredientsStored = window.sessionStorage.getItem('menu-ingredients');
+    if (_.isNil(ingredientsStored)) ingredientsStored = {};
+    else ingredientsStored = JSON.parse(ingredientsStored);
+    let counterIngr = 0;
+    let counterIngreChecked = 0;
+
+    Object.keys(ingredientsStored).forEach((ingredientKey) => {
+      if (Array.isArray(ingredientsStored[ingredientKey])) {
+        ingredientsStored[ingredientKey].forEach((ingr) => {
+          counterIngr += 1;
+          if (ingr.checked) counterIngreChecked += 1;
+        });
+      } else {
+        counterIngr += 1;
+        if (ingredientsStored[ingredientKey].checked) counterIngreChecked += 1;
+      }
+    });
+
+    this.setState({
+      nbItemsInCart: counterIngr,
+      nbItemsInCartChecked: counterIngreChecked
+    });
   }
 
   componentWillUnmount() {
@@ -154,8 +180,62 @@ export default class App extends Component {
 
   // ------------------------------- Cart ------------------------------------
 
-  updateNbItemsCheckedInCart(value) {
-    this.setState({ nbItemsInCartChecked: this.state.nbItemsInCartChecked + value });
+  cleanCart() {
+    if (_.isNil(window.sessionStorage.getItem('menu-ingredients'))) return;
+    const ingredientsStored = JSON.parse(window.sessionStorage.getItem('menu-ingredients'));
+
+    let counterIngr = 0;
+
+    Object.keys(ingredientsStored).forEach((ingredientKey) => {
+      if (Array.isArray(ingredientsStored[ingredientKey])) {
+        const cleanedArray = [];
+        ingredientsStored[ingredientKey].forEach((ingr) => {
+          if (!ingr.checked) {
+            counterIngr += 1;
+            cleanedArray.push(ingr);
+          }
+        });
+        if (cleanedArray.length === 0) delete ingredientsStored[ingredientKey];
+        if (cleanedArray.length === 1) {
+          const uniqItem = cleanedArray[0];
+          ingredientsStored[ingredientKey] = uniqItem;
+        }
+        if (cleanedArray.length > 1) ingredientsStored[ingredientKey] = cleanedArray;
+      } else if (ingredientsStored[ingredientKey].checked) delete ingredientsStored[ingredientKey];
+      else counterIngr += 1;
+    });
+
+    window.sessionStorage.removeItem('menu-ingredients');
+    window.sessionStorage.setItem('menu-ingredients', JSON.stringify(ingredientsStored));
+
+    this.setState({
+      nbItemsInCart: counterIngr,
+      nbItemsInCartChecked: 0
+    });
+  }
+
+  clearCart() {
+    if (_.isNil(window.sessionStorage.getItem('menu-ingredients'))) return;
+    window.sessionStorage.removeItem('menu-ingredients');
+    this.setState({
+      nbItemsInCart: 0,
+      nbItemsInCartChecked: 0
+    });
+  }
+
+  updateNbItemsCheckedInCart(checkValue, name, quantity, unit) {
+    this.setState({ nbItemsInCartChecked: this.state.nbItemsInCartChecked + checkValue });
+
+    const ingredientsStored = JSON.parse(window.sessionStorage.getItem('menu-ingredients'));
+    if (Array.isArray(ingredientsStored[name])) {
+      ingredientsStored[name].forEach((ingr) => {
+        if ((ingr.unit === unit) && (ingr.quantity === quantity)) ingr.checked = (checkValue === 1);
+      });
+    } else {
+      ingredientsStored[name].checked = (checkValue === 1);
+    }
+    window.sessionStorage.removeItem('menu-ingredients');
+    window.sessionStorage.setItem('menu-ingredients', JSON.stringify(ingredientsStored));
   }
 
   // -------------------------- Notifications --------------------------------
@@ -525,15 +605,36 @@ export default class App extends Component {
         let count = 0;
         const ingr = _.isNil(sessionStorage.getItem('menu-ingredients')) ? {} : JSON.parse(sessionStorage.getItem('menu-ingredients'));
         this.state.currentRecipe.ingredients.forEach((ingredient) => {
-          count += 1;
-          if (_.isEmpty(ingr)) ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit };
-          else {
+          if (_.isEmpty(ingr)) {
+            ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit, checked: false };
+            count += 1;
+          } else {
             needRemove = true;
             if (!_.isNil(ingr[ingredient.ingredient])) { // the key exist, need to update the quantity
-              if (Array.isArray(ingr[ingredient.ingredient])) ingr[ingredient.ingredient].push({ quantity: ingredient.quantity, unit: ingredient.unit });
-              else ingr[ingredient.ingredient] = [ingr[ingredient.ingredient], { quantity: ingredient.quantity, unit: ingredient.unit }];
+              // if unit is the same, sum the quantity
+              if (Array.isArray(ingr[ingredient.ingredient])) {
+                let findit = false;
+                ingr[ingredient.ingredient].forEach((subIngr) => {
+                  if (subIngr.unit === ingredient.unit) {
+                    if (subIngr.quantity !== '') {
+                      findit = true;
+                      subIngr = { quantity: Number(subIngr.quantity) + Number(ingredient.quantity), unit: ingredient.unit, checked: false };
+                    }
+                  }
+                });
+                if (!findit) {
+                  ingr[ingredient.ingredient].push({ quantity: ingredient.quantity, unit: ingredient.unit, checked: false });
+                  count += 1;
+                }
+              } else if (ingredient.unit === ingr[ingredient.ingredient].unit) {
+                if (ingredient.quantity !== '') ingr[ingredient.ingredient] = { quantity: Number(ingredient.quantity) + Number(ingr[ingredient.ingredient].quantity), unit: ingredient.unit, checked: false };
+              } else {
+                ingr[ingredient.ingredient] = [ingr[ingredient.ingredient], { quantity: ingredient.quantity, unit: ingredient.unit, checked: false }];
+                count += 1;
+              }
             } else {
-              ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit };
+              ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit, checked: false };
+              count += 1;
             }
             if (needRemove) sessionStorage.removeItem('menu-ingredients');
             sessionStorage.setItem('menu-ingredients', JSON.stringify(ingr));
