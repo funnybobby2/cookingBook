@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import axios from 'axios'; // to manage REST API
+import NoSleep from 'nosleep.js'; // to prevent display sleep and enable wake lock in all Android and iOS web browsers.
 import createHistory from 'history/createBrowserHistory'; // to manage history
 // Import react components
 import LeftPart from './components/LeftPart/LeftPart';
@@ -66,6 +67,7 @@ export default class App extends Component {
       nbItemsInCartChecked: 0
     };
     this.history = createHistory();
+    this.noSleep = new NoSleep();
   }
 
   componentWillMount() {
@@ -133,6 +135,9 @@ export default class App extends Component {
       }
     });
 
+    // activate the noSleep mode
+    this.noSleep.enable();
+    
     // restore the cart
     let ingredientsStored = window.sessionStorage.getItem('menu-ingredients');
     if (_.isNil(ingredientsStored)) ingredientsStored = {};
