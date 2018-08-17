@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import axios from 'axios'; // to manage REST API
+import NoSleep from 'nosleep.js'; // to prevent display sleep and enable wake lock in all Android and iOS web browsers.
 import createHistory from 'history/createBrowserHistory'; // to manage history
 // Import react components
 import LeftPart from './components/LeftPart/LeftPart';
@@ -63,6 +64,7 @@ export default class App extends Component {
       notif: { text: '', state: 'info' }
     };
     this.history = createHistory();
+    this.noSleep = new NoSleep();
   }
 
   componentWillMount() {
@@ -125,6 +127,9 @@ export default class App extends Component {
         if (location.hash.startsWith('#recipes/id/')) this.showRecipe(location.hash.slice(12), false);
       }
     });
+
+    // activate the noSleep mode
+    this.noSleep.enable();
   }
 
   componentWillUnmount() {
