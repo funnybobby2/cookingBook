@@ -14,20 +14,23 @@ class MenuLateralButton extends React.Component {
   }
 
   render() {
-    return <div className="menuLateralItem" onClick={this.doAction}>{this.props.name}</div>;
+    const stateClass = ((this.props.action === 'courseListe') && this.props.showCart) ? 'menuLateralItem inShopping' : 'menuLateralItem';
+    return <div className={stateClass} onClick={this.doAction}>{this.props.name}</div>;
   }
 }
 
 MenuLateralButton.propTypes = {
   name: PropTypes.string,
   action: PropTypes.string,
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  showCart: PropTypes.bool
 };
 
 MenuLateralButton.defaultProps = { // define the default props
   name: '',
   action: '',
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  showCart: false
 };
 
 export default MenuLateralButton;

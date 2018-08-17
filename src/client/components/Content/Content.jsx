@@ -5,7 +5,6 @@ import TopBar from '../TopBar/TopBar';
 import Foot from '../Foot/Foot';
 import Recipes from '../Recipes/Recipes';
 import Pagination from '../Pagination/Pagination';
-
 import TopRecipe from '../TopRecipe/TopRecipe';
 import HeaderRecipe from '../HeaderRecipe/HeaderRecipe';
 import Ingredients from '../Ingredients/Ingredients';
@@ -13,6 +12,7 @@ import Steps from '../Steps/Steps';
 import ChiefTip from '../ChiefTip/ChiefTip';
 import Tags from '../Tags/Tags';
 import Comments from '../Comments/Comments';
+import ShoppingList from '../ShoppingList/ShoppingList';
 // Import style
 import './Content.scss';
 
@@ -42,55 +42,65 @@ class Content extends React.Component {
     const nbTotalPages = this.props.totalPages;
     const edit = this.state.editMode;
 
-    return (currentRecipe === undefined)
+    return this.props.showCart
       ? (
         <div className="content">
           <TopBar query={q} category={this.props.category} maestro={this.props.maestro} />
-          <div className="recipesZone">
-            <Recipes recipes={recipesList} currentPage={currentPage} nbItemPerPage={this.props.nbItemPerPage} maestro={this.props.maestro} />
-            <Pagination currentPage={currentPage} nbTotalPages={nbTotalPages} maestro={this.props.maestro} />
+          <div className="cartZone">
+            <ShoppingList maestro={this.props.maestro} nbItemsInCart={this.props.nbItemsInCart} nbItemsInCartChecked={this.props.nbItemsInCartChecked} />
           </div>
           <Foot />
         </div>
       ) : (
-        <div className="content">
-          <TopBar maestro={this.props.maestro} />
-          <div className="recipe">
-            <TopRecipe
-              recipeTitle={currentRecipe.title}
-              validatedBy={currentRecipe.validatedBy}
-              mark={currentRecipe.mark}
-              nbMark={currentRecipe.nbMark}
-              user={this.props.user}
-              recipeID={currentRecipe.recipeID}
-              edition={edit}
-              query={q}
-              maestro={this.props.maestro}
-            />
-            <HeaderRecipe
-              category={currentRecipe.category}
-              meatClass={currentRecipe.meatClass}
-              maestro={this.props.maestro}
-              recipeID={currentRecipe.recipeID}
-              recipeTitle={currentRecipe.title}
-              spicy={currentRecipe.spicy}
-              preparationTime={currentRecipe.prepPeriod}
-              cuissonTime={currentRecipe.cookPeriod}
-              reposTime={currentRecipe.restPeriod}
-              nbPerson={currentRecipe.nbPeople}
-              nbPersonUnit={currentRecipe.nbPeopleUnit}
-              edition={edit}
-            />
-            <div className="ingredientsAndSteps">
-              <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
-              <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+        (currentRecipe === undefined)
+          ? (
+            <div className="content">
+              <TopBar query={q} category={this.props.category} maestro={this.props.maestro} />
+              <div className="recipesZone">
+                <Recipes recipes={recipesList} currentPage={currentPage} nbItemPerPage={this.props.nbItemPerPage} maestro={this.props.maestro} />
+                <Pagination currentPage={currentPage} nbTotalPages={nbTotalPages} maestro={this.props.maestro} />
+              </div>
+              <Foot />
             </div>
-            <ChiefTip tip={currentRecipe.chiefTrick} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
-            <Tags tags={currentRecipe.tags} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
-            <Comments comments={currentRecipe.comments} edition={edit} recipeID={currentRecipe.recipeID} user={this.props.user} maestro={this.props.maestro} />
-          </div>
-          <Foot />
-        </div>);
+          ) : (
+            <div className="content">
+              <TopBar maestro={this.props.maestro} />
+              <div className="recipe">
+                <TopRecipe
+                  recipeTitle={currentRecipe.title}
+                  validatedBy={currentRecipe.validatedBy}
+                  mark={currentRecipe.mark}
+                  nbMark={currentRecipe.nbMark}
+                  user={this.props.user}
+                  recipeID={currentRecipe.recipeID}
+                  edition={edit}
+                  query={q}
+                  maestro={this.props.maestro}
+                />
+                <HeaderRecipe
+                  category={currentRecipe.category}
+                  meatClass={currentRecipe.meatClass}
+                  maestro={this.props.maestro}
+                  recipeID={currentRecipe.recipeID}
+                  recipeTitle={currentRecipe.title}
+                  spicy={currentRecipe.spicy}
+                  preparationTime={currentRecipe.prepPeriod}
+                  cuissonTime={currentRecipe.cookPeriod}
+                  reposTime={currentRecipe.restPeriod}
+                  nbPerson={currentRecipe.nbPeople}
+                  nbPersonUnit={currentRecipe.nbPeopleUnit}
+                  edition={edit}
+                />
+                <div className="ingredientsAndSteps">
+                  <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+                  <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+                </div>
+                <ChiefTip tip={currentRecipe.chiefTrick} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+                <Tags tags={currentRecipe.tags} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+                <Comments comments={currentRecipe.comments} edition={edit} recipeID={currentRecipe.recipeID} user={this.props.user} maestro={this.props.maestro} />
+              </div>
+              <Foot />
+            </div>));
   }
 }
 
@@ -121,7 +131,10 @@ Content.propTypes = {
     role: PropTypes.oneOf(['admin', 'user']),
     email: PropTypes.string,
     votedFor: PropTypes.arrayOf(PropTypes.number)
-  })
+  }),
+  showCart: PropTypes.bool,
+  nbItemsInCart: PropTypes.number,
+  nbItemsInCartChecked: PropTypes.number
 };
 
 Content.defaultProps = { // define the default props
@@ -133,7 +146,10 @@ Content.defaultProps = { // define the default props
   maestro: { dataRefresh: () => {} },
   category: '',
   nbItemPerPage: 1,
-  user: undefined
+  user: undefined,
+  showCart: false,
+  nbItemsInCart: 0,
+  nbItemsInCartChecked: 0
 };
 
 // Mixins aren’t supported in ES6 classes.
