@@ -10,7 +10,7 @@ import './MenusLateral.scss';
 import configCookingBook from '../../assets/json/menuLateral.json';
 
 const MenusLateral = ({
-  aRecipeIsSelected, filters, maestro, user
+  aRecipeIsSelected, filters, maestro, user, showCart
 }) => {
   const filterTab = [];
   configCookingBook.filters.forEach((filter) => {
@@ -27,7 +27,7 @@ const MenusLateral = ({
     <div className="menus" >
       <div className="menuLateralItems">
         {/* boutons de menu gauche pour les recettes au hasard et la liste de course */}
-        {configCookingBook.menus.map(button => <MenuLateralButton name={button.title} action={button.actionKey} key={button.title} maestro={maestro} />)}
+        {configCookingBook.menus.map(button => <MenuLateralButton name={button.title} action={button.actionKey} key={button.title} maestro={maestro} showCart={showCart} />)}
         { addRecipeButton }
       </div>
       <div className={filtersClass}>
@@ -46,7 +46,8 @@ MenusLateral.propTypes = {
     role: PropTypes.oneOf(['admin', 'user']),
     email: PropTypes.string
   }),
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  showCart: PropTypes.bool
 };
 
 MenusLateral.defaultProps = { // define the default props
@@ -57,7 +58,8 @@ MenusLateral.defaultProps = { // define the default props
     dislike: false
   },
   user: undefined,
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  showCart: false
 };
 
 export default MenusLateral;

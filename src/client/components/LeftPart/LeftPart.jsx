@@ -8,11 +8,11 @@ import './LeftPart.scss';
 
 
 const LeftPart = ({
-  aRecipeIsSelected, filters, user, maestro
+  aRecipeIsSelected, filters, user, maestro, showCart
 }) => (
   <div className="leftPart">
     <LogoConnect user={user} maestro={maestro} />
-    <MenusLateral maestro={maestro} user={user} aRecipeIsSelected={aRecipeIsSelected} filters={filters} />
+    <MenusLateral maestro={maestro} user={user} showCart={showCart} aRecipeIsSelected={aRecipeIsSelected} filters={filters} />
   </div>
 );
 
@@ -26,7 +26,8 @@ LeftPart.propTypes = {
     role: PropTypes.oneOf(['admin', 'user']),
     email: PropTypes.string
   }),
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  showCart: PropTypes.bool
 };
 
 LeftPart.defaultProps = { // define the default props
@@ -37,7 +38,8 @@ LeftPart.defaultProps = { // define the default props
     dislike: false
   },
   user: undefined,
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  showCart: false
 };
 
 export default LeftPart;
