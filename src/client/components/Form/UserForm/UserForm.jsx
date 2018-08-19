@@ -33,7 +33,7 @@ class UserForm extends React.Component {
       return;
     }
 
-    // If you have arrived here, congratulations, you are worthy to create your account with us
+    // If you arrived here, congratulations, you are worthy to create your account with us
     this.props.maestro.dataRefresh('createUser', this.userLogin.value, this.userPassword.value, this.userMail.value);
   }
 
