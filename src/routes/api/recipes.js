@@ -86,7 +86,7 @@ module.exports = function (app) {
       .limit(1)
       .exec()
       .then((recip) => {
-        const nextId = recip.recipeID + 1;
+        const nextId = recip[0].recipeID + 1;
         const recipe = new Recipe(); // on utilise le schema de Recipe
         recipe.recipeID = nextId;
         const bodyRecipe = JSON.parse(req.body.recipe);
@@ -99,27 +99,9 @@ module.exports = function (app) {
         recipe.nbPeopleUnit = bodyRecipe.nbPeopleUnit;
         recipe.meatClass = bodyRecipe.meatClass;
         recipe.chiefTrick = bodyRecipe.chiefTrick;
-        /*
-        ingredients: [
-          {
-            ingredient: { type: String, required: true },
-            quantity: {
-              type: String,
-              default: ''
-            },
-            unit: {
-              type: String,
-              default: ''
-            },
-            index: { type: Number, required: true }
-          }
-        ],
-        steps: [{
-          text: { type: String, required: true },
-          index: { type: Number, required: true },
-        }],
-        tags: { type: [String], index: true },
-        */
+        recipe.ingredients = bodyRecipe.ingredients;
+        recipe.steps = bodyRecipe.steps;
+        recipe.tags = bodyRecipe.tags;
 
         // on stocke l'objet en base
         recipe.save()

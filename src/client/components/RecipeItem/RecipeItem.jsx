@@ -18,6 +18,8 @@ class RecipeItem extends React.Component {
 
   showRecipe() {
     this.props.maestro.dataRefresh('showRecipe', this.props.recipe.id);
+    // activate the noSleep mode
+    this.props.noSleep.enable();
   }
 
   render() { // exemple de render en ternaire
@@ -51,12 +53,14 @@ class RecipeItem extends React.Component {
 
 RecipeItem.propTypes = {
   recipe: PropTypes.object,
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  noSleep: PropTypes.object
 };
 
 RecipeItem.defaultProps = { // define the default props
   recipe: {},
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  noSleep: {}
 };
 
 export default RecipeItem;

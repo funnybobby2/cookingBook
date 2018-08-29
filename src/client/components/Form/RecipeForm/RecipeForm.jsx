@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import _ from 'lodash';
 // Import style
 import './RecipeForm.scss';
 
@@ -127,14 +128,27 @@ class RecipeForm extends React.Component {
       nbPeopleUnit: this.state.partSelectedOption.value,
       spicy: 0,
       meatClass: this.state.meatSelectedOption.value,
-      chiefTrick: this.recipeTips.value,
       ingredients,
       steps,
       tags
     };
+    
+    if (!_.isEmpty(this.recipeTips.value)) newRecipe.chiefTrick = this.recipeTips.value;
 
     // If you arrived here, congratulations, you are worthy to create this recipe
     this.props.maestro.dataRefresh('createRecipe', newRecipe);
+
+    this.setState({
+      categorySelectedOption: null,
+      meatSelectedOption: null,
+      preparationSelectedOption: null,
+      cuissonSelectedOption: null,
+      sleepSelectedOption: null,
+      partSelectedOption: null,
+      ingredientsInput: [],
+      stepsInput: [],
+      tagsInput: []
+    });
   }
 
   closeForm() {

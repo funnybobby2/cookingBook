@@ -727,9 +727,10 @@ export default class App extends Component {
   }
 
   createRecipe(recipe) {
-    axios.put('/api/recipes/create', { recipe: JSON.stringify(recipe) }, { upsert: true })
+    axios.post('/api/recipes/create', { recipe: JSON.stringify(recipe) }, { upsert: true })
       .then((resRecipe) => {
-        this.setState({ currentRecipe: resRecipe.data });
+        this.setState({ currentRecipe: undefined, openRecipeForm: false });
+        this.addNotif(`La recette n° ${resRecipe.data.recipeID} "${resRecipe.data.title}" a bien été créée`, 'success');
       });
   }
 
@@ -758,6 +759,7 @@ export default class App extends Component {
           maestro={maestro}
           nbItemsInCart={this.state.nbItemsInCart}
           nbItemsInCartChecked={this.state.nbItemsInCartChecked}
+          noSleep={this.noSleep}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
         <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} />

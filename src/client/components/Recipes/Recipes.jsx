@@ -6,7 +6,7 @@ import RecipeItem from '../RecipeItem/RecipeItem';
 import './Recipes.scss';
 
 const Recipes = ({
-  recipes, user, currentPage, nbItemPerPage, maestro
+  recipes, user, currentPage, nbItemPerPage, maestro, noSleep
 }) => {
   // select the good slice of the recipes
   const start = ((currentPage - 1) * nbItemPerPage) + ((currentPage === 1) ? 0 : 1);
@@ -26,7 +26,7 @@ const Recipes = ({
     }
 
     const recipeItem = { title: recipe.title, id: recipe.recipeID, valid: isValid };
-    recipeItems.push(<RecipeItem recipe={recipeItem} key={recipeItem.id} maestro={maestro} />);
+    recipeItems.push(<RecipeItem recipe={recipeItem} key={recipeItem.id} maestro={maestro} noSleep={noSleep} />);
   });
 
   return (
@@ -48,7 +48,8 @@ Recipes.propTypes = {
   }),
   currentPage: PropTypes.number,
   nbItemPerPage: PropTypes.number,
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  noSleep: PropTypes.object
 };
 
 Recipes.defaultProps = { // define the default props
@@ -58,7 +59,8 @@ Recipes.defaultProps = { // define the default props
   },
   currentPage: 1,
   nbItemPerPage: 1,
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  noSleep: {}
 };
 
 export default Recipes;
