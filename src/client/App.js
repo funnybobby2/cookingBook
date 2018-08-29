@@ -140,6 +140,9 @@ export default class App extends Component {
       }
     });
 
+    // activate the noSleep mode
+    this.noSleep.enable();
+
     // restore the cart
     let ingredientsStored = window.sessionStorage.getItem('menu-ingredients');
     if (_.isNil(ingredientsStored)) ingredientsStored = {};

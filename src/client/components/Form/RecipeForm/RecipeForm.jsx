@@ -132,6 +132,7 @@ class RecipeForm extends React.Component {
       steps,
       tags
     };
+    
     if (!_.isEmpty(this.recipeTips.value)) newRecipe.chiefTrick = this.recipeTips.value;
 
     // If you arrived here, congratulations, you are worthy to create this recipe
