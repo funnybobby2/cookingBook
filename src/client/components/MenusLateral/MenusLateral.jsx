@@ -18,7 +18,7 @@ const MenusLateral = ({
   });
 
   const addRecipeButton = ((user !== undefined) && (user.role === 'admin'))
-    ? <AddRecipe />
+    ? <AddRecipe maestro={maestro} />
     : '';
 
   const filtersClass = (user !== undefined) ? 'filters' : 'filters disable';

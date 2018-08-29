@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import axios from 'axios'; // to manage REST API
+import NoSleep from 'nosleep.js'; // to prevent display sleep and enable wake lock in all Android and iOS web browsers.
 import createHistory from 'history/createBrowserHistory'; // to manage history
 // Import react components
 import LeftPart from './components/LeftPart/LeftPart';
 import Content from './components/Content/Content';
 import Notification from './components/Notification/Notification';
 import UserForm from './components/Form/UserForm/UserForm';
+import RecipeForm from './components/Form/RecipeForm/RecipeForm';
 // import services
 import { maestro } from './js/services/maestro';
 // Import style
@@ -49,6 +51,7 @@ export default class App extends Component {
       user: undefined,
       usersLogin: [],
       openUserForm: false,
+      openRecipeForm: false,
       currentRecipe: undefined,
       recipes: [],
       searchQuery: '',
@@ -66,6 +69,7 @@ export default class App extends Component {
       nbItemsInCartChecked: 0
     };
     this.history = createHistory();
+    this.noSleep = new NoSleep();
   }
 
   componentWillMount() {
@@ -87,6 +91,9 @@ export default class App extends Component {
     maestro.addListener('deleteArrayField', 'app', this.deleteArrayField.bind(this));
     maestro.addListener('addArrayField', 'app', this.addArrayField.bind(this));
     maestro.addListener('updateMark', 'app', this.updateMark.bind(this));
+    maestro.addListener('openCreateRecipe', 'app', this.openCreateRecipe.bind(this));
+    maestro.addListener('closeRecipeCreation', 'app', this.closeRecipeCreation.bind(this));
+    maestro.addListener('createRecipe', 'app', this.createRecipe.bind(this));
     // navigations
     maestro.addListener('goTo', 'app', this.goTo.bind(this));
     // notifications
@@ -301,7 +308,8 @@ export default class App extends Component {
             user: res.data,
             nbTotalPages: getNbTotalPages(recipes.length).nbPages,
             currentPage: 1,
-            openUserForm: false
+            openUserForm: false,
+            openRecipeForm: false
           });
 
           this.addNotif(`Connexion réussie ${login} !`, 'success');
@@ -707,6 +715,22 @@ export default class App extends Component {
       });
   }
 
+  openCreateRecipe() {
+    this.setState({ openRecipeForm: true });
+  }
+
+  closeRecipeCreation() {
+    this.setState({ openRecipeForm: false });
+  }
+
+  createRecipe(recipe) {
+    axios.post('/api/recipes/create', { recipe: JSON.stringify(recipe) }, { upsert: true })
+      .then((resRecipe) => {
+        this.setState({ currentRecipe: undefined, openRecipeForm: false });
+        this.addNotif(`La recette n° ${resRecipe.data.recipeID} "${resRecipe.data.title}" a bien été créée`, 'success');
+      });
+  }
+
   render() {
     const numberOfItems = getNbTotalPages(this.state.recipes.length).nbItems;
 
@@ -732,10 +756,13 @@ export default class App extends Component {
           maestro={maestro}
           nbItemsInCart={this.state.nbItemsInCart}
           nbItemsInCartChecked={this.state.nbItemsInCartChecked}
+          noSleep={this.noSleep}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
         <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} />
+        <RecipeForm open={this.state.openRecipeForm} maestro={maestro} />
       </div>
     );
   }
 }
+

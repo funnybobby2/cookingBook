@@ -57,7 +57,7 @@ class Content extends React.Component {
             <div className="content">
               <TopBar query={q} category={this.props.category} maestro={this.props.maestro} />
               <div className="recipesZone">
-                <Recipes recipes={recipesList} currentPage={currentPage} nbItemPerPage={this.props.nbItemPerPage} maestro={this.props.maestro} />
+                <Recipes recipes={recipesList} currentPage={currentPage} nbItemPerPage={this.props.nbItemPerPage} user={this.props.user} maestro={this.props.maestro} noSleep={this.props.noSleep} />
                 <Pagination currentPage={currentPage} nbTotalPages={nbTotalPages} maestro={this.props.maestro} />
               </div>
               <Foot />
@@ -134,7 +134,8 @@ Content.propTypes = {
   }),
   showCart: PropTypes.bool,
   nbItemsInCart: PropTypes.number,
-  nbItemsInCartChecked: PropTypes.number
+  nbItemsInCartChecked: PropTypes.number,
+  noSleep: PropTypes.object
 };
 
 Content.defaultProps = { // define the default props
@@ -149,7 +150,8 @@ Content.defaultProps = { // define the default props
   user: undefined,
   showCart: false,
   nbItemsInCart: 0,
-  nbItemsInCartChecked: 0
+  nbItemsInCartChecked: 0,
+  noSleep: {}
 };
 
 // Mixins aren’t supported in ES6 classes.

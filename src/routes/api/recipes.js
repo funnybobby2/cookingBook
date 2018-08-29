@@ -80,16 +80,34 @@ module.exports = function (app) {
 
   // //////////////////////////////////////    CREATE A RECIPE   //////////////////////////////// //
 
-  app.post('/api/recipes/', (req, res, next) => {
-    const recipe = new Recipe(); // on utilise le schema de Recipe
-    // on récupère les données reçues pour les ajouter à l'objet Recipe
-    recipe.category = req.body.category;
-    recipe.title = req.body.title;
-    // etc ...
-    // on stocke l'objet en base
-    recipe.save()
-      .then(() => res.json(recipe))
-      .catch(err => next(err));
+  app.post('/api/recipes/create', (req, res, next) => {
+    Recipe.find()
+      .sort({ recipeID: -1 })
+      .limit(1)
+      .exec()
+      .then((recip) => {
+        const nextId = recip[0].recipeID + 1;
+        const recipe = new Recipe(); // on utilise le schema de Recipe
+        recipe.recipeID = nextId;
+        const bodyRecipe = JSON.parse(req.body.recipe);
+        recipe.category = bodyRecipe.category;
+        recipe.title = bodyRecipe.title;
+        recipe.prepPeriod = bodyRecipe.prepPeriod;
+        recipe.cookPeriod = bodyRecipe.cookPeriod;
+        recipe.restPeriod = bodyRecipe.restPeriod;
+        recipe.nbPeople = bodyRecipe.nbPeople;
+        recipe.nbPeopleUnit = bodyRecipe.nbPeopleUnit;
+        recipe.meatClass = bodyRecipe.meatClass;
+        recipe.chiefTrick = bodyRecipe.chiefTrick;
+        recipe.ingredients = bodyRecipe.ingredients;
+        recipe.steps = bodyRecipe.steps;
+        recipe.tags = bodyRecipe.tags;
+
+        // on stocke l'objet en base
+        recipe.save()
+          .then(() => res.json(recipe))
+          .catch(err => next(err));
+      });
   });
 
   // //////////////////////////////////////    UPDATE A RECIPE   //////////////////////////////// //
