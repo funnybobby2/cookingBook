@@ -13,7 +13,8 @@
     content: " ";
     display: block;
     position: absolute;
-}
+    transition: all 0.5s;
+  }
 
   &:before {
     width: 44px;
@@ -31,8 +32,22 @@
     top: 2px;
     left: -6px;
   }
+
+  &.edition{
+    .minus, .plus{
+      display: block;
+    }
+  }
+
   &.level0{
     opacity: 0;
+    &.edition{
+      opacity: 1;
+      &:before{
+        background: #FFF;
+        color: black;
+      }
+    }
   }
 
   &.level1{
@@ -40,7 +55,7 @@
       background: #ffcd00;
     }
     &:after {
-      width: 40px;
+      width: 43px;
       background: #ffcd00;
     }
   }
@@ -50,7 +65,7 @@
       background: #f58220;
     }
     &:after {
-      width: 90px;
+      width: 89px;
       background: #f58220;
     }
   }
@@ -74,5 +89,26 @@
     top: -15px;
     left: -41px;
     background: transparent url(../../assets/img/spicy.png) no-repeat center center;
+  }
+
+  .minus, .plus{
+    display: none;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    color: #FFF;
+    top: -2px;
+    &:hover{
+      color: #009EE0;
+      cursor: pointer;
+    }
+  }
+
+  .minus {
+    left: -64px;
+  }
+
+  .plus {
+    right: -24px;
   }
 }

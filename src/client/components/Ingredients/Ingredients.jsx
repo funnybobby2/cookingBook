@@ -81,7 +81,7 @@ class Ingredients extends React.Component {
     });
 
     return (
-      <div className="ingredients">
+      <div className={this.props.edition ? 'ingredients edition' : 'ingredients'}>
         <div className="ingredientsTitle">Ingrédients</div>
         <ul className="ingredientList">
           {ingredientList}
