@@ -75,7 +75,11 @@ const recipeSchema = new mongoose.Schema({
         type: String,
         default: ''
       },
-      index: { type: Number, required: true }
+      index: { type: Number, required: true },
+      group: {
+        type: String,
+        default: ''
+      }
     }
   ],
   steps: [{
