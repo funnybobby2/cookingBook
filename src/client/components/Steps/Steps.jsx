@@ -9,7 +9,7 @@ import './Steps.scss';
 const Steps = ({
   stepList, edition, recipeID, query, maestro
 }) => (
-  <div className="steps">
+  <div className={edition ? 'steps edition' : 'steps'}>
     <div className="stepsTitle">Étapes</div>
     <div className="stepList">
       {stepList.map(step => <Step text={step.text} index={step.index} key={step.index} edition={edition} recipeID={recipeID} query={query} maestro={maestro} />)}
@@ -17,6 +17,7 @@ const Steps = ({
     <StepAdd edition={edition} recipeID={recipeID} nextIndex={stepList.length} maestro={maestro} />
   </div>
 );
+
 
 Steps.propTypes = {
   stepList: PropTypes.arrayOf(PropTypes.object),

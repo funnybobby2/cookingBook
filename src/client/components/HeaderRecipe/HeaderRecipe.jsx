@@ -14,7 +14,7 @@ const HeaderRecipe = ({
   <div className="headerRecipe">
     <div className="meatAndSpice">
       <MeatSelector meat={meatClass} edition={edition} recipeID={recipeID} maestro={maestro} />
-      <Spice spicy={spicy} />
+      <Spice spicy={spicy} edition={edition} maestro={maestro} recipeID={recipeID} />
     </div>
     <PhotoWithDuration
       maestro={maestro}

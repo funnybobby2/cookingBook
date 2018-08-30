@@ -24,6 +24,11 @@
     border-radius: 6px;
     margin: 0 13px;
   }
+
+  &.edition .stepList{
+    width: calc(100% - 60px);
+    margin-left: 5px;
+  }
 }
 
 .stepAdd {
