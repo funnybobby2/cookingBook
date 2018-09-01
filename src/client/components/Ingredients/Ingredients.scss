@@ -17,6 +17,78 @@
     }
   }
 
+  .ingredientsLegend{
+    position: relative;
+
+    .ingredientLegendIcon{
+      position: absolute;
+      margin-left: 84px;
+      margin-top: -28px;
+      background: #191919;
+      padding: 3px;
+      padding-bottom: 6px;
+      color: whitesmoke;
+      border-radius: 5px 5px 0 0;
+      &:hover{
+        cursor: pointer;
+        color: #009EE0;
+      }
+    }
+
+    .legend {
+      padding: 10px;
+      position: absolute;
+      background: #f5f5f5;
+      width: 180px;
+      border-radius: 5px;
+      box-shadow: 8px 8px 4px #0c0c0c;
+      display: none;
+      
+      .legendItem {
+        color: #191919;
+        padding-bottom: 5px;
+        font-weight: bold;
+        font-family: Indie Flower,cursive;
+
+        .item0,.item1,.item2,.item3,.item4,.item5,.item6{
+          font-size: 13px;
+          padding-right: 6px;
+        }
+        .item0{
+          color: #ed5564;
+        }
+        .item1{
+          color: #47cec0;
+        }
+        .item2{
+          color: #d870ad;
+        }
+        .item3{
+          color: #fab153;
+        }
+        .item4{
+          color: #4a8bdb;
+        }
+        .item5{
+          color: #b377d9;
+        }
+        .item6{
+          color: #c2d468;
+        }
+      }
+    }
+
+    &.open{
+      .ingredientLegendIcon{
+        background: #f5f5f5;
+        color: #1e7aca;
+      }
+      .legend {
+        display: block;
+      }
+    }
+  }
+
   .ingredientList {
     margin: 0;
     max-width: 660px;
@@ -31,6 +103,9 @@
       list-style-type: none;
       font-family: 'Indie Flower';
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+
       &.edition{
         width: 100%;
         display: flex;
@@ -73,6 +148,34 @@
           margin: 0 5px;
         }
       }
+
+      .group0, .group1, .group2, .group3, .group4, .group5, .group6{
+        font-size: 22px;
+        padding-bottom: 3px;
+        padding-right: 5px;
+      }
+      .group0{
+        color: #ed5564;
+      }
+      .group1{
+        color: #47cec0;
+      }
+      .group2{
+        color: #d870ad;
+      }
+      .group3{
+        color: #fab153;
+      }
+      .group4{
+        color: #4a8bdb;
+      }
+      .group5{
+        color: #b377d9;
+      }
+      .group6{
+        color: #c2d468;
+      }
+
     }
   }
 }
