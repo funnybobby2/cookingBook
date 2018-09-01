@@ -76,7 +76,7 @@ class Ingredients extends React.Component {
             onKeyPress={this.editFieldByEnter.bind(this, 'unit', index)}
           />
           <i className="deleteIngredient material-icons" onClick={() => { this.deleteIngredient(index, ingr.index); }}>delete_forever</i>
-                            </li>);
+        </li>);
       }
     });
 
@@ -87,6 +87,7 @@ class Ingredients extends React.Component {
           {ingredientList}
         </ul>
         <IngredientAdd edition={this.props.edition} recipeID={this.props.recipeID} nextIndex={ingredientList.length} maestro={this.props.maestro} />
+        <div className="union" />
       </div>);
   }
 }
