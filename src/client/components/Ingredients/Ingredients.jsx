@@ -5,16 +5,45 @@ import IngredientAdd from './IngredientAdd';
 // Import style
 import './Ingredients.scss';
 
+const hasGroup = (ingredients) => {
+  let has = false;
+  for (let i = 0, cpt = ingredients.length; i < cpt; i += 1) {
+    if ((ingredients[i].group !== undefined) && (ingredients[i].group !== '')) {
+      has = true;
+      break;
+    }
+  }
+  return has;
+};
+
+const getAllGroups = (ingredients) => {
+  const groups = [];
+  for (let i = 0, cpt = ingredients.length; i < cpt; i += 1) {
+    if ((ingredients[i].group === undefined) && (!groups.includes('???'))) groups.push('???');
+    else if ((ingredients[i].group === '') && (!groups.includes('???'))) groups.push('???');
+    else if (!groups.includes(ingredients[i].group)) groups.push(ingredients[i].group);
+  }
+  return groups.sort();
+};
+
+const getGroupIcon = (hasAGroup, groups, group) => {
+  if (!hasAGroup) return '<span>-</span>';
+  if ((group === '') || (group === undefined)) group = '???';
+  return `<i class='material-icons group${groups.indexOf(group)}'>label</i>`;
+};
+
 class Ingredients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputIngredientsValue: this.props.ingredientList
+      inputIngredientsValue: this.props.ingredientList,
+      open: false
     };
 
     this.deleteIngredient = this.deleteIngredient.bind(this);
     this.editField = this.editField.bind(this);
     this.editFieldByEnter = this.editFieldByEnter.bind(this);
+    this.open = this.open.bind(this);
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -39,17 +68,31 @@ class Ingredients extends React.Component {
     e.target.blur();
   }
 
+  open() {
+    this.setState({ open: !this.state.open });
+  }
+
   updateIngredients() {
     this.setState({ inputIngredientsValue: this.props.ingredientList });
+  }
+
+  renderLegend(groups) {
+    const items = [];
+
+    return <div className="legendItem"><i className="material-icons item0">label</i>test un peu long mais quand même ça arrive des fois</div>;
   }
 
   render() {
     const ingredientList = [];
     const ingredients = this.state.inputIngredientsValue;
+    const hasAGroup = hasGroup(ingredients);
+    const groups = getAllGroups(ingredients);
+    const classLegend = this.state.open ? 'ingredientsLegend open' : 'ingredientsLegend';
 
     ingredients.forEach((ingr, index) => {
+      const ingrIcon = getGroupIcon(hasAGroup, groups, ingr.group);
       const ingredientAfterSearch = (this.props.query.length > 2) ? ingr.ingredient.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : ingr.ingredient;
-      const ingrTextAfterSearch = ((ingr.quantity !== '') || (ingr.unit !== '')) ? `- ${ingredientAfterSearch} : ${ingr.quantity} ${ingr.unit}` : `- ${ingredientAfterSearch}`;
+      const ingrTextAfterSearch = ((ingr.quantity !== '') || (ingr.unit !== '')) ? `${ingrIcon} ${ingredientAfterSearch} : ${ingr.quantity} ${ingr.unit}` : `${ingrIcon} ${ingredientAfterSearch}`;
       if (!this.props.edition) {
         ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
@@ -76,13 +119,19 @@ class Ingredients extends React.Component {
             onKeyPress={this.editFieldByEnter.bind(this, 'unit', index)}
           />
           <i className="deleteIngredient material-icons" onClick={() => { this.deleteIngredient(index, ingr.index); }}>delete_forever</i>
-        </li>);
+                            </li>);
       }
     });
 
     return (
       <div className={this.props.edition ? 'ingredients edition' : 'ingredients'}>
         <div className="ingredientsTitle">Ingrédients</div>
+        <div className={classLegend}>
+          <i className="material-icons ingredientLegendIcon" onClick={this.open}>ballot</i>
+          <div className="legend">
+            {groups.map((group, index) => <div className="legendItem"><i className={`material-icons item${index}`} title={group[index]}>label</i>{group}</div>)}
+          </div>
+        </div>
         <ul className="ingredientList">
           {ingredientList}
         </ul>
