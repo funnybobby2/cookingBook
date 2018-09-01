@@ -9,8 +9,8 @@ const Recipes = ({
   recipes, user, currentPage, nbItemPerPage, maestro, noSleep
 }) => {
   // select the good slice of the recipes
-  const start = ((currentPage - 1) * nbItemPerPage) + ((currentPage === 1) ? 0 : 1);
-  const end = ((currentPage * nbItemPerPage) + ((currentPage === 1) ? 0 : 1));
+  const start = (currentPage - 1) * nbItemPerPage;
+  const end = currentPage * nbItemPerPage;
   recipes = recipes.slice(start, end);
 
   const recipeItems = [];
