@@ -19,9 +19,11 @@ const hasGroup = (ingredients) => {
 const getAllGroups = (ingredients) => {
   const groups = [];
   for (let i = 0, cpt = ingredients.length; i < cpt; i += 1) {
-    if ((ingredients[i].group === undefined) && (!groups.includes('???'))) groups.push('???');
-    else if ((ingredients[i].group === '') && (!groups.includes('???'))) groups.push('???');
-    else if (!groups.includes(ingredients[i].group)) groups.push(ingredients[i].group);
+    if (ingredients[i].group === undefined) {
+      if (!groups.includes('???')) groups.push('???');
+    } else if (ingredients[i].group === '') {
+      if (!groups.includes('???')) groups.push('???');
+    } else if (!groups.includes(ingredients[i].group)) groups.push(ingredients[i].group);
   }
   return groups.sort();
 };
@@ -37,13 +39,15 @@ class Ingredients extends React.Component {
     super(props);
     this.state = {
       inputIngredientsValue: this.props.ingredientList,
-      open: false
+      openLegend: false
     };
 
     this.deleteIngredient = this.deleteIngredient.bind(this);
     this.editField = this.editField.bind(this);
     this.editFieldByEnter = this.editFieldByEnter.bind(this);
-    this.open = this.open.bind(this);
+    this.openLegend = this.openLegend.bind(this);
+    this.openVideo = this.openVideo.bind(this);
+    this.openTips = this.openTips.bind(this);
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -68,18 +72,32 @@ class Ingredients extends React.Component {
     e.target.blur();
   }
 
-  open() {
-    this.setState({ open: !this.state.open });
+  openLegend() {
+    this.setState({
+      openLegend: !this.state.openLegend,
+      openVideo: false,
+      openTips: false
+    });
+  }
+
+  openVideo() {
+    this.setState({
+      openLegend: false,
+      openVideo: !this.state.openVideo,
+      openTips: false
+    });
+  }
+
+  openTips() {
+    this.setState({
+      openLegend: false,
+      openVideo: false,
+      openTips: !this.state.openTips
+    });
   }
 
   updateIngredients() {
     this.setState({ inputIngredientsValue: this.props.ingredientList });
-  }
-
-  renderLegend(groups) {
-    const items = [];
-
-    return <div className="legendItem"><i className="material-icons item0">label</i>test un peu long mais quand même ça arrive des fois</div>;
   }
 
   render() {
@@ -87,7 +105,11 @@ class Ingredients extends React.Component {
     const ingredients = this.state.inputIngredientsValue;
     const hasAGroup = hasGroup(ingredients);
     const groups = getAllGroups(ingredients);
-    const classLegend = this.state.open ? 'ingredientsLegend open' : 'ingredientsLegend';
+    const classLegend = this.state.openLegend ? `ingredientsLegend open ${hasAGroup ? '' : 'disable'}` : `ingredientsLegend ${hasAGroup ? '' : 'disable'}`;
+    const hasAVideo = false; //! (this.props.video === undefined);
+    const classVideo = this.state.openVideo ? `videoBlock open ${hasAVideo ? '' : 'disable'}` : `videoBlock ${hasAVideo ? '' : 'disable'}`;
+    const hasATip = false; // !(this.props.tips === undefined);
+    const classTips = this.state.openTips ? `tipsBlock open ${hasATip ? '' : 'disable'}` : `tipsBlock ${hasATip ? '' : 'disable'}`;
 
     ingredients.forEach((ingr, index) => {
       const ingrIcon = getGroupIcon(hasAGroup, groups, ingr.group);
@@ -126,12 +148,24 @@ class Ingredients extends React.Component {
     return (
       <div className={this.props.edition ? 'ingredients edition' : 'ingredients'}>
         <div className="ingredientsTitle">Ingrédients</div>
+
         <div className={classLegend}>
-          <i className="material-icons ingredientLegendIcon" onClick={this.open}>ballot</i>
+          <i className="material-icons ingredientLegendIcon" onClick={this.openLegend}>ballot</i>
           <div className="legend">
             {groups.map((group, index) => <div className="legendItem"><i className={`material-icons item${index}`} title={group[index]}>label</i>{group}</div>)}
           </div>
         </div>
+
+        <div className={classTips}>
+          <i className="material-icons ingredientTipsIcon" onClick={this.openTips}>wb_incandescent</i>
+          <div className="ingredientTips" />
+        </div>
+
+        <div className={classVideo}>
+          <i className="material-icons ingredientVideoIcon" onClick={this.openVideo}>videocam</i>
+          <div className="ingredientVideo" />
+        </div>
+
         <ul className="ingredientList">
           {ingredientList}
         </ul>
