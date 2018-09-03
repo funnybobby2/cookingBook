@@ -17,7 +17,7 @@
     }
   }
 
-  .ingredientsLegend{
+  /*.ingredientsLegend{
     position: relative;
 
     .ingredientLegendIcon{
@@ -92,43 +92,17 @@
       display: none;
     }
   }
-
-  .tipsBlock, .videoBlock{
-    position: relative;
-
-    .ingredientTipsIcon, .ingredientVideoIcon{
-      position: absolute;
-      margin-left: 84px;
-      margin-top: -28px;
-      background: #191919;
-      padding: 3px;
-      padding-bottom: 1px;
-      color: whitesmoke;
-      border-radius: 5px 5px 0 0;
-      &:hover{
-        cursor: pointer;
-        color: #009EE0;
-      }
-    }
-
-    .ingredientTipsIcon{
-      margin-left: 116px;
-    }
-    .ingredientVideoIcon{
-      margin-left: 148px;
-    }
-
-    &.disable{
-      display: none;
-    }
-  }
+  */
 
   .ingredientList {
     margin: 0;
     max-width: 660px;
     padding: 10px;
     background-color: #191919;
+    border: 1px solid #2d2d2d;
     border-radius: 6px;
+    position: relative;
+
     li {
       float: left;
       width: 300px;
@@ -209,7 +183,98 @@
       .group6{
         color: #c2d468;
       }
+    }
 
+    .ingredientTabs{
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      top: -30px;
+
+      .ingredientsLegend {
+        position: relative;
+        border-radius: 5px 5px 0 0;
+
+        &.disable .ingredientLegendIcon {
+          color: #424242 !important;
+          &:hover {
+            cursor: default !important;
+            color: #424242 !important;
+          }
+        }
+
+        .ingredientLegendIcon {
+          color: whitesmoke;
+          background: #191919;
+          padding: 3px;
+          margin-right: 3px;
+          border-radius: 5px 5px 0 0;
+          border-top: 1px solid #2d2d2d;
+          border-left: 1px solid #2d2d2d;
+          border-right: 1px solid #2d2d2d;
+          &:hover{
+            cursor: pointer;
+            color: #009EE0;
+          }
+        }
+
+        .legend{
+          position: absolute;
+          display: none;
+          padding: 10px;
+          background: #f5f5f5;
+          width: 180px;
+          box-shadow: 8px 8px 4px #0c0c0c;
+          border-radius: 0 5px 5px 5px;
+          box-shadow: 8px 8px 4px #0c0c0c;
+          margin-top: -1px;
+          margin-left: 1px;
+
+          .legendItem {
+            color: #191919;
+            padding-bottom: 5px;
+            font-weight: bold;
+            font-family: Indie Flower,cursive;
+    
+            .item0,.item1,.item2,.item3,.item4,.item5,.item6{
+              font-size: 13px;
+              padding-right: 6px;
+            }
+            .item0{
+              color: #ed5564;
+            }
+            .item1{
+              color: #47cec0;
+            }
+            .item2{
+              color: #d870ad;
+            }
+            .item3{
+              color: #fab153;
+            }
+            .item4{
+              color: #4a8bdb;
+            }
+            .item5{
+              color: #b377d9;
+            }
+            .item6{
+              color: #c2d468;
+            }
+          }
+        }
+
+        &.open{
+          .ingredientLegendIcon{
+            background: #f5f5f5;
+            color: #1e7aca;
+          }
+
+          .legend{
+            display: block;
+          }
+        }
+      }
     }
   }
 }
