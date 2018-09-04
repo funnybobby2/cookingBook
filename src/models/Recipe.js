@@ -87,6 +87,14 @@ const recipeSchema = new mongoose.Schema({
     index: { type: Number, required: true },
   }],
   tags: { type: [String], index: true },
+  video: {
+    type: String,
+    default: ''
+  },
+  help: {
+    type: String,
+    default: ''
+  },
   validatedBy: [{ type: mongoose.Schema.Types.ObjectId, default: [], ref: 'User' }],
   deletedBy: [{ type: mongoose.Schema.Types.ObjectId, default: [], ref: 'User' }]
 });
