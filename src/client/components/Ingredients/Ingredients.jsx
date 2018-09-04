@@ -137,6 +137,7 @@ class Ingredients extends React.Component {
 
         </ul>
         <IngredientAdd edition={this.props.edition} recipeID={this.props.recipeID} nextIndex={ingredientList.length} maestro={this.props.maestro} />
+        <div className="union" />
       </div>);
   }
 }
