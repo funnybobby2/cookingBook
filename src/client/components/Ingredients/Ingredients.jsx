@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import react component
 import IngredientAdd from './IngredientAdd';
+import IngredientTabs from './IngredientTabs';
 // Import style
 import './Ingredients.scss';
 
@@ -38,14 +39,12 @@ class Ingredients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputIngredientsValue: this.props.ingredientList,
-      openLegend: false
+      inputIngredientsValue: this.props.ingredientList
     };
 
     this.deleteIngredient = this.deleteIngredient.bind(this);
     this.editField = this.editField.bind(this);
     this.editFieldByEnter = this.editFieldByEnter.bind(this);
-    this.openLegend = this.openLegend.bind(this);
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -64,14 +63,13 @@ class Ingredients extends React.Component {
 
   editFieldByEnter(field, index, e) {
     if (e.key !== 'Enter') return;
-    if ((e.target.value.trim() === '') && (e.target.dataset.notEmpty !== undefined)) return; // TODO lever une erreur
+    if ((e.target.value.trim() === '') && (e.target.dataset.notEmpty !== undefined)) {
+      this.props.maestro.dataRefresh('addNotif', `Vous devez remplir le champ ${field}`, 'error');
+      return;
+    }
 
     this.props.maestro.dataRefresh('updateArrayField', this.props.recipeID, 'ingredients', index, field, e.target.value);
     e.target.blur();
-  }
-
-  openLegend() {
-    if (hasGroup(this.state.inputIngredientsValue)) this.setState({ openLegend: !this.state.openLegend });
   }
 
   updateIngredients() {
@@ -83,7 +81,6 @@ class Ingredients extends React.Component {
     const ingredients = this.state.inputIngredientsValue;
     const hasAGroup = hasGroup(ingredients);
     const groups = getAllGroups(ingredients);
-    const classLegend = this.state.openLegend ? `ingredientsLegend open ${hasAGroup ? '' : 'disable'}` : `ingredientsLegend ${hasAGroup ? '' : 'disable'}`;
 
     ingredients.forEach((ingr, index) => {
       const ingrIcon = getGroupIcon(hasAGroup, groups, ingr.group);
@@ -92,7 +89,16 @@ class Ingredients extends React.Component {
       if (!this.props.edition) {
         ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
-        ingredientList.push(<li key={index} className="edition">- <input
+        ingredientList.push(<li key={index} className="edition">- 
+        <input 
+          className="ingredientInput group"
+          value={ingr.group}
+          type="text"
+          placeholder="Groupe"
+          onChange={this.editField.bind(this, 'group', index)}
+          onKeyPress={this.editFieldByEnter.bind(this, 'group', index)}
+        />
+        <input
           className="ingredientInput name"
           value={ingr.ingredient}
           type="text"
@@ -125,16 +131,7 @@ class Ingredients extends React.Component {
 
         <ul className="ingredientList">
           {ingredientList}
-
-          <div className="ingredientTabs">
-            <div className={classLegend}>
-              <i className="material-icons ingredientLegendIcon" onClick={this.openLegend}>ballot</i>
-              <div className="legend">
-                {groups.map((group, index) => <div className="legendItem"><i className={`material-icons item${index}`} title={group[index]}>label</i>{group}</div>)}
-              </div>
-            </div>
-          </div>
-
+          <IngredientTabs edition={this.props.edition} recipeID={this.props.recipeID} ingredientList={this.props.ingredientList} />
         </ul>
         <IngredientAdd edition={this.props.edition} recipeID={this.props.recipeID} nextIndex={ingredientList.length} maestro={this.props.maestro} />
         <div className="union" />

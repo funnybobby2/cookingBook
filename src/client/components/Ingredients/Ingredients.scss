@@ -118,14 +118,6 @@
         position: relative;
         border-radius: 5px 5px 0 0;
 
-        &.disable .ingredientLegendIcon {
-          color: #424242 !important;
-          &:hover {
-            cursor: default !important;
-            color: #424242 !important;
-          }
-        }
-
         .ingredientLegendIcon {
           color: whitesmoke;
           background: #191919;
@@ -140,6 +132,17 @@
             color: #009EE0;
           }
         }
+
+        &.disable {
+          .ingredientLegendIcon {
+            color: #424242;
+            &:hover {
+              cursor: default;
+              color: #424242;
+            }
+          }
+        }
+
 
         .legend{
           position: absolute;
