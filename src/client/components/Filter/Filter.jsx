@@ -16,7 +16,7 @@ class Filter extends React.Component {
   render() {
     return (
       <div
-        className={(this.props.filters[this.props.classe]) ? `${this.props.classe} green` : this.props.classe}
+        className={(this.props.filters[this.props.classe]) ? `${this.props.classe} green ${this.props.over ? 'overable' : ''}` : `${this.props.classe} ${this.props.over ? 'overable' : ''}`}
         title={this.props.title}
         onClick={this.toggleFilter}
       >
@@ -30,6 +30,7 @@ Filter.propTypes = {
   type: PropTypes.string,
   filters: PropTypes.object,
   title: PropTypes.string,
+  over: PropTypes.bool,
   maestro: PropTypes.object
 };
 
@@ -37,6 +38,7 @@ Filter.defaultProps = { // define the default props
   classe: '',
   type: '',
   title: '',
+  over: false,
   filters: {
     validate: false,
     new: false,

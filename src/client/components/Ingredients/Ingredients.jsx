@@ -45,6 +45,7 @@ class Ingredients extends React.Component {
     this.deleteIngredient = this.deleteIngredient.bind(this);
     this.editField = this.editField.bind(this);
     this.editFieldByEnter = this.editFieldByEnter.bind(this);
+    this.blurField = this.blurField.bind(this);
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -72,6 +73,15 @@ class Ingredients extends React.Component {
     e.target.blur();
   }
 
+  blurField(field, index, e) {
+    if ((e.target.value.trim() === '') && (e.target.dataset.notEmpty !== undefined)) {
+      this.props.maestro.dataRefresh('addNotif', `Vous devez remplir le champ ${field}`, 'error');
+      return;
+    }
+
+    this.props.maestro.dataRefresh('updateArrayField', this.props.recipeID, 'ingredients', index, field, e.target.value);
+  }
+
   updateIngredients() {
     this.setState({ inputIngredientsValue: this.props.ingredientList });
   }
@@ -89,29 +99,32 @@ class Ingredients extends React.Component {
       if (!this.props.edition) {
         ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
-        ingredientList.push(<li key={index} className="edition">- 
-        <input 
-          className="ingredientInput group"
-          value={ingr.group}
-          type="text"
-          placeholder="Groupe"
-          onChange={this.editField.bind(this, 'group', index)}
-          onKeyPress={this.editFieldByEnter.bind(this, 'group', index)}
-        />
-        <input
-          className="ingredientInput name"
-          value={ingr.ingredient}
-          type="text"
-          data-not-empty
-          onChange={this.editField.bind(this, 'ingredient', index)}
-          onKeyPress={this.editFieldByEnter.bind(this, 'ingredient', index)}
-        /> :
+        ingredientList.push(<li key={index} className="edition">-
+          <input
+            className="ingredientInput group"
+            value={ingr.group}
+            type="text"
+            placeholder="Groupe"
+            onChange={this.editField.bind(this, 'group', index)}
+            onKeyPress={this.editFieldByEnter.bind(this, 'group', index)}
+            onBlur={this.blurField.bind(this, 'group', index)}
+          />
+          <input
+            className="ingredientInput name"
+            value={ingr.ingredient}
+            type="text"
+            data-not-empty
+            onChange={this.editField.bind(this, 'ingredient', index)}
+            onKeyPress={this.editFieldByEnter.bind(this, 'ingredient', index)}
+            onBlur={this.blurField.bind(this, 'ingredient', index)}
+          /> :
           <input
             className="ingredientInput qte"
             value={ingr.quantity}
             type="text"
             onChange={this.editField.bind(this, 'quantity', index)}
             onKeyPress={this.editFieldByEnter.bind(this, 'quantity', index)}
+            onBlur={this.blurField.bind(this, 'quantity', index)}
           />
           <input
             className="ingredientInput unit"
@@ -119,6 +132,7 @@ class Ingredients extends React.Component {
             type="text"
             onChange={this.editField.bind(this, 'unit', index)}
             onKeyPress={this.editFieldByEnter.bind(this, 'unit', index)}
+            onBlur={this.blurField.bind(this, 'unit', index)}
           />
           <i className="deleteIngredient material-icons" onClick={() => { this.deleteIngredient(index, ingr.index); }}>delete_forever</i>
         </li>);

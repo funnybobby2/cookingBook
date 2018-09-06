@@ -19,32 +19,32 @@
   &.disable {
     display: none;
   }
-  .validate, .new, .dislike {
+  .validate, .new, .dislike, .hot, .starFilter {
     height: 40px;
     width: 40px;
     margin-top: 3px;
     margin-left: 2px;
     color: grey;
   }
-  .validate:hover, .new:hover, .dislike:hover, .validator:hover, .cart:hover {
+  .validate.green, .new.green, .dislike.green, .starFilter.green, .hot.green {
+    color: #bee000;
+  }
+  .validate:hover, .new:hover, .dislike:hover, .validator:hover, .cart:hover, .hot:hover, .starFilter:hover {
     cursor: pointer;
-    color: #009EE0 !important;
+    color: #009EE0;
   }
-  .validate.green, .new.green, .dislike.green {
-    color: #bee000 !important;
-  }
-  .validate.disable, .new.disable, .dislike.disable {
+  .validate.disable, .new.disable, .dislike.disable, .starFilter.disable, .hot.disable {
     opacity: 0.3;
   }
-  .validate.disable:hover, .new.disable:hover, .dislike.disable:hover {
-    color: grey !important;
-    cursor: default !important;
+  .validate.disable:hover, .new.disable:hover, .dislike.disable:hover, .starFilter.disable:hover, .hot.disable:hover {
+    color: grey;
+    cursor: default;
   }
-  .validate > i, .new > i, .dislike > i {
+  .validate > i, .new > i, .dislike > i, .starFilter > i, .hot > i {
     font-size: 31px;
     padding: 2px;
   }
-  .new, .dislike {
+  .new, .dislike, .starFilter, .hot {
     margin-top: -3px;
   }
   .print, .validator, .cart {
@@ -56,14 +56,14 @@
   }
   .print:hover, .validator:hover, .cart:hover {
     cursor: pointer;
-    color: #009EE0 !important;
+    color: #009EE0;
   }
   .print.disabled, .validator.disabled, .cart.disabled {
     opacity: 0.3;
   }
   .print.disabled:hover, .validator.disabled:hover, .cart.disabled:hover {
     cursor: default;
-    color: grey !important;
+    color: grey;
   }
   .print > i, .validator > i, .cart > i {
     font-size: 31px;

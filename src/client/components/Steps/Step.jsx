@@ -13,6 +13,7 @@ class Step extends React.Component {
     this.deleteStep = this.deleteStep.bind(this);
     this.edit = this.edit.bind(this);
     this.editByEnter = this.editByEnter.bind(this);
+    this.blurField = this.blurField.bind(this);
     this.toggleCheck = this.toggleCheck.bind(this);
   }
 
@@ -39,6 +40,15 @@ class Step extends React.Component {
     e.target.blur();
   }
 
+  blurField(e) {
+    if ((e.target.value.trim() === '') && (e.target.dataset.notEmpty !== undefined)) {
+      this.props.maestro.dataRefresh('addNotif', 'Il faut rentrer un texte pour créer une étape, c\'est la base !', 'error');
+      return;
+    }
+
+    this.props.maestro.dataRefresh('updateArrayField', this.props.recipeID, 'steps', this.props.index - 1, 'text', e.target.value);
+  }
+
   toggleCheck() {
     this.setState({
       checked: !this.state.checked
@@ -63,6 +73,7 @@ class Step extends React.Component {
           value={this.state.inputStepValue}
           onChange={this.edit}
           onKeyPress={this.editByEnter}
+          onBlur={this.blurField}
           autoComplete="off"
         />
         <i className="deleteStep material-icons" onClick={this.deleteStep}>delete_forever</i>
