@@ -101,9 +101,9 @@ class RecipeForm extends React.Component {
   valideRecipe() {
     // construct object for save recipe in datbase
     const ingredients = [];
-    for (let i = 0, cpt = this.state.ingredientsInput.length; i < cpt; i++) {
+    for (let i = 0, cpt = this.state.ingredientsInput.length; i < cpt; i += 1) {
       ingredients.push({
-        ingredient: this[`ingrNameInput${i}`].value, quantity: this[`ingrQuantityInput${i}`].value, unit: this[`ingrUnitInput${i}`].value, index: i + 1
+        group: this[`ingrGroupInput${i}`].value, ingredient: this[`ingrNameInput${i}`].value, quantity: this[`ingrQuantityInput${i}`].value, unit: this[`ingrUnitInput${i}`].value, index: i + 1
       });
     }
 
@@ -132,7 +132,7 @@ class RecipeForm extends React.Component {
       steps,
       tags
     };
-    
+
     if (!_.isEmpty(this.recipeTips.value)) newRecipe.chiefTrick = this.recipeTips.value;
 
     // If you arrived here, congratulations, you are worthy to create this recipe
@@ -219,7 +219,7 @@ class RecipeForm extends React.Component {
 
             <div className="ingredientsCreator">
               <div className="ingredientsCreatorTitle">Ingredients <i className="material-icons" onClick={this.addIngredientInputs}>control_point</i></div>
-              {this.state.ingredientsInput.map((ingr, index) => <div className="ingrInputs"> <input type="text" ref={input => this[`ingrNameInput${index}`] = input} name="ingredient" placeholder="Nom" /> <input type="text" ref={input => this[`ingrQuantityInput${index}`] = input} name="quantity" placeholder="Quantité" /> <input type="text" name="unit" ref={input => this[`ingrUnitInput${index}`] = input} placeholder="Unité" /> </div>)}
+              {this.state.ingredientsInput.map((ingr, index) => <div className="ingrInputs"> <input type="text" ref={input => this[`ingrGroupInput${index}`] = input} name="group" placeholder="Groupe" /> <input type="text" ref={input => this[`ingrNameInput${index}`] = input} name="ingredient" placeholder="Nom" /> <input type="text" ref={input => this[`ingrQuantityInput${index}`] = input} name="quantity" placeholder="Quantité" /> <input type="text" name="unit" ref={input => this[`ingrUnitInput${index}`] = input} placeholder="Unité" /> </div>)}
             </div>
 
             <div className="separator" />
