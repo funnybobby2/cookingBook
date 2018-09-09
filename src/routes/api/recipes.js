@@ -112,6 +112,7 @@ module.exports = function (app) {
         recipe.nbPeopleUnit = bodyRecipe.nbPeopleUnit;
         recipe.meatClass = bodyRecipe.meatClass;
         recipe.chiefTrick = bodyRecipe.chiefTrick;
+        recipe.spicy = Number(bodyRecipe.spicy);
         recipe.ingredients = bodyRecipe.ingredients;
         recipe.steps = bodyRecipe.steps;
         recipe.tags = bodyRecipe.tags;

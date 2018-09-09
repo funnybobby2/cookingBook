@@ -32,6 +32,13 @@ const meats = [
   { value: 'vegetable', label: 'Végétarien' }
 ];
 
+const spices = [
+  { value: 0, label: 'Pas du tout piquant' },
+  { value: 1, label: 'Ca piquote un peu' },
+  { value: 2, label: 'C\'est moi ou il fait chaud ici ?' },
+  { value: 3, label: 'Appelez les pompiers !!!' },
+];
+
 const times = [
   { value: 'min', label: 'Minutes' },
   { value: 'h', label: 'Heures' },
@@ -50,6 +57,7 @@ class RecipeForm extends React.Component {
     this.state = {
       categorySelectedOption: null,
       meatSelectedOption: null,
+      spiceSelectedOption: null,
       preparationSelectedOption: null,
       cuissonSelectedOption: null,
       sleepSelectedOption: null,
@@ -64,6 +72,7 @@ class RecipeForm extends React.Component {
 
     this.categoryHandleChange = this.categoryHandleChange.bind(this);
     this.meatHandleChange = this.meatHandleChange.bind(this);
+    this.spiceHandleChange = this.spiceHandleChange.bind(this);
     this.preparationHandleChange = this.preparationHandleChange.bind(this);
     this.cuissonHandleChange = this.cuissonHandleChange.bind(this);
     this.sleepHandleChange = this.sleepHandleChange.bind(this);
@@ -80,6 +89,10 @@ class RecipeForm extends React.Component {
 
   meatHandleChange(meatSelectedOption) {
     this.setState({ meatSelectedOption });
+  }
+
+  spiceHandleChange(spiceSelectedOption) {
+    this.setState({ spiceSelectedOption });
   }
 
   preparationHandleChange(preparationSelectedOption) {
@@ -126,7 +139,7 @@ class RecipeForm extends React.Component {
       restPeriod: `${this.recipeSleep.value} ${this.state.sleepSelectedOption.value}`,
       nbPeople: this.recipeNbPerson.value,
       nbPeopleUnit: this.state.partSelectedOption.value,
-      spicy: 0,
+      spicy: Number((this.state.spiceSelectedOption.value === null) ? 0 : this.state.spiceSelectedOption.value),
       meatClass: this.state.meatSelectedOption.value,
       ingredients,
       steps,
@@ -141,6 +154,7 @@ class RecipeForm extends React.Component {
     this.setState({
       categorySelectedOption: null,
       meatSelectedOption: null,
+      spiceSelectedOption: null,
       preparationSelectedOption: null,
       cuissonSelectedOption: null,
       sleepSelectedOption: null,
@@ -178,7 +192,7 @@ class RecipeForm extends React.Component {
 
   render() {
     const {
-      categorySelectedOption, meatSelectedOption, preparationSelectedOption, cuissonSelectedOption, sleepSelectedOption, partSelectedOption
+      categorySelectedOption, meatSelectedOption, spiceSelectedOption, preparationSelectedOption, cuissonSelectedOption, sleepSelectedOption, partSelectedOption
     } = this.state;
     const containerClass = this.props.open ? 'formContainer show' : 'formContainer';
 
@@ -187,53 +201,54 @@ class RecipeForm extends React.Component {
         <div className="recipeForm">
           <div className="formTitle">Création de votre recette</div>
           <div className="inputs">
-            <input type="text" name="title" className="recipeInput" placeholder="Titre" ref={input => this.recipeTitle = input} />
+            <input type="text" name="title" className="recipeInput" placeholder="Titre" autoComplete="off" ref={input => this.recipeTitle = input} />
             <Select value={categorySelectedOption} onChange={this.categoryHandleChange} name="category" placeholder="Catégorie" className="recipeSelect" options={categories} />
             <Select value={meatSelectedOption} onChange={this.meatHandleChange} name="meat" placeholder="Viandes" className="recipeSelect" options={meats} />
+            <Select value={spiceSelectedOption} onChange={this.spiceHandleChange} name="spice" placeholder="Note épicée" className="recipeSelect" options={spices} />
             <div className="photoAndDuration">
               <div className="photoRecipe" />
               <div className="photoInputs">
                 <div className="inputAndTime">
-                  <input type="text" name="preparation" className="recipeInput" placeholder="Durée préparation" ref={input => this.recipePrep = input} />
+                  <input type="text" name="preparation" className="recipeInput" placeholder="Durée préparation" autoComplete="off" ref={input => this.recipePrep = input} />
                   <Select value={preparationSelectedOption} onChange={this.preparationHandleChange} name="preparation" placeholder="Unité de temps" className="timeSelect" options={times} />
                 </div>
 
                 <div className="inputAndTime">
-                  <input type="text" name="cuisson" className="recipeInput" placeholder="Durée cuisson" ref={input => this.recipeCook = input} />
+                  <input type="text" name="cuisson" className="recipeInput" placeholder="Durée cuisson" autoComplete="off" ref={input => this.recipeCook = input} />
                   <Select value={cuissonSelectedOption} onChange={this.cuissonHandleChange} name="cuisson" placeholder="Unité de temps" className="timeSelect" options={times} />
                 </div>
                 <div className="inputAndTime">
-                  <input type="text" name="sleep" className="recipeInput" placeholder="Durée de repos" ref={input => this.recipeSleep = input} />
+                  <input type="text" name="sleep" className="recipeInput" placeholder="Durée de repos" autoComplete="off" ref={input => this.recipeSleep = input} />
                   <Select value={sleepSelectedOption} onChange={this.sleepHandleChange} name="sleep" placeholder="Unité de temps" className="timeSelect" options={times} />
                 </div>
                 <div className="inputAndTime">
-                  <input type="text" name="part" className="recipeInput" placeholder="Nombre de part" ref={input => this.recipeNbPerson = input} />
+                  <input type="text" name="part" className="recipeInput" placeholder="Nombre de part" autoComplete="off" ref={input => this.recipeNbPerson = input} />
                   <Select value={partSelectedOption} onChange={this.partHandleChange} name="part" placeholder="Unité de parts" className="timeSelect" options={parts} />
                 </div>
               </div>
             </div>
 
-            <input type="text" name="astuce" className="recipeInput" placeholder="Astuce" ref={input => this.recipeTips = input} />
+            <input type="text" name="astuce" className="recipeInput" placeholder="Astuce" autoComplete="off" ref={input => this.recipeTips = input} />
 
             <div className="separator" />
 
             <div className="ingredientsCreator">
               <div className="ingredientsCreatorTitle">Ingredients <i className="material-icons" onClick={this.addIngredientInputs}>control_point</i></div>
-              {this.state.ingredientsInput.map((ingr, index) => <div className="ingrInputs"> <input type="text" ref={input => this[`ingrGroupInput${index}`] = input} name="group" placeholder="Groupe" /> <input type="text" ref={input => this[`ingrNameInput${index}`] = input} name="ingredient" placeholder="Nom" /> <input type="text" ref={input => this[`ingrQuantityInput${index}`] = input} name="quantity" placeholder="Quantité" /> <input type="text" name="unit" ref={input => this[`ingrUnitInput${index}`] = input} placeholder="Unité" /> </div>)}
+              {this.state.ingredientsInput.map((ingr, index) => <div className="ingrInputs"> <input type="text" autoComplete="off" ref={input => this[`ingrGroupInput${index}`] = input} name="group" placeholder="Groupe" /> <input type="text" ref={input => this[`ingrNameInput${index}`] = input} autoComplete="off" name="ingredient" placeholder="Nom" /> <input type="text" autoComplete="off" ref={input => this[`ingrQuantityInput${index}`] = input} name="quantity" placeholder="Quantité" /> <input autoComplete="off" type="text" name="unit" ref={input => this[`ingrUnitInput${index}`] = input} placeholder="Unité" /> </div>)}
             </div>
 
             <div className="separator" />
 
             <div className="stepsCreator">
               <div className="stepsCreatorTitle">Etapes <i className="material-icons" onClick={this.addStepInputs}>control_point</i></div>
-              {this.state.stepsInput.map((step, index) => <div className="stepsInputs"> <input type="text" ref={input => this[`stepInput${index}`] = input} name="step" placeholder="Etape" /> </div>)}
+              {this.state.stepsInput.map((step, index) => <div className="stepsInputs"> <input type="text" autoComplete="off" ref={input => this[`stepInput${index}`] = input} name="step" placeholder="Etape" /> </div>)}
             </div>
 
             <div className="separator" />
 
             <div className="tagsCreator">
               <div className="tagsCreatorTitle">Tags <i className="material-icons" onClick={this.addTagInputs}>control_point</i></div>
-              {this.state.tagsInput.map((tag, index) => <div className="tagsInputs"> <input type="text" ref={input => this[`tagInput${index}`] = input} name="tag" placeholder="Tag" /> </div>)}
+              {this.state.tagsInput.map((tag, index) => <div className="tagsInputs"> <input type="text" autoComplete="off" ref={input => this[`tagInput${index}`] = input} name="tag" placeholder="Tag" /> </div>)}
             </div>
 
           </div>
