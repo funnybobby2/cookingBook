@@ -41,13 +41,15 @@
 		"title": "Filtrez si c'est trop piquant !",
 		"type": "whatshot",
 		"restricted": "recipesList",
-		"overview": true
+		"overview": true,
+		"max":3
 	},{
 		"classe": "starFilter",
 		"title": "Filtrez par étoile !",
 		"type": "star_rate",
 		"restricted": "recipesList",
-		"overview": true
+		"overview": true,
+		"max":5
 	},{
 		"classe": "print",
 		"title": "Imprimer la recette",

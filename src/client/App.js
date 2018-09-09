@@ -14,13 +14,19 @@ import { maestro } from './js/services/maestro';
 // Import style
 import './app.css';
 
-async function getFilteredRecipes(category, onlyDeleted, onlyValidated, onlyNew, query, user) {
+async function getFilteredRecipes(category, onlyDeleted, onlyValidated, onlyNew, spiceMin, spiceMax, spice, rateMin, rateMax, rate, query, user) {
   const recipes = await axios.get('/api/recipes', {
     params: {
       cat: category,
       del: onlyDeleted,
       val: onlyValidated,
       new: onlyNew,
+      spiceMin,
+      spiceMax,
+      spice,
+      rateMin,
+      rateMax,
+      rate,
       q: query,
       u: (user === undefined) ? user : user._id
     }
@@ -59,7 +65,13 @@ export default class App extends Component {
       filters: {
         validate: false,
         new: false,
-        dislike: false
+        dislike: false,
+        spiceMin: 0,
+        spiceMax: 3,
+        spice: false,
+        rateMin: 0,
+        rateMax: 5,
+        rate: false,
       },
       nbTotalPages: 1,
       currentPage: 1,
@@ -86,6 +98,7 @@ export default class App extends Component {
     maestro.addListener('searchRecipes', 'app', this.searchRecipes.bind(this));
     maestro.addListener('showRecipe', 'app', this.showRecipe.bind(this));
     maestro.addListener('toggleFilter', 'app', this.toggleFilter.bind(this));
+    maestro.addListener('toggleFilterMinMax', 'app', this.toggleFilterMinMax.bind(this));
     maestro.addListener('updateSimpleField', 'app', this.updateSimpleField.bind(this));
     maestro.addListener('updateArrayField', 'app', this.updateArrayField.bind(this));
     maestro.addListener('deleteArrayField', 'app', this.deleteArrayField.bind(this));
@@ -302,6 +315,12 @@ export default class App extends Component {
             this.state.filters.dislike,
             this.state.filters.validate,
             this.state.filters.new,
+            this.state.filters.spiceMin,
+            this.state.filters.spiceMax,
+            this.state.filters.spice,
+            this.state.filters.rateMin,
+            this.state.filters.rateMax,
+            this.state.filters.rate,
             this.state.query,
             res.data
           );
@@ -337,6 +356,12 @@ export default class App extends Component {
         false,
         false,
         false,
+        0,
+        3,
+        false,
+        0,
+        5,
+        false,
         this.state.query,
         undefined
       )
@@ -351,6 +376,12 @@ export default class App extends Component {
       this.state.filters.dislike,
       this.state.filters.validate,
       this.state.filters.new,
+      this.state.filters.spiceMin,
+      this.state.filters.spiceMax,
+      this.state.filters.spice,
+      this.state.filters.rateMin,
+      this.state.filters.rateMax,
+      this.state.filters.rate,
       this.state.query,
       this.state.user
     );
@@ -372,6 +403,12 @@ export default class App extends Component {
             this.state.filters.dislike,
             this.state.filters.validate,
             this.state.filters.new,
+            this.state.filters.spiceMin,
+            this.state.filters.spiceMax,
+            this.state.filters.spice,
+            this.state.filters.rateMin,
+            this.state.filters.rateMax,
+            this.state.filters.rate,
             this.state.query,
             this.state.user
           );
@@ -492,6 +529,12 @@ export default class App extends Component {
         this.state.filters.dislike,
         this.state.filters.validate,
         this.state.filters.new,
+        this.state.filters.spiceMin,
+        this.state.filters.spiceMax,
+        this.state.filters.spice,
+        this.state.filters.rateMin,
+        this.state.filters.rateMax,
+        this.state.filters.rate,
         this.state.query,
         this.state.user
       );
@@ -514,6 +557,12 @@ export default class App extends Component {
       this.state.filters.dislike,
       this.state.filters.validate,
       this.state.filters.new,
+      this.state.filters.spiceMin,
+      this.state.filters.spiceMax,
+      this.state.filters.spice,
+      this.state.filters.rateMin,
+      this.state.filters.rateMax,
+      this.state.filters.rate,
       query,
       this.state.user
     );
@@ -536,6 +585,12 @@ export default class App extends Component {
         this.state.filters.dislike,
         this.state.filters.validate,
         this.state.filters.new,
+        this.state.filters.spiceMin,
+        this.state.filters.spiceMax,
+        this.state.filters.spice,
+        this.state.filters.rateMin,
+        this.state.filters.rateMax,
+        this.state.filters.rate,
         this.state.query,
         this.state.user
       );
@@ -587,6 +642,14 @@ export default class App extends Component {
       case 'dislike': { // show only deleted recipes
         newFilters.validate = false;
         newFilters.new = false;
+        break;
+      }
+      case 'hot': {
+        newFilters.spice = !newFilters.spice;
+        break;
+      }
+      case 'starFilter': { // filter the recipes by spicy rank or rate
+        newFilters.rate = !newFilters.rate;
         break;
       }
       case 'print': { // print the current recipe
@@ -664,6 +727,48 @@ export default class App extends Component {
       newFilters.dislike,
       newFilters.validate,
       newFilters.new,
+      newFilters.spiceMin,
+      newFilters.spiceMax,
+      newFilters.spice,
+      newFilters.rateMin,
+      newFilters.rateMax,
+      newFilters.rate,
+      this.state.query,
+      this.state.user
+    );
+
+    this.setState({
+      filters: newFilters,
+      recipes,
+      nbTotalPages: getNbTotalPages(recipes.length).nbPages,
+      currentPage: 1
+    });
+  }
+
+  async toggleFilterMinMax(min, max, filter) {
+    const newFilters = this.state.filters;
+    newFilters[filter] = true;
+    if (filter === 'hot') {
+      newFilters.spice = true;
+      newFilters.spiceMin = min;
+      newFilters.spiceMax = max;
+    } else {
+      newFilters.rate = true;
+      newFilters.rateMin = min;
+      newFilters.rateMax = max;
+    }
+
+    const recipes = await getFilteredRecipes(
+      this.state.category,
+      newFilters.dislike,
+      newFilters.validate,
+      newFilters.new,
+      newFilters.spiceMin,
+      newFilters.spiceMax,
+      newFilters.spice,
+      newFilters.rateMin,
+      newFilters.rateMax,
+      newFilters.rate,
       this.state.query,
       this.state.user
     );

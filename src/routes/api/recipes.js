@@ -32,6 +32,17 @@ const getFilteredParam = (query) => {
   return filterParam;
 };
 
+const checkFilterMinMax = (spiceMin, spiceMax, rateMin, rateMax, spiceFilter, rateFilter, recipe) => {
+  let spiceVal = true;
+  if (spiceFilter === 'true') spiceVal = (Number(recipe.spicy) >= Number(spiceMin)) && (Number(recipe.spicy) <= Number(spiceMax));
+  let rateVal = true;
+  if (rateFilter === 'true') {
+    const rate = Number(recipe.mark) / Number(recipe.nbMark);
+    rateVal = (rate >= Number(rateMin)) && (rate <= Number(rateMax));
+  }
+  return spiceVal && rateVal;
+};
+
 // ///////////////// RECIPES API //////////////////// //
 
 module.exports = function (app) {
@@ -61,16 +72,18 @@ module.exports = function (app) {
         // ici on filtre sur les new only/deleted only/validated only :
         // del: onlyDeleted, val: onlyValidated, new: onlyNew, q: query, u: user._id
         recipes = _.filter(recipes, (r) => {
+          // check spice and rate
+          const checkSpiceAndRate = checkFilterMinMax(req.query.spiceMin, req.query.spiceMax, req.query.rateMin, req.query.rateMax, req.query.spice, req.query.rate, r);
           // only deleted
-          if (req.query.del === 'true') return _.filter(r.deletedBy, { _id: req.query.u }).length > 0;
+          if (req.query.del === 'true') return (_.filter(r.deletedBy, { _id: req.query.u }).length > 0) && checkSpiceAndRate;
 
           const notDeleted = _.filter(r.deletedBy, { _id: req.query.u }).length === 0;
           const validated = _.filter(r.validatedBy, { _id: req.query.u }).length > 0;
           // only validated
-          if (req.query.val === 'true') return (validated && notDeleted);
+          if (req.query.val === 'true') return (validated && notDeleted && checkSpiceAndRate);
           // only new
-          if (req.query.new === 'true') return (!validated && notDeleted);
-          return notDeleted;
+          if (req.query.new === 'true') return (!validated && notDeleted && checkSpiceAndRate);
+          return notDeleted && checkSpiceAndRate;
         });
 
         res.json(recipes);
