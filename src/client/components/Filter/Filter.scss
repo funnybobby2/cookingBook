@@ -11,7 +11,7 @@
   background: #202020;
   border-radius: 8px;
   transition: all 0.3s ease;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,13 +25,78 @@
     margin-top: 3px;
     margin-left: 2px;
     color: grey;
+    position: relative;
+    .overPart{
+      display: none;
+      position: absolute;
+      background: whitesmoke;
+      width: 112px;
+      height: 85px;
+      left: 40px;
+      top: -30px;
+      border-radius: 5px;
+      box-shadow: 7px 8px 7px #1a1a1aa6;
+      border: 1px solid gray;
+      border-left: none;
+      padding: 5px;
+    }
   }
   .validate.green, .new.green, .dislike.green, .starFilter.green, .hot.green {
     color: #bee000;
   }
-  .validate:hover, .new:hover, .dislike:hover, .validator:hover, .cart:hover, .hot:hover, .starFilter:hover {
+  .validate:hover, .new:hover, .dislike:hover, .validator:hover, .cart:hover {
     cursor: pointer;
     color: #009EE0;
+  }
+  .overable.validate:hover, .overable.new:hover, .overable.dislike:hover, .overable.validator:hover, .overable.cart:hover, .overable.hot:hover, .overable.starFilter:hover {
+    cursor: pointer;
+    background: whitesmoke;
+    color: #383838;
+    border-radius: 5px 0 0 5px;
+
+    i {
+      color: #009EE0;
+    }
+
+    .overPart{
+      display: flex;
+      flex-direction: column;
+      .line {
+        padding: 3px;
+        padding-left: 6px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        span:first-child{
+          font-family: lobster;
+        }
+        input[type="number"] {
+          border-radius: 3px;
+          border: 2px solid #838480;
+          padding: 2px;
+        }
+      }
+      button {
+        height: 25px;
+        width: 80px;
+        background: #bee000;
+        border: 1px solid #88a003;
+        border-radius: 5px;
+        margin-top: 3px;
+        color: #2b2b2b;
+        font-family: lobster;
+        font-weight: bold;
+        font-size: 17px;
+        align-self: center;
+
+        &:hover{
+          cursor: pointer;
+          color: #FFF;
+          background: #7aad00;
+        }
+      }
+    }
   }
   .validate.disable, .new.disable, .dislike.disable, .starFilter.disable, .hot.disable {
     opacity: 0.3;
@@ -43,6 +108,11 @@
   .validate > i, .new > i, .dislike > i, .starFilter > i, .hot > i {
     font-size: 31px;
     padding: 2px;
+    width: 40px;
+    overflow: hidden;
+    &:hover{
+      cursor: pointer;
+    }
   }
   .new, .dislike, .starFilter, .hot {
     margin-top: -3px;

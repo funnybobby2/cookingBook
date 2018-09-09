@@ -14,7 +14,9 @@ const MenusLateral = ({
 }) => {
   const filterTab = [];
   configCookingBook.filters.forEach((filter) => {
-    if ((aRecipeIsSelected && (filter.restricted !== 'recipesList')) || (!aRecipeIsSelected && (filter.restricted !== 'oneRecipe'))) { filterTab.push(<Filter classe={filter.classe} title={filter.title} type={filter.type} key={filter.title} over={filter.overview} filters={filters} maestro={maestro} />); }
+    if ((aRecipeIsSelected && (filter.restricted !== 'recipesList')) || (!aRecipeIsSelected && (filter.restricted !== 'oneRecipe'))) {
+      filterTab.push(<Filter classe={filter.classe} title={filter.title} type={filter.type} key={filter.title} over={filter.overview} max={filter.max} filters={filters} maestro={maestro} />);
+    }
   });
 
   const addRecipeButton = ((user !== undefined) && (user.role === 'admin'))
