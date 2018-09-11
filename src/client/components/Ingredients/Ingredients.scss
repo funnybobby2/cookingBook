@@ -68,6 +68,14 @@
         border-radius: 5px;
         font-style: italic;
 
+        &.ingredientInput.group, &.ingredientInput.unit {
+          width: 20%;
+        }
+
+        &.ingredientInput.name {
+          width: 30%;
+        }
+
         &.ingredientInput.qte {
           width: 25px;
           margin-left: 5px;
