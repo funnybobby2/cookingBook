@@ -35,17 +35,35 @@ const getGroupIcon = (hasAGroup, groups, group) => {
   return `<i class='material-icons group${groups.indexOf(group)}'>label</i>`;
 };
 
+const dragLeave = (e) => {
+  let targ = e.target;
+  e.preventDefault(); // cancel drop forbidden
+  if (e.target.tagName !== 'LI') targ = e.target.parentNode;
+  targ.style.background = 'transparent';
+};
+
+const dragOver = (e) => {
+  let targ = e.target;
+  e.preventDefault(); // cancel drop forbidden
+  if (e.target.tagName !== 'LI') targ = e.target.parentNode;
+  targ.style.background = '#989898';
+};
+
 class Ingredients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputIngredientsValue: this.props.ingredientList
+      inputIngredientsValue: this.props.ingredientList,
+      draggedElement: null
     };
 
     this.deleteIngredient = this.deleteIngredient.bind(this);
     this.editField = this.editField.bind(this);
     this.editFieldByEnter = this.editFieldByEnter.bind(this);
     this.blurField = this.blurField.bind(this);
+    this.dragEnd = this.dragEnd.bind(this);
+    this.dragStart = this.dragStart.bind(this);
+    this.drop = this.drop.bind(this);
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -86,6 +104,39 @@ class Ingredients extends React.Component {
     this.setState({ inputIngredientsValue: this.props.ingredientList });
   }
 
+  drop(ingr, e) {
+    document.body.removeChild(document.getElementsByClassName('ghost')[0]);
+    let targ = e.target;
+    e.preventDefault(); // cancel drop forbidden
+    if (e.target.tagName !== 'LI') targ = e.target.parentNode;
+    targ.style.background = 'transparent';
+    this.props.maestro.dataRefresh('reorderIngredients', this.props.recipeID, this.state.draggedElement, ingr);
+  }
+
+  dragEnd(e) {
+    e.target.style.opacity = '1';
+    e.preventDefault(); // cancel drop forbidden
+
+    this.setState({ draggedElement: null });
+  }
+
+  dragStart(ingr, e) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.target.style.opacity = '0.2';
+    const crt = document.createElement('DIV');
+    const icon = document.createElement('I');
+    icon.className = 'material-icons';
+    icon.appendChild(document.createTextNode('fastfood'));
+    const div = document.createElement('SPAN');
+    div.appendChild(document.createTextNode(ingr.ingredient));
+    crt.appendChild(icon);
+    crt.appendChild(div);
+    crt.className = 'ghost';
+    document.body.appendChild(crt);
+    e.dataTransfer.setDragImage(crt, 0, 0);
+    this.setState({ draggedElement: ingr });
+  }
+
   render() {
     const ingredientList = [];
     const ingredients = this.state.inputIngredientsValue;
@@ -99,7 +150,16 @@ class Ingredients extends React.Component {
       if (!this.props.edition) {
         ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
-        ingredientList.push(<li key={index} className="edition">-
+        ingredientList.push(<li
+          draggable="true"
+          onDragEnd={this.dragEnd}
+          onDragOver={dragOver}
+          onDragLeave={dragLeave}
+          onDragStart={this.dragStart.bind(this, ingr)}
+          onDrop={this.drop.bind(this, ingr)}
+          key={index}
+          className="edition"
+        >-
           <input
             className="ingredientInput group"
             value={ingr.group}

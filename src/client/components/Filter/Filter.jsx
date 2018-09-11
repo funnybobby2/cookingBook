@@ -17,10 +17,10 @@ class Filter extends React.Component {
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
-    this.state = {
+    this.setState({
       inputMin: (newProps.classe === 'hot') ? newProps.filters.spiceMin : newProps.filters.rateMin,
       inputMax: (newProps.classe === 'hot') ? newProps.filters.spiceMax : newProps.filters.rateMax
-    };
+    });
   }
 
   changeMax(e) {
