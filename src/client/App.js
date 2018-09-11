@@ -107,6 +107,7 @@ export default class App extends Component {
     maestro.addListener('openCreateRecipe', 'app', this.openCreateRecipe.bind(this));
     maestro.addListener('closeRecipeCreation', 'app', this.closeRecipeCreation.bind(this));
     maestro.addListener('createRecipe', 'app', this.createRecipe.bind(this));
+    maestro.addListener('reorderIngredients', 'app', this.reorderIngredients.bind(this));
     // navigations
     maestro.addListener('goTo', 'app', this.goTo.bind(this));
     // notifications
@@ -794,6 +795,24 @@ export default class App extends Component {
 
   deleteArrayField(recipeID, fieldName, index, subField = 'none', fieldValue) {
     axios.put(`/api/recipes/deleteArray/${fieldName}/${index}/${subField}/${recipeID}`, { field: fieldValue })
+      .then((res) => {
+        this.setState({ currentRecipe: res.data });
+      });
+  }
+
+  reorderIngredients(recipeID, ingrToBeMoved, ingrTarget) {
+    const ingrs = this.state.currentRecipe.ingredients;
+
+    const ingrsReordered = [];
+    // on remet le tableau d'ingredients dans l'ordre que l'on souhaite
+    ingrs.forEach((i) => {
+      if (i.index !== ingrToBeMoved.index) {
+        if (i.index === ingrTarget.index) ingrsReordered.push(ingrToBeMoved);
+        ingrsReordered.push(i);
+      }
+    });
+
+    axios.put(`/api/recipes/reorderIngredients/${recipeID}`, { ingredients: JSON.stringify(ingrsReordered) })
       .then((res) => {
         this.setState({ currentRecipe: res.data });
       });

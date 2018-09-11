@@ -25,6 +25,7 @@
     border: 1px solid #2d2d2d;
     border-radius: 6px;
     position: relative;
+    overflow: hidden;
 
     li {
       float: left;
@@ -299,5 +300,26 @@
     .ingredientsTitle, .ingredientList li {
       color: #191919;;
     }
+  }
+}
+
+.ghost {
+  background-color : #009EE0;
+  color : #191919;
+  width : 200px;
+  height : 30px;
+  opacity : 0.8;
+  border-radius : 5px;
+  display : flex;
+  flex-direction : row;
+  align-items : center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: -1000px;
+
+  i {
+    padding-right: 10px;
   }
 }

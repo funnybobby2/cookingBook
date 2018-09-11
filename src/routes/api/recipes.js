@@ -272,6 +272,29 @@ module.exports = function (app) {
       });
   });
 
+  app.put('/api/recipes/reorderIngredients/:id', (req, res, next) => {
+    Recipe.findOneAndUpdate({ recipeID: Number(req.params.id) }, { $set: { ingredients: [] } }, { upsert: true }, (err) => {
+      if (err) console.log('error during the delete all ingredients action', err);
+      else {
+        Recipe.findOne({ recipeID: Number(req.params.id) }) // Get the recipe with id
+          .populate('validatedBy') // pour peupler les users en ref
+          .populate('deletedBy') // pour peupler les users en ref
+          .populate('comments.author') // pour peupler les users en ref
+          .exec()
+          .then((recipe) => {
+            const newIngrs = JSON.parse(req.body.ingredients);
+            newIngrs.forEach((i) => {
+              recipe.ingredients.push(i);
+            });
+            recipe.save(() => {
+              res.json(recipe);
+            });
+          })
+          .catch(e => next(e));
+      }
+    });
+  });
+
   app.put('/api/recipes/deleteArray/:fieldName/:index/:subField/:id', (req, res, next) => {
     if (req.params.subField !== 'none') { // array of object
       const obj = {};
