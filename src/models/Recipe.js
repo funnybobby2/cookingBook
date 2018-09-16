@@ -88,8 +88,8 @@ const recipeSchema = new mongoose.Schema({
   }],
   tags: { type: [String], index: true },
   video: {
-    type: String,
-    default: ''
+    type: Boolean,
+    default: false
   },
   help: {
     type: String,

@@ -13,7 +13,7 @@ const dev = process.env.NODE_ENV === 'dev'; // get the value of the environment 
 // output folder
 const outputDirectory = 'dist';
 if (fs.existsSync(outputDirectory)) { // If it exists, remove the content to start fresh
-  rimraf.sync(`${outputDirectory }/**`);
+  rimraf.sync(`${outputDirectory}/**`);
 } else { // Otherwise, we create it on the fly
   fs.mkdirSync(outputDirectory);
 }
@@ -115,6 +115,18 @@ const config = {
             loader: 'img-loader',
             options: {
               enabled: !dev
+            }
+          }
+        ]
+      },
+      {
+        test: /\.mp4$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'video/mp4'
             }
           }
         ]

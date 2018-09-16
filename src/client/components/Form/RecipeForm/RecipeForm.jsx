@@ -141,6 +141,7 @@ class RecipeForm extends React.Component {
       nbPeopleUnit: this.state.partSelectedOption.value,
       spicy: Number((this.state.spiceSelectedOption.value === null) ? 0 : this.state.spiceSelectedOption.value),
       meatClass: this.state.meatSelectedOption.value,
+      video: this.recipeVideo.value,
       ingredients,
       steps,
       tags
@@ -163,6 +164,12 @@ class RecipeForm extends React.Component {
       stepsInput: [],
       tagsInput: []
     });
+
+    this.recipeTitle.value = '';
+    this.recipePrep.value = 0;
+    this.recipeCook.value = 0;
+    this.recipeSleep.value = 0;
+    this.recipeNbPerson.value = 0;
   }
 
   closeForm() {
@@ -229,6 +236,11 @@ class RecipeForm extends React.Component {
             </div>
 
             <input type="text" name="astuce" className="recipeInput" placeholder="Astuce" autoComplete="off" ref={input => this.recipeTips = input} />
+
+            <label className="container"> Vidéo ?
+              <input type="checkbox" ref={input => this.recipeVideo = input} />
+              <span className="checkmark" />
+            </label>
 
             <div className="separator" />
 

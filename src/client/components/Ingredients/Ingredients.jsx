@@ -108,6 +108,9 @@ class Ingredients extends React.Component {
     document.body.removeChild(document.getElementsByClassName('ghost')[0]);
     let targ = e.target;
     e.preventDefault(); // cancel drop forbidden
+
+    if (ingr.index === this.state.draggedElement.index) return;
+
     if (e.target.tagName !== 'LI') targ = e.target.parentNode;
     targ.style.background = 'transparent';
     this.props.maestro.dataRefresh('reorderIngredients', this.props.recipeID, this.state.draggedElement, ingr);
@@ -195,7 +198,7 @@ class Ingredients extends React.Component {
             onBlur={this.blurField.bind(this, 'unit', index)}
           />
           <i className="deleteIngredient material-icons" onClick={() => { this.deleteIngredient(index, ingr.index); }}>delete_forever</i>
-        </li>);
+                            </li>);
       }
     });
 
@@ -205,10 +208,9 @@ class Ingredients extends React.Component {
 
         <ul className="ingredientList">
           {ingredientList}
-          <IngredientTabs edition={this.props.edition} recipeID={this.props.recipeID} ingredientList={this.props.ingredientList} />
+          <IngredientTabs edition={this.props.edition} ingredientList={this.props.ingredientList} />
         </ul>
         <IngredientAdd edition={this.props.edition} recipeID={this.props.recipeID} nextIndex={ingredientList.length} maestro={this.props.maestro} />
-        <div className="union" />
       </div>);
   }
 }
