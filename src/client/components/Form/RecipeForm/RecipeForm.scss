@@ -43,7 +43,8 @@
           border-radius: 5px;
           padding: 3px;
           background: #cccccc;
-          font-family: Lobster,cursive;
+          font-family: Indie Flower;
+          font-weight: bold;;
           font-size: 16px;
           margin-bottom: 10px;
         }
@@ -67,7 +68,8 @@
             .css-1rtrksz{
               .css-1492t68, .css-va7pk8{
                 color: #757575;
-                font-family: lobster;
+                font-family: Indie Flower;
+                font-weight: bold;
                 font-size: 16px;
               }
             }
@@ -83,7 +85,8 @@
 
           .css-v73v8k, .css-wqgs6e{
             color: #757575;
-            font-family: lobster;
+            font-family: Indie Flower;
+            font-weight: bold;
             font-size: 16px;
           }
           .css-wqgs6e{
@@ -143,7 +146,8 @@
           align-items: center;
 
           .ingredientsCreatorTitle, .stepsCreatorTitle, .tagsCreatorTitle{
-            font-family: Lobster,cursive;
+            font-family: Indie Flower;
+            font-weight: bold;
             font-size: 20px;
             color: #fff;
             display: flex;
@@ -170,7 +174,8 @@
               flex: 1;
               padding: 5px;
               background: #ccc;
-              font-family: Lobster,cursive;
+              font-family: Indie Flower;
+              font-weight: bold;
               font-size: 18px;
               border: 2px solid #696868;
               border-radius: 5px;
@@ -180,6 +185,61 @@
 
           .ingrInputs input {
             width: 30%;
+          }
+        }
+
+        // Checkbox
+        .container {
+          display: block;
+          position: relative;
+          padding-left: 35px;
+          margin-bottom: 12px;
+          cursor: pointer;
+          font-family: Indie Flower;
+          font-weight: 700;
+          font-size: 20px;
+          color: #fff;
+          user-select: none;
+
+          input { // Hide the browser default checkbox
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+
+            &:checked ~ .checkmark {
+              background-color: #009EE0;
+              &:after { // Show the checkmark when checked
+                display: block;
+              }
+            }
+          }
+
+          .checkmark { // custom checkbox
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #CCCCCC;
+            border-radius: 5px;
+            border: 2px solid #696868;
+
+            &:after { // Create the checkmark/indicator (hidden when not checked)
+              content: "";
+              position: absolute;
+              display: none;
+              left: 7px;
+              top: 2px;
+              width: 5px;
+              height: 10px;
+              border: solid white;
+              border-width: 0 3px 3px 0;
+              transform: rotate(45deg);
+            }
+          }
+
+          &:hover input ~ .checkmark {
+            background-color: #ccc;
           }
         }
       }

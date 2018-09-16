@@ -24,6 +24,7 @@
     border-radius: 6px;
     margin: 0 13px;
     border: 1px solid #2d2d2d;
+    position: relative;
   }
 
   &.edition .stepList{
@@ -91,6 +92,77 @@
   .steps {
     .stepsTitle {
       color: #191919;;
+    }
+  }
+}
+
+.stepTabs{
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: -30px;
+
+  .stepsVideo {
+    position: relative;
+    border-radius: 5px 5px 0 0;
+
+    .stepsVideoIcon {
+      color: whitesmoke;
+      background: #191919;
+      padding: 3px;
+      margin-right: 3px;
+      border-radius: 5px 5px 0 0;
+      border-top: 1px solid #2d2d2d;
+      border-left: 1px solid #2d2d2d;
+      border-right: 1px solid #2d2d2d;
+      &:hover{
+        cursor: pointer;
+        color: #009EE0;
+      }
+    }
+
+    &.disable {
+      .stepsVideoIcon {
+        color: #424242;
+        &:hover {
+          cursor: default;
+          color: #424242;
+        }
+      }
+    }
+  }
+
+  .player{
+    display: none;
+    &.open {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 90%;
+      z-index: 3;
+      padding-top: 60px;
+      padding-left: 5%;
+      padding-right: 5%;
+      background: #303030 url(../../assets/img/background.png) repeat;
+
+      .video-react .video-react-big-play-button {
+        top: calc(50% - 22px);
+        left: calc(50% - 45px);
+      }
+
+      i.material-icons.closer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        color: #FFF;
+        &:hover{
+          color: #009EE0;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

@@ -51,10 +51,7 @@ class IngredientTabs extends React.Component {
         <div className={classLegend}>
           <i className="material-icons ingredientLegendIcon" onClick={this.openLegend}>ballot</i>
           <div className="legend">
-            {groups.map((group, index) => (<div className="legendItem">
-              <i className={`material-icons item${index}`} title={group[index]}>label</i>
-              {group}
-            </div>))}
+            {groups.map((group, index) => (<div className="legendItem"> <i className={`material-icons item${index}`} title={group[index]}>label</i> {group} </div>))}
           </div>
         </div>
       </div>);
@@ -63,16 +60,12 @@ class IngredientTabs extends React.Component {
 
 IngredientTabs.propTypes = {
   ingredientList: PropTypes.array,
-  edition: PropTypes.bool,
-  maestro: PropTypes.object,
-  recipeID: PropTypes.number
+  edition: PropTypes.bool
 };
 
 IngredientTabs.defaultProps = { // define the default props
   ingredientList: [],
-  edition: false,
-  maestro: { dataRefresh: () => {} },
-  recipeID: 1
+  edition: false
 };
 
 export default IngredientTabs;
