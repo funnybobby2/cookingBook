@@ -20,8 +20,7 @@ class Content extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editMode: false,
-      hasVideo: false
+      editMode: false
     };
 
     this.changeVideoState = this.changeVideoState.bind(this);
@@ -32,8 +31,7 @@ class Content extends React.Component {
   }
 
   changeVideoState() {
-    this.setState({ hasVideo: this.recipeVideo.value });
-    this.props.maestro.dataRefresh('updateSimpleField', this.props.recipeSelected.recipeID, 'video', this.recipeVideo.value === 'on');
+    this.props.maestro.dataRefresh('updateSimpleField', this.props.recipeSelected.recipeID, 'video', this.recipeVideo.checked);
   }
 
   toggleEditMode() {

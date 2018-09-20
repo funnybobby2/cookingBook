@@ -24,6 +24,13 @@ class RecipeItem extends React.Component {
 
   render() { // exemple de render en ternaire
     const { recipe } = this.props;
+    let currentRecipeImg;
+    try {
+      currentRecipeImg = require(`../../assets/img/plats/${recipe.id}.jpg`);
+    } catch (e) {
+      console.log(e.code);
+      currentRecipeImg = require('../../assets/img/plats/default.jpg');
+    }
 
     return (
       <div className={recipe.valid ? 'thumbnail animation-thumbnail checked' : 'thumbnail animation-thumbnail'}>
@@ -32,7 +39,7 @@ class RecipeItem extends React.Component {
         <i className="material-icons">restaurant_menu</i>
         <img
           alt="recipe"
-          src={require(`../../assets/img/plats/${recipe.id}.jpg`)}
+          src={currentRecipeImg}
           height="150"
           width="150"
           title={recipe.id}
