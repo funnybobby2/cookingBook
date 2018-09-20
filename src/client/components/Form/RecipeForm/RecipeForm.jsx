@@ -141,7 +141,7 @@ class RecipeForm extends React.Component {
       nbPeopleUnit: this.state.partSelectedOption.value,
       spicy: Number((this.state.spiceSelectedOption.value === null) ? 0 : this.state.spiceSelectedOption.value),
       meatClass: this.state.meatSelectedOption.value,
-      video: this.recipeVideo.value,
+      video: this.recipeVideo.value === 'on',
       ingredients,
       steps,
       tags

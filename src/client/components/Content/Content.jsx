@@ -20,12 +20,20 @@ class Content extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editMode: false
+      editMode: false,
+      hasVideo: false
     };
+
+    this.changeVideoState = this.changeVideoState.bind(this);
   }
 
   componentWillMount() {
     this.props.maestro.addListener('toggleEdit', 'content', this.toggleEditMode.bind(this));
+  }
+
+  changeVideoState() {
+    this.setState({ hasVideo: this.recipeVideo.value });
+    this.props.maestro.dataRefresh('updateSimpleField', this.props.recipeSelected.recipeID, 'video', this.recipeVideo.value === 'on');
   }
 
   toggleEditMode() {
@@ -41,6 +49,19 @@ class Content extends React.Component {
     const currentPage = this.props.curPage;
     const nbTotalPages = this.props.totalPages;
     const edit = this.state.editMode;
+    const video = edit ? (
+      currentRecipe.video ? (
+        <label className="container"> Vidéo ?
+          <input type="checkbox" checked="checked" onChange={this.changeVideoState} ref={input => this.recipeVideo = input} />
+          <span className="checkmark" />
+        </label>
+      ) : (
+        <label className="container"> Vidéo ?
+          <input type="checkbox" onChange={this.changeVideoState} ref={input => this.recipeVideo = input} />
+          <span className="checkmark" />
+        </label>
+      )
+    ) : '';
 
     return this.props.showCart
       ? (
@@ -92,6 +113,7 @@ class Content extends React.Component {
                   edition={edit}
                 />
                 <div className="ingredientsAndSteps">
+                  { video }
                   <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
                   <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} video={currentRecipe.video} maestro={this.props.maestro} />
                 </div>
