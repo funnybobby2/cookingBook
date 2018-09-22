@@ -1,3 +1,5 @@
+<img src="https://github.com/happyksu/cookingBook/blob/master/logo/png/Cooking_logo_preview.png"/>
+
 ## Welcome to **Cooking book**
 
 A modern website to save your favorite recipes and share them
