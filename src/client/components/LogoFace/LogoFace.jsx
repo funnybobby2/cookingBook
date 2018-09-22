@@ -3,29 +3,43 @@ import PropTypes from 'prop-types';
 // Import style
 import './LogoFace.scss';
 // Import images
-import logo from '../../assets/img/menu.png';
+import logo from '../../assets/img/Cooking_logo.svg';
 
 class LogoFace extends React.Component {
   constructor(props) {
     super(props);
+    this.showHelper = this.showHelper.bind(this);
+    this.showUserParameter = this.showUserParameter.bind(this);
     this.unconnect = this.unconnect.bind(this);
+  }
+
+  showHelper() {
+    this.props.maestro.dataRefresh('helper');
+  }
+
+  showUserParameter() {
+    this.props.maestro.dataRefresh('userParameter');
   }
 
   unconnect() {
     this.props.maestro.dataRefresh('unconnect');
   }
 
-  render() { // exemple de render en ternaire
+  render() {
+    const userLogo = require(`../../assets/img/user/user_${this.props.user.logo}.svg`)
     return (
       <div className="logoFace">
-        <img src={logo} alt="MENU food &amp; drinks" />
-        <div className="websiteTitle">Menu</div>
-        <div className="neon">
-          <span className="text-neon">By </span>
-          <span className="text-neon">{this.props.user.login}</span>
-          <span className="text-neon">
-            <i className="material-icons" onClick={this.unconnect}>highlight_off</i>
-          </span>
+        <img src={logo} height="250" alt="MENU food &amp; drinks" />
+        <div className="userInfo">
+          <img src={userLogo} height="70" alt="egg" />
+          <div className="userDetails">
+            <span>{this.props.user.login}</span>
+            <div className="actions">
+              <span onClick={this.showHelper}>Aide</span>
+              <span onClick={this.showUserParameter}>Paramétrage</span>
+              <span onClick={this.unconnect}>Déconnexion</span>
+            </div>
+          </div>
         </div>
       </div>);
   }
@@ -37,14 +51,15 @@ LogoFace.propTypes = {
     login: PropTypes.string,
     password: PropTypes.string,
     role: PropTypes.oneOf(['admin', 'user']),
-    email: PropTypes.string
+    email: PropTypes.string,
+    logo: PropTypes.oneOf(['cherry', 'egg', 'meat', 'pepper', 'tomato'])
   }),
   maestro: PropTypes.object
 };
 
 LogoFace.defaultProps = { // define the default props
   user: {
-    _id: '', login: '', password: '', role: 'user', email: ''
+    _id: '', login: '', password: '', role: 'user', email: '', logo: 'egg'
   },
   maestro: { dataRefresh: () => {} }
 };
