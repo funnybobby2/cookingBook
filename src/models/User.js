@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-z]{2,6}$/
   },
+  logo: {
+    type: String,
+    enum: ['cherry', 'egg', 'meat', 'pepper', 'tomato'],
+    default: 'egg'
+  },
   votedFor: [{ type: Number, default: [] }],
 });
 

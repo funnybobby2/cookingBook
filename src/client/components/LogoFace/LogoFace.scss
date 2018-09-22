@@ -1,7 +1,48 @@
 .logoFace {
   text-align: center;
-  font-family: 'Lobster',cursive;
+  font-family: Lobster,cursive;
   margin-top: -27px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .userInfo{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+
+    .userDetails{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      color: #FFFFFF;
+      padding-left: 30px;
+      font-family: Pacifico;
+      font-size: 17px;
+      margin-top: -14px;
+
+      .actions{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 5px;
+
+        span{
+          cursor: pointer;
+          font-family: 'Englebert', sans-serif;
+          font-size: 13px;
+          padding-top: 3px;
+          color: gray;
+          &:hover {
+            color: #FFF;
+          }
+        }
+      }
+    }
+  }
+
+  /*
   .websiteTitle {
     margin-top: -129px;
     position: absolute;
@@ -28,4 +69,5 @@
       text-shadow: none;
     }
   }
+  */
 }

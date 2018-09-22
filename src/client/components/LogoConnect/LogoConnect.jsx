@@ -10,8 +10,8 @@ const LogoConnect = ({
   user, maestro
 }) => (
   (user.login !== '')
-    ? <div className="container3D"><div className="card3D"><LogoFace user={user} maestro={maestro} /></div></div>
-    : <div className="container3D"><div className="card3D"><LoggingFace maestro={maestro} /></div></div>
+    ? <div className="containerLogin"><LogoFace user={user} maestro={maestro} /></div>
+    : <div className="containerLogin"><LoggingFace maestro={maestro} /></div>
 );
 
 LogoConnect.propTypes = {

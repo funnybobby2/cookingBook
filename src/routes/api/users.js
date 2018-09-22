@@ -46,18 +46,37 @@ module.exports = function (app) {
   });
 
   // update a user
-  app.put('/api/user/:login/:password', (req, res, next) => {
+  app.put('/api/users/update', (req, res, next) => {
     // on cherche l'utilisateur concernée
-    User.findOne({ login: req.params.login, password: req.params.password })
+    User.findOne({ _id: req.body.id })
       .exec()
       .then((user) => {
-        // mise à jour du user
-        user.login = req.body.login;
-        user.password = req.body.password; // etc ...
-        // on stocke l'objet en base
-        user.save()
-          .then(() => res.json(user))
-          .catch(err => next(err));
+        // si l'utilisateur a toujours le même login
+        if (user.login === req.body.login) {
+          user.password = req.body.password;
+          user.email = req.body.email;
+          user.logo = req.body.logo;
+          // on stocke l'objet en base
+          user.save()
+            .then(() => res.json(user))
+            .catch(err => next(err));
+        } else {
+          const newUser = new User(); // use User schema
+          // get data to create user from req.body
+          newUser._id = `@${req.body.login}`;
+          newUser.login = req.body.login;
+          newUser.password = req.body.password;
+          newUser.email = req.body.email;
+          newUser.logo = req.body.logo;
+          // delete the old user
+          console.log('TRY to remove user : ', user._id);
+          User.findByIdAndRemove(user._id)
+            .catch(err => console.log(err));
+          // save it
+          newUser.save()
+            .then(() => res.json(newUser))
+            .catch(err => next(err));
+        }
       })
       .catch(err => next(err));
   });

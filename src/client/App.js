@@ -91,6 +91,8 @@ export default class App extends Component {
     maestro.addListener('closeUserCreation', 'app', this.closeUserCreation.bind(this));
     maestro.addListener('connect', 'app', this.connect.bind(this));
     maestro.addListener('unconnect', 'app', this.unconnect.bind(this));
+    maestro.addListener('updateUser', 'app', this.updateUser.bind(this));
+    maestro.addListener('userParameter', 'app', this.userParameter.bind(this));
     // recipes
     maestro.addListener('deleteRecipe', 'app', this.deleteRecipe.bind(this));
     maestro.addListener('randomRecipeOrCart', 'app', this.randomRecipeOrCart.bind(this));
@@ -119,6 +121,8 @@ export default class App extends Component {
     maestro.addListener('ingredientBought', 'app', this.updateNbItemsCheckedInCart.bind(this));
     maestro.addListener('cleanCart', 'app', this.cleanCart.bind(this));
     maestro.addListener('clearCart', 'app', this.clearCart.bind(this));
+    // help
+    maestro.addListener('helper', 'app', this.showHelper.bind(this));
 
     axios.get('/api/recipes')
       .then((resRecipes) => {
@@ -293,8 +297,6 @@ export default class App extends Component {
   }
 
   createUser(login, password, email) {
-    console.log(login, password, email);
-    // this.addNotif('En cours de développement !', 'info');
     axios.post('/api/users/', { login, password, email })
       .then(async (res) => {
         if (res.status === 200) { // insert ok
@@ -367,6 +369,19 @@ export default class App extends Component {
         undefined
       )
     });
+  }
+
+  updateUser(id, login, password, email, logo) {
+    axios.put('/api/users/update', {
+      id, login, password, email, logo
+    }, { upsert: true })
+      .then((res) => {
+        this.setState({ user: res.data, openUserForm: false });
+      });
+  }
+
+  userParameter() {
+    this.setState({ openUserForm: true });
   }
 
   async updateDimensions() {
@@ -858,6 +873,11 @@ export default class App extends Component {
       });
   }
 
+  // HELPER
+  showHelper() {
+    this.addNotif('TODO : Faire l\'aide en ligne', 'warning');
+  }
+
   render() {
     const numberOfItems = getNbTotalPages(this.state.recipes.length).nbItems;
 
@@ -886,7 +906,7 @@ export default class App extends Component {
           noSleep={this.noSleep}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
-        <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} />
+        <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} user={this.state.user} />
         <RecipeForm open={this.state.openRecipeForm} maestro={maestro} />
       </div>
     );
