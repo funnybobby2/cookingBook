@@ -30,7 +30,12 @@ class StepTabs extends React.Component {
     const classPlayer = `player${this.state.openVideo ? ' open' : ''}`;
     let video = '';
     if (this.props.video) {
-      const currentRecipeVideo = require(`../../assets/video/${this.props.recipeID}.mp4`);
+      let currentRecipeVideo;
+      try {
+        currentRecipeVideo = require(`../../assets/video/${this.props.recipeID}.mp4`);
+      } catch (e) {
+        currentRecipeVideo = require('../../assets/video/default.mp4');
+      }
       video = (
         <div className={classPlayer}>
           <i className="material-icons closer" onClick={this.closeVideo}>close</i>

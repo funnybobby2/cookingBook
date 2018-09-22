@@ -88,7 +88,6 @@ class PhotoWithDuration extends React.Component {
     try {
       currentRecipeImg = require(`../../assets/img/plats/${this.props.recipeID}.jpg`);
     } catch (e) {
-      console.log(e.code);
       currentRecipeImg = require('../../assets/img/plats/default.jpg');
     }
     const foodImgClass = this.props.edition ? 'foodImage edition' : 'foodImage';
