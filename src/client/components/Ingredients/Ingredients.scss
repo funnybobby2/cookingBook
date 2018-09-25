@@ -122,11 +122,11 @@
       flex-direction: row;
       top: -30px;
 
-      .ingredientsLegend {
+      .ingredientsMove {
         position: relative;
         border-radius: 5px 5px 0 0;
 
-        .ingredientLegendIcon {
+        .ingredientIcon {
           color: whitesmoke;
           background: #191919;
           padding: 3px;
@@ -142,7 +142,41 @@
         }
 
         &.disable {
-          .ingredientLegendIcon {
+          .ingredientIcon {
+            color: #424242;
+            &:hover {
+              cursor: default;
+              color: #424242;
+            }
+          }
+        }
+
+        &.open {
+          color: #009EE0;
+        }
+      }
+
+      .ingredientsLegend {
+        position: relative;
+        border-radius: 5px 5px 0 0;
+
+        .ingredientIcon {
+          color: whitesmoke;
+          background: #191919;
+          padding: 3px;
+          margin-right: 3px;
+          border-radius: 5px 5px 0 0;
+          border-top: 1px solid #2d2d2d;
+          border-left: 1px solid #2d2d2d;
+          border-right: 1px solid #2d2d2d;
+          &:hover{
+            cursor: pointer;
+            color: #009EE0;
+          }
+        }
+
+        &.disable {
+          .ingredientIcon {
             color: #424242;
             &:hover {
               cursor: default;

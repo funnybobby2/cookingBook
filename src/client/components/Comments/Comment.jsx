@@ -7,7 +7,6 @@ import './Comment.scss';
 class Comment extends React.Component {
   constructor(props) {
     super(props);
-
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
     this.emoji = new EmojiConvertor();
@@ -26,7 +25,7 @@ class Comment extends React.Component {
   }
 
   edit() {
-    console.log('edit', this);
+    this.props.maestro.dataRefresh('addNotif', 'TODO : Edition des commentaires à faire', 'warning');
   }
 
   transform(text) {
