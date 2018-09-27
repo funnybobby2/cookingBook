@@ -54,7 +54,8 @@ class Ingredients extends React.Component {
     super(props);
     this.state = {
       inputIngredientsValue: this.props.ingredientList,
-      draggedElement: null
+      draggedElement: null,
+      movable: false
     };
 
     this.deleteIngredient = this.deleteIngredient.bind(this);
@@ -64,6 +65,11 @@ class Ingredients extends React.Component {
     this.dragEnd = this.dragEnd.bind(this);
     this.dragStart = this.dragStart.bind(this);
     this.drop = this.drop.bind(this);
+    this.updateMovable = this.updateMovable.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.maestro.addListener('reorderIngredientsAvailable', 'ingredients', this.updateMovable.bind(this));
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -140,6 +146,10 @@ class Ingredients extends React.Component {
     this.setState({ draggedElement: ingr });
   }
 
+  updateMovable(isMovable) {
+    this.setState({ movable: isMovable });
+  }
+
   render() {
     const ingredientList = [];
     const ingredients = this.state.inputIngredientsValue;
@@ -154,7 +164,7 @@ class Ingredients extends React.Component {
         ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
         ingredientList.push(<li
-          draggable="true"
+          draggable={this.state.movable}
           onDragEnd={this.dragEnd}
           onDragOver={dragOver}
           onDragLeave={dragLeave}
@@ -208,7 +218,7 @@ class Ingredients extends React.Component {
 
         <ul className="ingredientList">
           {ingredientList}
-          <IngredientTabs edition={this.props.edition} ingredientList={this.props.ingredientList} />
+          <IngredientTabs edition={this.props.edition} ingredientList={this.props.ingredientList} user={this.props.user} maestro={this.props.maestro} />
         </ul>
         <IngredientAdd edition={this.props.edition} recipeID={this.props.recipeID} nextIndex={ingredientList.length} maestro={this.props.maestro} />
       </div>);
@@ -220,7 +230,8 @@ Ingredients.propTypes = {
   recipeID: PropTypes.number,
   edition: PropTypes.bool,
   query: PropTypes.string,
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  user: PropTypes.object
 };
 
 Ingredients.defaultProps = { // define the default props
@@ -228,7 +239,8 @@ Ingredients.defaultProps = { // define the default props
   recipeID: 1,
   edition: false,
   query: '',
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  user: {}
 };
 
 export default Ingredients;

@@ -57,7 +57,7 @@ class Comments extends React.Component {
       <div className="comments">
         <div className="commentsTitle">Commentaires</div>
         <div className="commentList">
-          {this.props.comments.map(com => <Comment text={com.text} date={com.postedAt} recipeID={this.props.recipeID} maestro={this.props.maestro} commentUser={com.author.login} user={this.props.user} key={new Date(com.postedAt).toLocaleString()} />)}
+          {this.props.comments.map((com, index) => <Comment text={com.text} date={com.postedAt} index={index} recipeID={this.props.recipeID} maestro={this.props.maestro} commentUser={com.author.login} user={this.props.user} key={new Date(com.postedAt).toLocaleString()} />)}
         </div>
         {commentForm}
       </div>);

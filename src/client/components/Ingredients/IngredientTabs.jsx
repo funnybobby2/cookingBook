@@ -30,14 +30,21 @@ class IngredientTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openLegend: false
+      openLegend: false,
+      movable: false
     };
 
     this.openLegend = this.openLegend.bind(this);
+    this.toggleMovable = this.toggleMovable.bind(this);
   }
 
   openLegend() {
     if (hasGroup(this.props.ingredientList) && !this.props.edition) { this.setState({ openLegend: !this.state.openLegend }); }
+  }
+
+  toggleMovable() {
+    this.props.maestro.dataRefresh('reorderIngredientsAvailable', !this.state.movable);
+    this.setState({ movable: !this.state.movable });
   }
 
   render() {
@@ -45,27 +52,37 @@ class IngredientTabs extends React.Component {
     const hasAGroup = hasGroup(ingredients);
     const groups = getAllGroups(ingredients);
     const classLegend = this.state.openLegend ? `ingredientsLegend open ${(hasAGroup && !this.props.edition) ? '' : 'disable'}` : `ingredientsLegend ${(hasAGroup && !this.props.edition) ? '' : 'disable'}`;
+    const classMovable = this.state.movable ? `ingredientsMove open ${this.props.edition ? '' : 'disable'}` : `ingredientsMove ${this.props.edition ? '' : 'disable'}`;
+    const moveIcon = (this.props.user.role === 'admin') ? (
+      <div className={classMovable}>
+        <i className="material-icons ingredientIcon" title="Déplacer les ingrédients" onClick={this.toggleMovable}>open_with</i>
+      </div>) : '';
 
     return (
       <div className="ingredientTabs">
         <div className={classLegend}>
-          <i className="material-icons ingredientLegendIcon" onClick={this.openLegend}>ballot</i>
+          <i className="material-icons ingredientIcon" title="Catégories d'ingrédient" onClick={this.openLegend}>ballot</i>
           <div className="legend">
             {groups.map((group, index) => (<div className="legendItem"> <i className={`material-icons item${index}`} title={group[index]}>label</i> {group} </div>))}
           </div>
         </div>
+        {moveIcon}
       </div>);
   }
 }
 
 IngredientTabs.propTypes = {
   ingredientList: PropTypes.array,
-  edition: PropTypes.bool
+  edition: PropTypes.bool,
+  maestro: PropTypes.object,
+  user: PropTypes.object
 };
 
 IngredientTabs.defaultProps = { // define the default props
   ingredientList: [],
-  edition: false
+  edition: false,
+  maestro: { dataRefresh: () => {} },
+  user: {}
 };
 
 export default IngredientTabs;

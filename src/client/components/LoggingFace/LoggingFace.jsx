@@ -35,6 +35,7 @@ class LoggingFace extends React.Component {
             id="loginInput"
             type="text"
             placeholder="login"
+            autoComplete="off"
             ref={input => this.login = input}
             onKeyPress={this.tapePassword}
           />
@@ -45,6 +46,7 @@ class LoggingFace extends React.Component {
             id="passwordInput"
             type="password"
             placeholder="Mot de passe"
+            autoComplete="off"
             ref={input => this.password = input}
             onKeyPress={this.connect}
           />

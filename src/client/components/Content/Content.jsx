@@ -112,7 +112,7 @@ class Content extends React.Component {
                 />
                 <div className="ingredientsAndSteps">
                   { video }
-                  <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
+                  <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} user={this.props.user} maestro={this.props.maestro} />
                   <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} video={currentRecipe.video} maestro={this.props.maestro} />
                 </div>
                 <ChiefTip tip={currentRecipe.chiefTrick} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
