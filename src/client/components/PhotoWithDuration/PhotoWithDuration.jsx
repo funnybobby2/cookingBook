@@ -21,6 +21,8 @@ class PhotoWithDuration extends React.Component {
     this.editField = this.editField.bind(this);
     this.editFieldByEnter = this.editFieldByEnter.bind(this);
     this.deleteRecipe = this.deleteRecipe.bind(this);
+    this.moreGuestsTonight = this.moreGuestsTonight.bind(this);
+    this.lessGuestsTonight = this.lessGuestsTonight.bind(this);
   }
 
   changeUnit() {
@@ -48,7 +50,7 @@ class PhotoWithDuration extends React.Component {
         this.setState({ inputNbPersonValue: e.target.value }); break;
       }
       default: {
-        this.props.maestro.dataRefresh(`Qu'est-ce que c'est que ce champ ${e.target.id} ?!!!`, 'error');
+        this.props.maestro.dataRefresh('addNotif', `Qu'est-ce que c'est que ce champ ${e.target.id} ?!!!`, 'error');
       }
     }
   }
@@ -74,13 +76,21 @@ class PhotoWithDuration extends React.Component {
         this.nbPerson.blur(); break;
       }
       default: {
-        this.props.maestro.dataRefresh(`Qu'est-ce que c'est que ce champ ${e.target.id}où vous voulez faire Enter ?!!!`, 'error');
+        this.props.maestro.dataRefresh('addNotif', `Qu'est-ce que c'est que ce champ ${e.target.id} où vous voulez faire Enter ?!!!`, 'error');
       }
     }
   }
 
   deleteRecipe() {
     this.props.maestro.dataRefresh('deleteRecipe', this.props.recipeID);
+  }
+
+  lessGuestsTonight(){
+    
+  }
+
+  moreGuestsTonight(){
+    
   }
 
   render() {
@@ -105,7 +115,7 @@ class PhotoWithDuration extends React.Component {
           <div className="preparation" title="Temps de préparation">
             <i className="material-icons">restore</i>
             <img alt="timer" src={require('../../assets/img/timer.png')} height="22" />
-            <span>{this.props.preparationTime}</span>
+            <div className="value">{this.props.preparationTime}</div>
             <input
               name="prepPeriod"
               className="dureeInput"
@@ -122,7 +132,7 @@ class PhotoWithDuration extends React.Component {
           <div className="cuisson" title="Temps de cuisson">
             <i className="material-icons">whatshot</i>
             <Fire />
-            <span>{this.props.cuissonTime}</span>
+            <div className="value">{this.props.cuissonTime}</div>
             <input
               name="cookPeriod"
               className="dureeInput"
@@ -139,7 +149,7 @@ class PhotoWithDuration extends React.Component {
           <div className="repos" title="Temps de repos">
             <i className="material-icons">brightness_3</i>
             <Moon />
-            <span>{this.props.restPeriod}</span>
+            <div className="value">{this.props.restPeriod}</div>
             <input
               name="restPeriod"
               className="dureeInput"
@@ -155,7 +165,7 @@ class PhotoWithDuration extends React.Component {
 
           <div className="nbPersonne" title="Nombre de personnes / pièces">
             <i className="material-icons">restaurant</i>
-            <span>{this.props.nbPerson}</span>
+            <div className="value">{this.props.nbPerson}</div>
             <input
               name="nbPerson"
               className="dureeInput"
@@ -170,6 +180,10 @@ class PhotoWithDuration extends React.Component {
             <i className="nbPersonUnit material-icons" onClick={this.changeUnit}>
               {this.state.inputNbPersonUnitValue === 'Pers.' ? 'person' : 'local_pizza'}
             </i>
+            <span class="moreOrLess">
+              <i className="material-icons" onClick={this.moreGuestsTonight}>add_box</i>
+              <i className="material-icons" onCLick={this.lessGuestsTonight}>indeterminate_check_box</i>
+            </span>
           </div>
         </div>
       </div>);

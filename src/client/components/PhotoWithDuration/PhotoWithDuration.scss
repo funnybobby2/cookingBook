@@ -75,63 +75,67 @@
     width: 100px;
     background: #1b1b1b;
     position: absolute;
-  }
-  
-  .preparation, .cuisson, .repos, .nbPersonne {
-    height: 40px;
-    color: whitesmoke;
-    line-height: 40px;
-    padding-left: 30px;
-    font-family: 'Kavivanar';
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    span {
-      padding-left: 10px;
-    }
-  }
-  
-  .preparation i, .cuisson i, .repos i, .nbPersonne i {
-    display: none;
-  }
-  
-  .preparation {
-    border-bottom: 1px solid #202020;
-    position: relative;
-    img {
-      border: none;
-      position: absolute;
-      top: 7px;
-      left: 10px;
-    }
-  }
-  
-  .cuisson {
-    border-bottom: 1px solid #202020;
-    position: relative;
-  }
-  
-  .repos {
-    border-bottom: 1px solid #202020;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .nbPersonne {
-    position: relative;
-    i {
-      border: none;
-      position: absolute;
-      left: 8px;
-      top: 10px;
-      display: block;
-      font-size: 19px;
-    }
-  }
 
-  i.nbPersonUnit {
-    left: 77px;
-    color: whitesmoke;
+    .preparation, .cuisson, .repos, .nbPersonne {
+      height: 40px;
+      color: whitesmoke;
+      line-height: 40px;
+      padding-left: 5px;
+      font-family: 'Kavivanar';
+      font-size: 13px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-bottom: 1px solid #202020;
+      position: relative;
+      padding-right: 15px;
+
+      div {
+        flex: 1;
+        text-align: right;
+      }
+
+      i{
+        display: none;
+      }
+
+      img{
+        border: none;
+        padding-left: 7px;
+      }
+    }
+
+    .preparation {
+      border-bottom: none;
+    }
+
+    .repos {
+      overflow: hidden;
+    }
+
+    .nbPersonne {
+      padding-right: 3px;
+      i {
+        display: block;
+        &.material-icons{
+          font-size: 19px;
+          padding-left: 4px;
+        }
+      }
+
+      div {
+        text-align: center;
+      }
+
+      .moreOrLess i{
+        font-size: 13px;
+        &:hover{
+          cursor: pointer;
+          color: #009EE0;
+        }
+      }
+    }
+
   }
   
   /************************ input ***********************/
@@ -146,6 +150,8 @@
     font-style: italic;
     display: none;
     width: 60px;
+    margin-left: 2px;
+    margin-right: 2px;
     &#nbPerson{
       width: 35px;
     }
@@ -165,7 +171,17 @@
       }
     }
 
-    .times span{
+    .times div.value{
+      display: none;
+    }
+
+    .cuisson, .repos {
+      input.dureeInput {
+        margin-left: 27px;
+      }
+    }
+
+    .moreOrLess{
       display: none;
     }
   }
