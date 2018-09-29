@@ -159,7 +159,7 @@ class Ingredients extends React.Component {
     ingredients.forEach((ingr, index) => {
       const ingrIcon = getGroupIcon(hasAGroup, groups, ingr.group);
       const ingredientAfterSearch = (this.props.query.length > 2) ? ingr.ingredient.replace(new RegExp(`(${this.props.query})`, 'gi'), '<mark>$1</mark>') : ingr.ingredient;
-      const ingrTextAfterSearch = ((ingr.quantity !== '') || (ingr.unit !== '')) ? `${ingrIcon} ${ingredientAfterSearch} : ${ingr.quantity} ${ingr.unit}` : `${ingrIcon} ${ingredientAfterSearch}`;
+      const ingrTextAfterSearch = ((ingr.quantity !== '') || (ingr.unit !== '')) ? `${ingrIcon} ${ingredientAfterSearch} : ${ingr.quantity * (Number(this.props.nbPerson) + Number(this.props.delta)) / Number(this.props.nbPerson)} ${ingr.unit}` : `${ingrIcon} ${ingredientAfterSearch}`;
       if (!this.props.edition) {
         ingredientList.push(<li key={index} dangerouslySetInnerHTML={{ __html: ingrTextAfterSearch }} />);
       } else {
@@ -231,7 +231,9 @@ Ingredients.propTypes = {
   edition: PropTypes.bool,
   query: PropTypes.string,
   maestro: PropTypes.object,
-  user: PropTypes.object
+  user: PropTypes.object,
+  delta: PropTypes.number,
+  nbPerson: PropTypes.number
 };
 
 Ingredients.defaultProps = { // define the default props
@@ -240,7 +242,9 @@ Ingredients.defaultProps = { // define the default props
   edition: false,
   query: '',
   maestro: { dataRefresh: () => {} },
-  user: {}
+  user: {},
+  delta: 0,
+  nbPerson: 1
 };
 
 export default Ingredients;

@@ -85,12 +85,12 @@ class PhotoWithDuration extends React.Component {
     this.props.maestro.dataRefresh('deleteRecipe', this.props.recipeID);
   }
 
-  lessGuestsTonight(){
-    
+  lessGuestsTonight() {
+    this.props.maestro.dataRefresh('changeNbPeopleForMe', -1);
   }
 
-  moreGuestsTonight(){
-    
+  moreGuestsTonight() {
+    this.props.maestro.dataRefresh('changeNbPeopleForMe', 1);
   }
 
   render() {
@@ -163,9 +163,9 @@ class PhotoWithDuration extends React.Component {
             />
           </div>
 
-          <div className="nbPersonne" title="Nombre de personnes / pièces">
-            <i className="material-icons">restaurant</i>
-            <div className="value">{this.props.nbPerson}</div>
+          <div className="nbPersonne">
+            <i className="material-icons" title="Nombre de personnes / pièces">restaurant</i>
+            <div className="value">{Number(this.props.nbPerson) + Number(this.props.delta)}</div>
             <input
               name="nbPerson"
               className="dureeInput"
@@ -180,9 +180,9 @@ class PhotoWithDuration extends React.Component {
             <i className="nbPersonUnit material-icons" onClick={this.changeUnit}>
               {this.state.inputNbPersonUnitValue === 'Pers.' ? 'person' : 'local_pizza'}
             </i>
-            <span class="moreOrLess">
-              <i className="material-icons" onClick={this.moreGuestsTonight}>add_box</i>
-              <i className="material-icons" onCLick={this.lessGuestsTonight}>indeterminate_check_box</i>
+            <span className="moreOrLess">
+              <i className="material-icons" onClick={this.moreGuestsTonight} title="Ajouter un couvert !">add_box</i>
+              <i className="material-icons" onClick={this.lessGuestsTonight} title="On est un de moins !">indeterminate_check_box</i>
             </span>
           </div>
         </div>
@@ -199,7 +199,8 @@ PhotoWithDuration.propTypes = {
   recipeID: PropTypes.number,
   edition: PropTypes.bool,
   recipeTitle: PropTypes.string,
-  maestro: PropTypes.object
+  maestro: PropTypes.object,
+  delta: PropTypes.number
 };
 
 PhotoWithDuration.defaultProps = { // define the default props
@@ -211,7 +212,8 @@ PhotoWithDuration.defaultProps = { // define the default props
   recipeID: 1,
   edition: false,
   recipeTitle: '',
-  maestro: { dataRefresh: () => {} }
+  maestro: { dataRefresh: () => {} },
+  delta: 0
 };
 
 // Mixins aren’t supported in ES6 classes.
