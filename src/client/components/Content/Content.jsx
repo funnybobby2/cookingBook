@@ -109,10 +109,11 @@ class Content extends React.Component {
                   nbPerson={currentRecipe.nbPeople}
                   nbPersonUnit={currentRecipe.nbPeopleUnit}
                   edition={edit}
+                  delta={this.props.delta}
                 />
                 <div className="ingredientsAndSteps">
                   { video }
-                  <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} user={this.props.user} maestro={this.props.maestro} />
+                  <Ingredients ingredientList={currentRecipe.ingredients} edition={edit} recipeID={currentRecipe.recipeID} query={q} user={this.props.user} delta={this.props.delta} nbPerson={currentRecipe.nbPeople} maestro={this.props.maestro} />
                   <Steps stepList={currentRecipe.steps} edition={edit} recipeID={currentRecipe.recipeID} query={q} video={currentRecipe.video} maestro={this.props.maestro} />
                 </div>
                 <ChiefTip tip={currentRecipe.chiefTrick} edition={edit} recipeID={currentRecipe.recipeID} query={q} maestro={this.props.maestro} />
@@ -155,7 +156,8 @@ Content.propTypes = {
   showCart: PropTypes.bool,
   nbItemsInCart: PropTypes.number,
   nbItemsInCartChecked: PropTypes.number,
-  noSleep: PropTypes.object
+  noSleep: PropTypes.object,
+  delta: PropTypes.number
 };
 
 Content.defaultProps = { // define the default props
@@ -171,7 +173,8 @@ Content.defaultProps = { // define the default props
   showCart: false,
   nbItemsInCart: 0,
   nbItemsInCartChecked: 0,
-  noSleep: {}
+  noSleep: {},
+  delta: 0
 };
 
 // Mixins aren’t supported in ES6 classes.

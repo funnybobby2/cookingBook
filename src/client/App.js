@@ -78,7 +78,8 @@ export default class App extends Component {
       notif: { text: '', state: 'info' },
       showCart: false,
       nbItemsInCart: 0,
-      nbItemsInCartChecked: 0
+      nbItemsInCartChecked: 0,
+      deltaNbPeople: 0
     };
     this.history = createHistory();
     this.noSleep = new NoSleep();
@@ -110,6 +111,7 @@ export default class App extends Component {
     maestro.addListener('closeRecipeCreation', 'app', this.closeRecipeCreation.bind(this));
     maestro.addListener('createRecipe', 'app', this.createRecipe.bind(this));
     maestro.addListener('reorderIngredients', 'app', this.reorderIngredients.bind(this));
+    maestro.addListener('changeNbPeopleForMe', 'app', this.changeNbPeopleForMe.bind(this));
     // navigations
     maestro.addListener('goTo', 'app', this.goTo.bind(this));
     // notifications
@@ -334,7 +336,8 @@ export default class App extends Component {
             nbTotalPages: getNbTotalPages(recipes.length).nbPages,
             currentPage: 1,
             openUserForm: false,
-            openRecipeForm: false
+            openRecipeForm: false,
+            deltaNbPeople: 0
           });
 
           this.addNotif(`Connexion réussie ${login} !`, 'success');
@@ -349,6 +352,7 @@ export default class App extends Component {
   async unconnect() {
     this.setState({
       user: undefined,
+      deltaNbPeople: 0,
       filters: {
         validated: false,
         new: false,
@@ -441,7 +445,8 @@ export default class App extends Component {
           this.setState({
             recipes: filteredRecipes,
             currentPage: curPage,
-            nbTotalPages: totPages
+            nbTotalPages: totPages,
+            deltaNbPeople: 0
           });
         }
       });
@@ -452,7 +457,8 @@ export default class App extends Component {
       case 'first': {
         this.setState({
           currentPage: 1,
-          currentRecipe: undefined
+          currentRecipe: undefined,
+          deltaNbPeople: 0
         });
         this.history.push('#recipes/page/1', {
           category: this.state.category,
@@ -467,7 +473,8 @@ export default class App extends Component {
       case 'previous': {
         this.setState({
           currentPage: ((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1),
-          currentRecipe: undefined
+          currentRecipe: undefined,
+          deltaNbPeople: 0
         });
         this.history.push(`#recipes/page/${((this.state.currentPage - 1) < 1) ? 1 : (this.state.currentPage - 1)}`, {
           category: this.state.category,
@@ -483,7 +490,8 @@ export default class App extends Component {
         const pages = this.state.nbTotalPages;
         this.setState({
           currentPage: ((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1),
-          currentRecipe: undefined
+          currentRecipe: undefined,
+          deltaNbPeople: 0
         });
         this.history.push(`#recipes/page/${((this.state.currentPage + 1) > pages) ? pages : (this.state.currentPage + 1)}`, {
           category: this.state.category,
@@ -498,7 +506,8 @@ export default class App extends Component {
       case 'last': {
         this.setState({
           currentPage: this.state.nbTotalPages,
-          currentRecipe: undefined
+          currentRecipe: undefined,
+          deltaNbPeople: 0
         });
         this.history.push(`#recipes/page/${this.state.nbTotalPages}`, {
           category: this.state.category,
@@ -516,7 +525,8 @@ export default class App extends Component {
         else if (Number(where) > 1) page = Number(where);
         this.setState({
           currentPage: page,
-          currentRecipe: undefined
+          currentRecipe: undefined,
+          deltaNbPeople: 0
         });
         if (recordInHistory) {
           this.history.push(`#recipes/page/${page}`, {
@@ -558,7 +568,8 @@ export default class App extends Component {
       const randomRecipe = recipesFiltered[Math.floor(Math.random() * recipesFiltered.length)];
       // dispatch
       this.setState({
-        currentRecipe: randomRecipe
+        currentRecipe: randomRecipe,
+        deltaNbPeople: 0
       });
     }
   }
@@ -587,6 +598,7 @@ export default class App extends Component {
       searchQuery: query,
       recipes,
       currentRecipe: undefined,
+      deltaNbPeople: 0,
       nbTotalPages: getNbTotalPages(recipes.length).nbPages,
       currentPage: 1
     });
@@ -615,6 +627,7 @@ export default class App extends Component {
         recipes,
         category: categoryName,
         currentRecipe: undefined,
+        deltaNbPeople: 0,
         nbTotalPages: getNbTotalPages(recipes.length).nbPages,
         currentPage: 1
       });
@@ -634,7 +647,7 @@ export default class App extends Component {
   showRecipe(recipeId, recordInHistory = true) {
     axios.get(`/api/recipes/${recipeId}`)
       .then((res) => {
-        this.setState({ currentRecipe: res.data });
+        this.setState({ currentRecipe: res.data, deltaNbPeople: 0 });
       });
     if (recordInHistory) this.history.push(`#recipes/id/${recipeId}`);
   }
@@ -693,10 +706,11 @@ export default class App extends Component {
       case 'cart': {
         let needRemove = false;
         let count = 0;
+        const delta = (Number(this.state.currentRecipe.nbPeople) + Number(this.state.deltaNbPeople)) / Number(this.state.currentRecipe.nbPeople);
         const ingr = _.isNil(sessionStorage.getItem('menu-ingredients')) ? {} : JSON.parse(sessionStorage.getItem('menu-ingredients'));
         this.state.currentRecipe.ingredients.forEach((ingredient) => {
           if (_.isEmpty(ingr)) {
-            ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit, checked: false };
+            ingr[ingredient.ingredient] = { quantity: ((ingredient.quantity === '') ? '' : Number(ingredient.quantity) * Number(delta)), unit: ingredient.unit, checked: false };
             count += 1;
           } else {
             needRemove = true;
@@ -708,22 +722,22 @@ export default class App extends Component {
                   if (subIngr.unit === ingredient.unit) {
                     if (subIngr.quantity !== '') {
                       findit = true;
-                      subIngr = { quantity: Number(subIngr.quantity) + Number(ingredient.quantity), unit: ingredient.unit, checked: false };
+                      subIngr = { quantity: Number(subIngr.quantity) + (((ingredient.quantity === '') ? '' : Number(ingredient.quantity) * Number(delta))), unit: ingredient.unit, checked: false };
                     }
                   }
                 });
                 if (!findit) {
-                  ingr[ingredient.ingredient].push({ quantity: ingredient.quantity, unit: ingredient.unit, checked: false });
+                  ingr[ingredient.ingredient].push({ quantity: ((ingredient.quantity === '') ? '' : Number(ingredient.quantity) * Number(delta)), unit: ingredient.unit, checked: false });
                   count += 1;
                 }
               } else if (ingredient.unit === ingr[ingredient.ingredient].unit) {
-                if (ingredient.quantity !== '') ingr[ingredient.ingredient] = { quantity: Number(ingredient.quantity) + Number(ingr[ingredient.ingredient].quantity), unit: ingredient.unit, checked: false };
+                if (ingredient.quantity !== '') ingr[ingredient.ingredient] = { quantity: (((ingredient.quantity === '') ? '' : Number(ingredient.quantity) * Number(delta))) + Number(ingr[ingredient.ingredient].quantity), unit: ingredient.unit, checked: false };
               } else {
-                ingr[ingredient.ingredient] = [ingr[ingredient.ingredient], { quantity: ingredient.quantity, unit: ingredient.unit, checked: false }];
+                ingr[ingredient.ingredient] = [ingr[ingredient.ingredient], { quantity: ((ingredient.quantity === '') ? '' : Number(ingredient.quantity) * Number(delta)), unit: ingredient.unit, checked: false }];
                 count += 1;
               }
             } else {
-              ingr[ingredient.ingredient] = { quantity: ingredient.quantity, unit: ingredient.unit, checked: false };
+              ingr[ingredient.ingredient] = { quantity: ((ingredient.quantity === '') ? '' : Number(ingredient.quantity) * Number(delta)), unit: ingredient.unit, checked: false };
               count += 1;
             }
             if (needRemove) sessionStorage.removeItem('menu-ingredients');
@@ -795,6 +809,10 @@ export default class App extends Component {
       nbTotalPages: getNbTotalPages(recipes.length).nbPages,
       currentPage: 1
     });
+  }
+
+  changeNbPeopleForMe(value) {
+    this.setState({ deltaNbPeople: this.state.deltaNbPeople + value });
   }
 
   updateSimpleField(recipeID, fieldName, fieldValue, authorizeEmpty = false) {
@@ -904,6 +922,7 @@ export default class App extends Component {
           nbItemsInCart={this.state.nbItemsInCart}
           nbItemsInCartChecked={this.state.nbItemsInCartChecked}
           noSleep={this.noSleep}
+          delta={this.state.deltaNbPeople}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
         <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} user={this.state.user} />

@@ -9,7 +9,7 @@ import PhotoWithDuration from '../PhotoWithDuration/PhotoWithDuration';
 import './HeaderRecipe.scss';
 
 const HeaderRecipe = ({
-  meatClass, edition, recipeID, maestro, recipeTitle, preparationTime, cuissonTime, reposTime, nbPerson, nbPersonUnit, category, spicy
+  meatClass, edition, recipeID, maestro, recipeTitle, preparationTime, cuissonTime, reposTime, nbPerson, nbPersonUnit, category, spicy, delta
 }) => (
   <div className="headerRecipe">
     <div className="meatAndSpice">
@@ -26,6 +26,7 @@ const HeaderRecipe = ({
       nbPerson={nbPerson}
       nbPersonUnit={nbPersonUnit}
       edition={edition}
+      delta={delta}
     />
     <Category edition={edition} recipeID={recipeID} category={category} maestro={maestro} />
   </div>
@@ -43,7 +44,8 @@ HeaderRecipe.propTypes = {
   recipeID: PropTypes.number,
   spicy: PropTypes.number,
   maestro: PropTypes.object,
-  category: PropTypes.string
+  category: PropTypes.string,
+  delta: PropTypes.number
 };
 
 HeaderRecipe.defaultProps = { // define the default props
@@ -58,7 +60,8 @@ HeaderRecipe.defaultProps = { // define the default props
   recipeID: 1,
   spicy: 0,
   maestro: { dataRefresh: () => {} },
-  category: 'plat'
+  category: 'plat',
+  delta: 0
 };
 
 export default HeaderRecipe;
