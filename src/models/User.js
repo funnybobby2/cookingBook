@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   },
   logo: {
     type: String,
-    enum: ['cherry', 'egg', 'meat', 'pepper', 'tomato'],
+    enum: ['aubergine', 'biscuit', 'brochette', 'cherry', 'citron', 'cocktail', 'croissant', 'donut', 'egg', 'meat', 'nutella', 'pepper', 'poire', 'taco', 'tarte', 'tomato'],
     default: 'egg'
   },
   votedFor: [{ type: Number, default: [] }],

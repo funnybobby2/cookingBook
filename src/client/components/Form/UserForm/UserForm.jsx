@@ -5,11 +5,22 @@ import Select from 'react-select';
 import './UserForm.scss';
 
 const logos = [
+  { value: 'aubergine', label: 'Aubergine' },
+  { value: 'biscuit', label: 'Biscuit' },
+  { value: 'brochette', label: 'Brochette' },
   { value: 'cherry', label: 'Cerises' },
+  { value: 'citron', label: 'Citron' },
+  { value: 'cocktail', label: 'Cocktail' },
+  { value: 'croissant', label: 'Croissant' },
+  { value: 'donut', label: 'Donut' },
   { value: 'egg', label: 'Oeuf' },
   { value: 'meat', label: 'Steak' },
+  { value: 'nutella', label: 'Nutella' },
   { value: 'pepper', label: 'Poivron' },
-  { value: 'tomato', label: 'Tomate' },
+  { value: 'poire', label: 'Poire' },
+  { value: 'taco', label: 'Taco' },
+  { value: 'tarte', label: 'Tarte' },
+  { value: 'tomato', label: 'Tomate' }
 ];
 
 class UserForm extends React.Component {
