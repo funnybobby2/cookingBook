@@ -79,7 +79,8 @@ export default class App extends Component {
       showCart: false,
       nbItemsInCart: 0,
       nbItemsInCartChecked: 0,
-      deltaNbPeople: 0
+      deltaNbPeople: 0,
+      avatars: []
     };
     this.history = createHistory();
     this.noSleep = new NoSleep();
@@ -130,12 +131,16 @@ export default class App extends Component {
       .then((resRecipes) => {
         axios.get('/api/users')
           .then((resUsers) => {
-            this.setState({
-              recipes: resRecipes.data,
-              nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
-              currentPage: 1,
-              usersLogin: resUsers.data.map(u => u.login)
-            });
+            axios.get('/api/files/avatars')
+              .then((avatars) => {
+                this.setState({
+                  recipes: resRecipes.data,
+                  nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
+                  currentPage: 1,
+                  usersLogin: resUsers.data.map(u => u.login),
+                  avatars: avatars.data
+                });
+              });
           });
       });
 
@@ -298,8 +303,10 @@ export default class App extends Component {
     this.setState({ openUserForm: true });
   }
 
-  createUser(login, password, email) {
-    axios.post('/api/users/', { login, password, email })
+  createUser(login, password, email, logo) {
+    axios.post('/api/users/', {
+      login, password, email, logo
+    })
       .then(async (res) => {
         if (res.status === 200) { // insert ok
           this.connect(login, password);
@@ -925,7 +932,7 @@ export default class App extends Component {
           delta={this.state.deltaNbPeople}
         />
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
-        <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} user={this.state.user} />
+        <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} user={this.state.user} avatars={this.state.avatars} />
         <RecipeForm open={this.state.openRecipeForm} maestro={maestro} />
       </div>
     );

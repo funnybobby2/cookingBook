@@ -16,7 +16,7 @@
       flex-direction: column;
       justify-content: space-between;
       width: 350px;
-      height: 350px;
+      height: 540px;
       background: #3a3a3a url(./../../../assets/img/fingerprints.png) no-repeat;
       padding: 30px;
       border: 2px solid #1b1a1a;
@@ -45,6 +45,37 @@
           background: #cccccc;
           font-family: 'Englebert', sans-serif;
           font-size: 18px;
+          margin-bottom: 10px;
+        }
+      }
+
+      .avatars {
+        padding: 13px;
+        border-radius: 13px;
+        background: #202020;
+
+        .title{
+          font-family: Lobster,cursive;
+          font-size: 20px;
+          text-align: center;
+          color: #FFF;
+          text-decoration: underline;
+          margin-top: -10px;
+          margin-bottom: 7px;
+        }
+
+        img{
+          margin: 0 3px;
+          border-radius: 13px;
+          &.selected {
+            background: #6b6b6b;
+            &:hover{
+              background: #009EE0;
+            }
+          }
+          &:hover{
+            background: #009EE0;
+          }
         }
       }
 

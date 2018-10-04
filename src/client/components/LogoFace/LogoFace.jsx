@@ -52,7 +52,7 @@ LogoFace.propTypes = {
     password: PropTypes.string,
     role: PropTypes.oneOf(['admin', 'user']),
     email: PropTypes.string,
-    logo: PropTypes.oneOf(['cherry', 'egg', 'meat', 'pepper', 'tomato'])
+    logo: PropTypes.string
   }),
   maestro: PropTypes.object
 };
