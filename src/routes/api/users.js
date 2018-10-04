@@ -1,4 +1,5 @@
 const User = require('../../models/User');
+const fs = require('fs');
 
 // ///////////////// USERS API //////////////////// //
 
@@ -28,6 +29,7 @@ module.exports = function (app) {
     user.login = req.body.login;
     user.password = req.body.password;
     user.email = req.body.email;
+    user.logo = req.body.logo;
     // save it
     user.save()
       .then(() => res.json(user))
@@ -79,5 +81,16 @@ module.exports = function (app) {
         }
       })
       .catch(err => next(err));
+  });
+
+  // get files elements in the src\client\assets\img\user folder
+  app.get('/api/files/avatars', (req, res) => {
+    const files = [];
+    fs.readdirSync(`${__dirname}/../../client/assets/img/user`).forEach((file) => {
+      files.push(file);
+    });
+    return new Promise(((resolve) => {
+      resolve(res.json(files));
+    }));
   });
 };

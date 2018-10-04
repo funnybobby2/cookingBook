@@ -1,41 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
 // Import style
 import './UserForm.scss';
-
-const logos = [
-  { value: 'aubergine', label: 'Aubergine' },
-  { value: 'biscuit', label: 'Biscuit' },
-  { value: 'brochette', label: 'Brochette' },
-  { value: 'cherry', label: 'Cerises' },
-  { value: 'citron', label: 'Citron' },
-  { value: 'cocktail', label: 'Cocktail' },
-  { value: 'croissant', label: 'Croissant' },
-  { value: 'donut', label: 'Donut' },
-  { value: 'egg', label: 'Oeuf' },
-  { value: 'meat', label: 'Steak' },
-  { value: 'nutella', label: 'Nutella' },
-  { value: 'pepper', label: 'Poivron' },
-  { value: 'poire', label: 'Poire' },
-  { value: 'taco', label: 'Taco' },
-  { value: 'tarte', label: 'Tarte' },
-  { value: 'tomato', label: 'Tomate' }
-];
 
 class UserForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      logoSelectedOption: null
-    };
+    this.state = { logo: (this.props.user === undefined) ? 'egg' : this.props.user.logo };
 
     this.focusPassword = this.focusPassword.bind(this);
     this.focusEmail = this.focusEmail.bind(this);
     this.valideUser = this.valideUser.bind(this);
     this.closeForm = this.closeForm.bind(this);
-    this.logoHandleChange = this.logoHandleChange.bind(this);
+    this.changeAvatar = this.changeAvatar.bind(this);
   }
 
   componentWillReceiveProps(newProps) { // props/ctx changent => synchro avec state
@@ -43,13 +21,13 @@ class UserForm extends React.Component {
       this.userLogin.value = newProps.user.login;
       this.userPassword.value = newProps.user.password;
       this.userMail.value = newProps.user.email;
-      this.logoHandleChange(newProps.user.logo);
+      this.setState({ logo: newProps.user.logo });
     }
   }
 
   valideUser() {
     // check if the login / password / email is not empty
-    if ((this.userLogin.value === '') || (this.userPassword.value === '') || (this.userMail.value === '') || (this.state.logoSelectedOption === '')) {
+    if ((this.userLogin.value === '') || (this.userPassword.value === '') || (this.userMail.value === '')) {
       this.props.maestro.dataRefresh('addNotif', 'Vous devez remplir les champs Login, password et Email', 'error');
       return;
     }
@@ -67,10 +45,16 @@ class UserForm extends React.Component {
     }
 
     // If you are here, congratulations, you are worthy to create your account with us
-    if (this.props.user === undefined) this.props.maestro.dataRefresh('createUser', this.userLogin.value, this.userPassword.value, this.userMail.value);
+    if (this.props.user === undefined) this.props.maestro.dataRefresh('createUser', this.userLogin.value, this.userPassword.value, this.userMail.value, this.state.logo);
     else {
-      this.props.maestro.dataRefresh('updateUser', this.props.user._id, this.userLogin.value, this.userPassword.value, this.userMail.value, (this.state.logoSelectedOption.value === null) ? 0 : this.state.logoSelectedOption.value);
-      this.setState({ logoSelectedOption: null });
+      this.props.maestro.dataRefresh(
+        'updateUser',
+        this.props.user._id,
+        this.userLogin.value,
+        this.userPassword.value,
+        this.userMail.value,
+        this.state.logo
+      );
     }
   }
 
@@ -90,14 +74,13 @@ class UserForm extends React.Component {
     this.userPassword.select();
   }
 
-  logoHandleChange(logoSelectedOption) {
-    this.setState({ logoSelectedOption });
+  changeAvatar(avatar) {
+    this.setState({ logo: avatar.slice(5, -4) });
   }
 
   render() {
     const containerClass = this.props.open ? 'formContainer show' : 'formContainer';
     const titleForm = (this.props.user === undefined) ? 'Création de votre compte' : 'Mise à jour de votre compte';
-    const { logoSelectedOption } = this.state;
 
     return (
       <div className={containerClass}>
@@ -127,7 +110,11 @@ class UserForm extends React.Component {
               placeholder="e-mail"
               ref={input => this.userMail = input}
             />
-            <Select value={logoSelectedOption} onChange={this.logoHandleChange} name="logo" placeholder="Icône" className="userSelect" options={logos} />
+            <div className="avatars">
+              <div className="title">Avatars</div>
+              {this.props.avatars.map(avatar => <img alt="avatar" width="40px" height="40px" src={require(`../../../assets/img/user/${avatar}`)} className={(avatar.slice(5, -4) === this.state.logo) ? 'selected' : ''} onClick={() => { this.changeAvatar(avatar) ;}} />)}
+            </div>
+
           </div>
           <div className="buttons">
             <button className="validUser" onClick={this.valideUser}>Valider</button>
@@ -142,13 +129,15 @@ UserForm.propTypes = {
   open: PropTypes.bool,
   usersLogin: PropTypes.arrayOf(PropTypes.string),
   maestro: PropTypes.object,
-  user: PropTypes.object
+  user: PropTypes.object,
+  avatars: PropTypes.arrayOf(PropTypes.string)
 };
 
 UserForm.defaultProps = { // define the default props
   open: false,
   usersLogin: [],
   maestro: { dataRefresh: () => {} },
-  user: undefined
+  user: undefined,
+  avatars: []
 };
 export default UserForm;
