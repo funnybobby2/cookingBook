@@ -99,6 +99,7 @@ export default class App extends Component {
     maestro.addListener('deleteRecipe', 'app', this.deleteRecipe.bind(this));
     maestro.addListener('randomRecipeOrCart', 'app', this.randomRecipeOrCart.bind(this));
     maestro.addListener('selectCategory', 'app', this.selectCategory.bind(this));
+    maestro.addListener('advancedSearch', 'app', this.advancedSearch.bind(this));
     maestro.addListener('searchRecipes', 'app', this.searchRecipes.bind(this));
     maestro.addListener('showRecipe', 'app', this.showRecipe.bind(this));
     maestro.addListener('toggleFilter', 'app', this.toggleFilter.bind(this));
@@ -579,6 +580,14 @@ export default class App extends Component {
         deltaNbPeople: 0
       });
     }
+  }
+
+  advancedSearch(ingredientsIn, ingredientsOut, calories, time) {
+    if (ingredientsIn !== '') ingredientsIn = ` ingrIn:{${ingredientsIn}}`;
+    if (ingredientsOut !== '') ingredientsOut = ` ingrOut:{${ingredientsOut}}`;
+    if (calories !== '') calories = ` cal:{${calories}}`;
+    if (time !== '') time = ` time:{${time}}`;
+    this.searchRecipes(`${this.state.query}${ingredientsIn.length > 0 ? ingredientsIn : ''}${ingredientsOut.length > 0 ? ingredientsOut : ''}${calories.length > 0 ? calories : ''}${time.length > 0 ? time : ''}`);
   }
 
   // SELECT the recipes with title or ingredient or step or tag or chief trick match with query
