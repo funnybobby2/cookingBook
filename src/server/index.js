@@ -7,6 +7,7 @@ const bodyParser = require('body-parser'); // Analyzes incoming request bodies i
 const methodOverride = require('method-override'); // allows use of HTTP verbs such as PUT or DELETE in places where the client does not support it
 const createLogger = require('morgan'); // to log
 const cookieSession = require('cookie-session'); // cookies management
+require('dotenv').config(); // get the environnement variables
 // const csrfProtect = require('csurf'); // Create a middleware for CSRF token creation and validation (Node.js CSRF protection middleware)
 
 // Connection to mongoDB
@@ -14,7 +15,7 @@ const options = {
   server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
 };
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/menus', options);
+mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}` || 'mongodb://localhost/menus', options);
 
 // indicates if the connection failed because it's painful to diagnose
 const database = mongoose.connection;

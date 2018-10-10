@@ -3,6 +3,8 @@
   align-items: center;
   justify-content: flex-end;
   flex: 1;
+  position: relative;
+
   .icon-search {
     width: 24px;
     height: 24px;
@@ -23,20 +25,113 @@
       padding-left: 3px;
     }
   }
+  .icon-toggle{
+    width: 21px;
+    height: 19px;
+    background: transparent;
+    z-index: 1;
+    position: absolute;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > i {
+      font-size: 20px !important;
+      color: #808080;
+    }
+
+    &:hover {
+      cursor: pointer;
+      > i {
+        color: #009EE0;
+      }
+    }
+  }
   .search-input {
     width: 1px;
     border: 1px solid #717171;
     border-radius: 4px;
-    transition: width ease-in-out 1s;
     margin-right: -17px;
     background: #383838;
     padding: 2px 5px;
+    width: calc(100% - 5px);
+    max-width: 350px;
     &:focus, &:not(:placeholder-shown) {
       background: #fff;
       color: #2b2b2b;
     }
-    &.open {
-      width: calc(100% - 5px);
+  }
+
+  .search-form{
+    padding-top: 20px;
+    position: absolute;
+    width: calc(100% - 5px);
+    max-width: 350px;
+    background: #303030;
+    top: 29px;
+    right: 23px;
+    z-index: 3;
+    box-shadow: 0 3px 4px rgba(0,0,0,.7);
+    border: 1px solid black;
+    display: none;
+    &.open{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-ingredients-in, .search-ingredients-out, .search-calories, .search-max-time, .search-validation{
+      height: 30px;
+      width: calc(100% - 20px);
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+
+      span {
+        width: 230px;
+        font-size: 15px;
+      }
+
+      input{
+        height: 20px;
+        border: 2px solid #696868;
+        border-radius: 5px;
+        padding: 5px;
+        background: #ccc;
+        font-family: Englebert,sans-serif;
+        font-size: 15px;
+        margin-bottom: 10px;
+        width: calc(100% - 15px);
+      }
+    }
+
+    .search-validation{
+      height: 30px;
+      width: calc(100% - 20px);
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+
+      .validSearch{
+        height: 25px;
+        width: 100px;
+        margin-right: 0px;
+        margin-left: 25px;
+        background: #2d72dc;
+        border: none;
+        border-radius: 2px;
+        color: #202020;
+        font-weight: bold;
+        font-family: 'Englebert', sans-serif;
+        font-size: 16px;
+        &:hover{
+          background: #1d4d98;
+          color: #FFFFFF;
+          cursor: pointer;
+        }
+      }
     }
   }
 }
