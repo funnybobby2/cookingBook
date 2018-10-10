@@ -15,7 +15,8 @@ const options = {
   server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
 };
-mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}` || 'mongodb://localhost/menus', options);
+const mongoPath = ((process.env.DB_USER === undefined) || (process.env.DB_PASS === undefined) || (process.env.DB_SERVER === undefined)) ? 'mongodb://localhost/menus' : `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}` ;
+mongoose.connect(mongoPath, options);
 
 // indicates if the connection failed because it's painful to diagnose
 const database = mongoose.connection;
@@ -63,6 +64,10 @@ listenToConnectionOpen(() => {
   // app.use(csrfProtect());
 
   // routes ======================================================================
+
+  app.get('*', (request, response) => {
+    response.sendFile(`${__dirname}/../../dist/index.html`);
+  });
   require('../routes')(app);
 
   // Effective server launch by listening on the correct port for incoming HTTP connections.
