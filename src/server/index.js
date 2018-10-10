@@ -63,6 +63,10 @@ listenToConnectionOpen(() => {
   // app.use(csrfProtect());
 
   // routes ======================================================================
+
+  app.get('*', (request, response) => {
+    response.sendFile(`${__dirname}/dist/index.html`);
+  });
   require('../routes')(app);
 
   // Effective server launch by listening on the correct port for incoming HTTP connections.
