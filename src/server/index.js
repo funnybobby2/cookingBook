@@ -15,8 +15,8 @@ const options = {
   server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
 };
-const mongoPath = ((process.env.DB_USER === undefined) || (process.env.DB_PASS === undefined) || (process.env.DB_SERVER === undefined)) ? 'mongodb://localhost/menus' : `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`;
-console.log(mongoPath);
+let mongoPath = ((process.env.DB_USER === undefined) || (process.env.DB_PASS === undefined) || (process.env.DB_SERVER === undefined)) ? 'mongodb://localhost/menus' : `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`;
+mongoPath = 'mongodb://funnybobby:RKow88Ln!@ds125693.mlab.com:25693/cookingbook';
 mongoose.connect(mongoPath, options);
 
 // indicates if the connection failed because it's painful to diagnose
