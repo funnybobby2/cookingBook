@@ -15,7 +15,9 @@ const options = {
   server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
 };
-mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}` || 'mongodb://localhost/menus', options);
+const mongoPath = ((process.env.DB_USER === undefined) || (process.env.DB_PASS === undefined) || (process.env.DB_SERVER === undefined)) ? 'mongodb://localhost/menus' : `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`;
+console.log(mongoPath);
+mongoose.connect(mongoPath, options);
 
 // indicates if the connection failed because it's painful to diagnose
 const database = mongoose.connection;
@@ -23,7 +25,7 @@ database.on('error', () => {
   console.error(chalk`{red ✘ CANNOT CONNECT TO mongoDB DATABASE menus!}`);
 });
 
-// We export a registration function of a successful login callback, 
+// We export a registration function of a successful login callback,
 // if it interests the caller (`index.js` uses it to log that the connection is ready)
 const listenToConnectionOpen = function (onceReady) {
   if (typeof onceReady === 'function') {
@@ -64,8 +66,8 @@ listenToConnectionOpen(() => {
 
   // routes ======================================================================
 
-  app.get('*', (request, response) => {
-    response.sendFile(`${__dirname}/dist/index.html`);
+  app.get('/', (request, response) => {
+    response.sendFile(`${__dirname}/../../dist/index.html`);
   });
   require('../routes')(app);
 
