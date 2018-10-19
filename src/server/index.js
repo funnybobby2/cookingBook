@@ -61,6 +61,7 @@ listenToConnectionOpen(() => {
   app.use(cookieSession({
     name: 'cooking_book:session',
     secret: 'Funnybobby is in the place!',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   }));
   // app.use(csrfProtect());
 

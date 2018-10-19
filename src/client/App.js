@@ -128,19 +128,24 @@ export default class App extends Component {
     // help
     maestro.addListener('helper', 'app', this.showHelper.bind(this));
 
-    axios.get('/api/recipes')
-      .then((resRecipes) => {
-        axios.get('/api/users')
-          .then((resUsers) => {
-            axios.get('/api/files/avatars')
-              .then((avatars) => {
-                this.setState({
-                  recipes: resRecipes.data,
-                  nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
-                  currentPage: 1,
-                  usersLogin: resUsers.data.map(u => u.login),
-                  avatars: avatars.data
-                });
+    axios.get('/api/users/cookie')
+      .then((reqCookieUser) => {
+        if (reqCookieUser.data === null) reqCookieUser.data = undefined;
+        axios.get('/api/recipes')
+          .then((resRecipes) => {
+            axios.get('/api/users')
+              .then((resUsers) => {
+                axios.get('/api/files/avatars')
+                  .then((avatars) => {
+                    this.setState({
+                      recipes: resRecipes.data,
+                      user: reqCookieUser.data,
+                      nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
+                      currentPage: 1,
+                      usersLogin: resUsers.data.map(u => u.login),
+                      avatars: avatars.data
+                    });
+                  });
               });
           });
       });
@@ -358,6 +363,7 @@ export default class App extends Component {
 
   // UNCONNECT the user
   async unconnect() {
+    axios.put('/api/users/unconnect');
     this.setState({
       user: undefined,
       deltaNbPeople: 0,

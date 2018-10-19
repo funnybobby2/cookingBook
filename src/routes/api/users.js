@@ -12,12 +12,32 @@ module.exports = function (app) {
       .catch(err => next(err));
   });
 
+  // get a cookie user
+  app.get('/api/users/cookie', (req, res, next) => {
+    if (req.session === null) return;
+    // Pour récupérer le user dans le cookie
+    User.findOne({ login: req.session.userlogin, password: req.session.userPassword })
+      .exec()
+      .then(user => res.json(user)) // return user in JSON format
+      .catch(err => next(err));
+  });
+
+  // remove cookie user
+  app.put('/api/users/unconnect', (req) => {
+    req.session = null;
+  });
+
+
   // get a user
   app.get('/api/users/:login/:password', (req, res, next) => {
     // Pour récupérer le user avec ce login et ce password
     User.findOne({ login: req.params.login, password: req.params.password })
       .exec()
-      .then(user => res.json(user)) // return user in JSON format
+      .then((user) => {
+        req.session.userlogin = req.params.login;
+        req.session.userPassword = req.params.password;
+        return res.json(user);
+      }) // return user in JSON format
       .catch(err => next(err));
   });
 
