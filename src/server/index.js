@@ -6,7 +6,6 @@ const mongoose = require('mongoose'); // to easily manage mongoDB
 const bodyParser = require('body-parser'); // Analyzes incoming request bodies in a middleware before our managers (req.body)
 const methodOverride = require('method-override'); // allows use of HTTP verbs such as PUT or DELETE in places where the client does not support it
 const createLogger = require('morgan'); // to log
-const cookieSession = require('cookie-session'); // cookies management
 require('dotenv').config(); // get the environnement variables
 // const csrfProtect = require('csurf'); // Create a middleware for CSRF token creation and validation (Node.js CSRF protection middleware)
 
@@ -57,12 +56,6 @@ listenToConnectionOpen(() => {
   // app.use(methodOverride(req => req.body._method));
   app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
 
-  // `cookieSession` stores the entire cookie session
-  app.use(cookieSession({
-    name: 'cooking_book:session',
-    secret: 'Funnybobby is in the place!',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-  }));
   // app.use(csrfProtect());
 
   // routes ======================================================================

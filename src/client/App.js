@@ -128,27 +128,56 @@ export default class App extends Component {
     // help
     maestro.addListener('helper', 'app', this.showHelper.bind(this));
 
-    axios.get('/api/users/cookie')
-      .then((reqCookieUser) => {
-        if (reqCookieUser.data === null) reqCookieUser.data = undefined;
-        axios.get('/api/recipes')
-          .then((resRecipes) => {
-            axios.get('/api/users')
-              .then((resUsers) => {
-                axios.get('/api/files/avatars')
-                  .then((avatars) => {
-                    this.setState({
-                      recipes: resRecipes.data,
-                      user: reqCookieUser.data,
-                      nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
-                      currentPage: 1,
-                      usersLogin: resUsers.data.map(u => u.login),
-                      avatars: avatars.data
-                    });
+
+    if (_.isNil(localStorage.getItem('cookingbook_login')) || _.isNil(localStorage.getItem('cookingbook_password'))) {
+      axios.get('/api/recipes')
+        .then((resRecipes) => {
+          axios.get('/api/users')
+            .then((resUsers) => {
+              axios.get('/api/files/avatars')
+                .then((avatars) => {
+                  this.setState({
+                    recipes: resRecipes.data,
+                    nbTotalPages: getNbTotalPages(resRecipes.data.length).nbPages,
+                    currentPage: 1,
+                    usersLogin: resUsers.data.map(u => u.login),
+                    avatars: avatars.data
                   });
-              });
+                });
+            });
+        });
+    } else {
+      axios.get(`/api/users/${localStorage.getItem('cookingbook_login')}/${localStorage.getItem('cookingbook_password')}`)
+        .then(async (res) => {
+          const recipes = await getFilteredRecipes(
+            this.state.category,
+            this.state.filters.dislike,
+            this.state.filters.validate,
+            this.state.filters.new,
+            this.state.filters.spiceMin,
+            this.state.filters.spiceMax,
+            this.state.filters.spice,
+            this.state.filters.rateMin,
+            this.state.filters.rateMax,
+            this.state.filters.rate,
+            this.state.query,
+            res.data
+          );
+
+          const allUsers = await axios.get('/api/users');
+          const avatars = await axios.get('/api/files/avatars');
+
+          this.setState({
+            recipes,
+            user: res.data,
+            nbTotalPages: getNbTotalPages(recipes.length).nbPages,
+            currentPage: 1,
+            usersLogin: allUsers.data.map(u => u.login),
+            avatars: avatars.data
           });
-      });
+        });
+    }
+
 
     window.addEventListener('resize', this.updateDimensions.bind(this));
 
@@ -328,6 +357,9 @@ export default class App extends Component {
     axios.get(`/api/users/${login}/${password}`)
       .then(async (res) => {
         if (res.data !== null) {
+          localStorage.setItem('cookingbook_login', login);
+          localStorage.setItem('cookingbook_password', password);
+
           const recipes = await getFilteredRecipes(
             this.state.category,
             this.state.filters.dislike,
@@ -363,7 +395,9 @@ export default class App extends Component {
 
   // UNCONNECT the user
   async unconnect() {
-    axios.put('/api/users/unconnect');
+    localStorage.removeItem('cookingbook_login');
+    localStorage.removeItem('cookingbook_password');
+
     this.setState({
       user: undefined,
       deltaNbPeople: 0,
