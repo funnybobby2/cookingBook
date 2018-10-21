@@ -9,6 +9,7 @@ import Content from './components/Content/Content';
 import Notification from './components/Notification/Notification';
 import UserForm from './components/Form/UserForm/UserForm';
 import RecipeForm from './components/Form/RecipeForm/RecipeForm';
+import Help from './components/Help/Help';
 // import services
 import { maestro } from './js/services/maestro';
 // Import style
@@ -58,6 +59,7 @@ export default class App extends Component {
       usersLogin: [],
       openUserForm: false,
       openRecipeForm: false,
+      openHelp: false,
       currentRecipe: undefined,
       recipes: [],
       searchQuery: '',
@@ -95,6 +97,8 @@ export default class App extends Component {
     maestro.addListener('unconnect', 'app', this.unconnect.bind(this));
     maestro.addListener('updateUser', 'app', this.updateUser.bind(this));
     maestro.addListener('userParameter', 'app', this.userParameter.bind(this));
+    // help
+    maestro.addListener('closeHelp', 'app', this.closeHelp.bind(this));
     // recipes
     maestro.addListener('deleteRecipe', 'app', this.deleteRecipe.bind(this));
     maestro.addListener('randomRecipeOrCart', 'app', this.randomRecipeOrCart.bind(this));
@@ -949,7 +953,12 @@ export default class App extends Component {
 
   // HELPER
   showHelper() {
+    this.setState({ openHelp: true });
     this.addNotif('TODO : Faire l\'aide en ligne', 'warning');
+  }
+
+  closeHelp() {
+    this.setState({ openHelp: false });
   }
 
   render() {
@@ -983,6 +992,7 @@ export default class App extends Component {
         <Notification text={this.state.notif.text} state={this.state.notif.state} />
         <UserForm usersLogin={this.state.usersLogin} open={this.state.openUserForm} maestro={maestro} user={this.state.user} avatars={this.state.avatars} />
         <RecipeForm open={this.state.openRecipeForm} maestro={maestro} />
+        <Help open={this.state.openHelp} maestro={maestro} />
       </div>
     );
   }

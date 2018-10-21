@@ -1,0 +1,37 @@
+.helpContainer{
+  display: none;
+  &.show {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    background: #fff;
+    z-index: 3;
+    overflow: hidden;
+    padding: 30px;
+    margin: 30px;
+    border: 2px solid #383838;
+    box-shadow: 0px 0px 0px 40px rgba(0,0,0,0.75);
+    .imgContainer {
+        overflow: scroll;
+        padding: 20px;
+        height: 100%;
+        text-align: center;
+        img {
+          max-width: 1200px;
+        }
+    }
+    i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 30px;
+      &:hover{
+        color: #009EE0;
+        cursor: pointer;
+      }
+    }
+  }
+}
