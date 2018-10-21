@@ -1,22 +1,28 @@
 {
 	"menus": [{
 		"title": "Apéro au hasard",
-		"actionKey": "aperitif"
+		"actionKey": "aperitif",
+		"restricted": "all"
 	}, {
 		"title": "Entrée au hasard",
-		"actionKey": "entree"
+		"actionKey": "entree",
+		"restricted": "all"
 	}, {
 		"title": "Plat au hasard",
-		"actionKey": "plat"
+		"actionKey": "plat",
+		"restricted": "all"
 	}, {
 		"title": "Dessert au hasard",
-		"actionKey": "dessert"
+		"actionKey": "dessert",
+		"restricted": "all"
 	}, {
 		"title": "Boisson au hasard",
-		"actionKey": "boisson"
+		"actionKey": "boisson",
+		"restricted": "all"
 	}, {
 		"title": "Liste des courses",
-		"actionKey": "courseListe"
+		"actionKey": "courseListe",
+		"restricted": "connected"
 	}],
 	"filters":[{
 		"classe": "validate",

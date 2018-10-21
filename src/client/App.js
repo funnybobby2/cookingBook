@@ -954,7 +954,6 @@ export default class App extends Component {
   // HELPER
   showHelper() {
     this.setState({ openHelp: true });
-    this.addNotif('TODO : Faire l\'aide en ligne', 'warning');
   }
 
   closeHelp() {

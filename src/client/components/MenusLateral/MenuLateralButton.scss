@@ -19,4 +19,7 @@
     background: #bee000;
     color: #383838;
   }
+  &.disabled {
+    display: none;
+  }
 }

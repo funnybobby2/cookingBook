@@ -29,7 +29,7 @@ const MenusLateral = ({
     <div className="menus" >
       <div className="menuLateralItems">
         {/* boutons de menu gauche pour les recettes au hasard et la liste de course */}
-        {configCookingBook.menus.map(button => <MenuLateralButton name={button.title} action={button.actionKey} key={button.title} maestro={maestro} showCart={showCart} />)}
+        {configCookingBook.menus.map(button => <MenuLateralButton name={button.title} action={button.actionKey} key={button.title} maestro={maestro} showCart={showCart} user={user} restriction={button.restricted} />)}
         { addRecipeButton }
       </div>
       <div className={filtersClass}>
