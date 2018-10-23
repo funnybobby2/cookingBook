@@ -164,7 +164,7 @@ export default class App extends Component {
             this.state.filters.rateMin,
             this.state.filters.rateMax,
             this.state.filters.rate,
-            this.state.query,
+            this.state.searchQuery,
             res.data
           );
 
@@ -375,7 +375,7 @@ export default class App extends Component {
             this.state.filters.rateMin,
             this.state.filters.rateMax,
             this.state.filters.rate,
-            this.state.query,
+            this.state.searchQuery,
             res.data
           );
 
@@ -421,7 +421,7 @@ export default class App extends Component {
         0,
         5,
         false,
-        this.state.query,
+        this.state.searchQuery,
         undefined
       )
     });
@@ -454,7 +454,7 @@ export default class App extends Component {
       this.state.filters.rateMin,
       this.state.filters.rateMax,
       this.state.filters.rate,
-      this.state.query,
+      this.state.searchQuery,
       this.state.user
     );
 
@@ -481,7 +481,7 @@ export default class App extends Component {
             this.state.filters.rateMin,
             this.state.filters.rateMax,
             this.state.filters.rate,
-            this.state.query,
+            this.state.searchQuery,
             this.state.user
           );
           // cas numero 1 on delete la recipe depuis la liste
@@ -613,7 +613,7 @@ export default class App extends Component {
         this.state.filters.rateMin,
         this.state.filters.rateMax,
         this.state.filters.rate,
-        this.state.query,
+        this.state.searchQuery,
         this.state.user
       );
       // get a random number between 1 and recipesFiltered.length
@@ -627,11 +627,8 @@ export default class App extends Component {
   }
 
   advancedSearch(ingredientsIn, ingredientsOut, calories, time) {
-    if (ingredientsIn !== '') ingredientsIn = ` ingrIn:{${ingredientsIn}}`;
-    if (ingredientsOut !== '') ingredientsOut = ` ingrOut:{${ingredientsOut}}`;
-    if (calories !== '') calories = ` cal:{${calories}}`;
-    if (time !== '') time = ` time:{${time}}`;
-    this.searchRecipes(`${this.state.query}${ingredientsIn.length > 0 ? ingredientsIn : ''}${ingredientsOut.length > 0 ? ingredientsOut : ''}${calories.length > 0 ? calories : ''}${time.length > 0 ? time : ''}`);
+    console.log(ingredientsIn, ingredientsOut, calories, time);
+    this.addNotif('TODO à faire', 'warning');
   }
 
   // SELECT the recipes with title or ingredient or step or tag or chief trick match with query
@@ -679,7 +676,7 @@ export default class App extends Component {
         this.state.filters.rateMin,
         this.state.filters.rateMax,
         this.state.filters.rate,
-        this.state.query,
+        this.state.searchQuery,
         this.state.user
       );
 
@@ -823,7 +820,7 @@ export default class App extends Component {
       newFilters.rateMin,
       newFilters.rateMax,
       newFilters.rate,
-      this.state.query,
+      this.state.searchQuery,
       this.state.user
     );
 
@@ -859,7 +856,7 @@ export default class App extends Component {
       newFilters.rateMin,
       newFilters.rateMax,
       newFilters.rate,
-      this.state.query,
+      this.state.searchQuery,
       this.state.user
     );
 
