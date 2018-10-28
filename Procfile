@@ -1,1 +1,1 @@
-web: node server.js
+web: webpack -p | node server.js

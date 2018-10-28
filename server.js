@@ -1,5 +1,6 @@
 // Server entry point
 // =========================
+const path = require('path');
 const chalk = require('chalk'); // to have pretty colorful logs in the console
 const express = require('express');
 const mongoose = require('mongoose'); // to easily manage mongoDB
@@ -60,7 +61,8 @@ listenToConnectionOpen(() => {
   // routes ======================================================================
 
   app.get('/', (request, response) => {
-    response.sendFile(`${__dirname}/dist/index.html`);
+    const index = path.join(__dirname, 'dist', 'index.html');
+    response.sendFile(index);
   });
   require('./src/routes')(app);
 
