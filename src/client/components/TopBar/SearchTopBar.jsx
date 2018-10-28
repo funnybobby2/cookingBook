@@ -81,7 +81,7 @@ class SearchTopBar extends React.Component {
           </div>
           <div className="search-max-time">
             <span>Durée max ... </span>
-            <input type="text" name="dureeMax" autoComplete="off" ref={input => this.dureeMax = input} />
+            <input type="text" name="dureeMax" placeholder="Durée max en minutes" autoComplete="off" ref={input => this.dureeMax = input} />
           </div>
           <div className="search-validation">
             <button className="validSearch" onClick={this.advancedSearch.bind(this)}>Rechercher</button>

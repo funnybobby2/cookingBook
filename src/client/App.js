@@ -15,7 +15,20 @@ import { maestro } from './js/services/maestro';
 // Import style
 import './app.css';
 
-async function getFilteredRecipes(category, onlyDeleted, onlyValidated, onlyNew, spiceMin, spiceMax, spice, rateMin, rateMax, rate, query, user) {
+function getFullTime(recipe) {
+  const prepArr = /^(?:([0-9]*)\s*j)?(?:([0-9]*)\s*h)?(?:([0-9]*)\s*[min]?)?/.exec(recipe.prepPeriod);
+  const cookArr = /^(?:([0-9]*)\s*j)?(?:([0-9]*)\s*h)?(?:([0-9]*)\s*[min]?)?/.exec(recipe.cookPeriod);
+  const sleepArr = /^(?:([0-9]*)\s*j)?(?:([0-9]*)\s*h)?(?:([0-9]*)\s*[min]?)?/.exec(recipe.restPeriod);
+
+  return ((prepArr[1] === undefined) ? 0 : Number(prepArr[1].trim()) * 24 * 60) + ((prepArr[2] === undefined) ? 0 : Number(prepArr[2].trim()) * 60) + ((prepArr[3] === undefined) ? 0 : Number(prepArr[3].trim()))
+  + ((cookArr[1] === undefined) ? 0 : Number(cookArr[1].trim()) * 24 * 60) + ((cookArr[2] === undefined) ? 0 : Number(cookArr[2].trim()) * 60) + ((cookArr[3] === undefined) ? 0 : Number(cookArr[3].trim()))
+  + ((sleepArr[1] === undefined) ? 0 : Number(sleepArr[1].trim()) * 24 * 60) + ((sleepArr[2] === undefined) ? 0 : Number(sleepArr[2].trim()) * 60) + ((sleepArr[3] === undefined) ? 0 : Number(sleepArr[3].trim()));
+}
+
+async function getFilteredRecipes(category, onlyDeleted, onlyValidated, onlyNew, spiceMin, spiceMax, spice, rateMin, rateMax, rate, query, user, ingrIn, ingrOut, calMax, timeMax) {
+  if ((ingrIn.length === 1) && (ingrIn[0] === '')) ingrIn = [];
+  if ((ingrOut.length === 1) && (ingrOut[0] === '')) ingrOut = [];
+
   const recipes = await axios.get('/api/recipes', {
     params: {
       cat: category,
@@ -33,7 +46,43 @@ async function getFilteredRecipes(category, onlyDeleted, onlyValidated, onlyNew,
     }
   });
 
-  return recipes.data;
+  // filter the result by advance search properties
+  const recipesFiltered = recipes.data.filter((recipe) => {
+    let matchIngrIn = true;
+    let matchIngrOut = true;
+    let matchCal = true;
+    let matchTime = true;
+
+    const ingredientsName = recipe.ingredients.map(i => i.ingredient.toLowerCase());
+    // filter ingredients in
+    ingrIn.forEach((iIn) => {
+      let isIn = false;
+      ingredientsName.forEach((name) => {
+        if (name.indexOf(iIn) > -1) isIn = true;
+      });
+
+      if (!isIn) matchIngrIn = false;
+    });
+    // filter ingredients out
+    ingrOut.forEach((iOut) => {
+      let isIn = false;
+      ingredientsName.forEach((name) => {
+        if (name.indexOf(iOut) > -1) isIn = true;
+      });
+
+      if (isIn) matchIngrOut = false;
+    });
+    // filter calories max
+    if ((calMax === undefined) || (calMax === '') || (recipe.calories === undefined) || (recipe.calories === 0)) matchCal = true;
+    else matchCal = recipe.calories <= calMax;
+    // filter time max
+    if ((timeMax === undefined) || (timeMax === '')) matchTime = true;
+    else matchTime = getFullTime(recipe) <= timeMax;
+
+    return matchIngrIn && matchIngrOut && matchCal && matchTime;
+  });
+
+  return recipesFiltered;
 }
 
 function getNbTotalPages(nbRecipes) {
@@ -74,6 +123,10 @@ export default class App extends Component {
         rateMin: 0,
         rateMax: 5,
         rate: false,
+        ingrIn: [],
+        ingrOut: [],
+        calMax: undefined,
+        timeMax: undefined
       },
       nbTotalPages: 1,
       currentPage: 1,
@@ -165,7 +218,11 @@ export default class App extends Component {
             this.state.filters.rateMax,
             this.state.filters.rate,
             this.state.searchQuery,
-            res.data
+            res.data,
+            this.state.filters.ingrIn,
+            this.state.filters.ingrOut,
+            this.state.filters.calMax,
+            this.state.filters.timeMax
           );
 
           const allUsers = await axios.get('/api/users');
@@ -376,7 +433,11 @@ export default class App extends Component {
             this.state.filters.rateMax,
             this.state.filters.rate,
             this.state.searchQuery,
-            res.data
+            res.data,
+            this.state.filters.ingrIn,
+            this.state.filters.ingrOut,
+            this.state.filters.calMax,
+            this.state.filters.timeMax
           );
 
           this.setState({
@@ -422,7 +483,11 @@ export default class App extends Component {
         5,
         false,
         this.state.searchQuery,
-        undefined
+        undefined,
+        this.state.filters.ingrIn,
+        this.state.filters.ingrOut,
+        this.state.filters.calMax,
+        this.state.filters.timeMax
       )
     });
   }
@@ -455,7 +520,11 @@ export default class App extends Component {
       this.state.filters.rateMax,
       this.state.filters.rate,
       this.state.searchQuery,
-      this.state.user
+      this.state.user,
+      this.state.filters.ingrIn,
+      this.state.filters.ingrOut,
+      this.state.filters.calMax,
+      this.state.filters.timeMax
     );
 
     this.setState({
@@ -482,7 +551,11 @@ export default class App extends Component {
             this.state.filters.rateMax,
             this.state.filters.rate,
             this.state.searchQuery,
-            this.state.user
+            this.state.user,
+            this.state.filters.ingrIn,
+            this.state.filters.ingrOut,
+            this.state.filters.calMax,
+            this.state.filters.timeMax
           );
           // cas numero 1 on delete la recipe depuis la liste
           let curPage;
@@ -614,7 +687,11 @@ export default class App extends Component {
         this.state.filters.rateMax,
         this.state.filters.rate,
         this.state.searchQuery,
-        this.state.user
+        this.state.user,
+        this.state.filters.ingrIn,
+        this.state.filters.ingrOut,
+        this.state.filters.calMax,
+        this.state.filters.timeMax
       );
       // get a random number between 1 and recipesFiltered.length
       const randomRecipe = recipesFiltered[Math.floor(Math.random() * recipesFiltered.length)];
@@ -626,9 +703,33 @@ export default class App extends Component {
     }
   }
 
-  advancedSearch(ingredientsIn, ingredientsOut, calories, time) {
-    console.log(ingredientsIn, ingredientsOut, calories, time);
-    this.addNotif('TODO à faire', 'warning');
+  async advancedSearch(ingredientsIn, ingredientsOut, calories, time) {
+    const recipes = await getFilteredRecipes(
+      this.state.category,
+      this.state.filters.dislike,
+      this.state.filters.validate,
+      this.state.filters.new,
+      this.state.filters.spiceMin,
+      this.state.filters.spiceMax,
+      this.state.filters.spice,
+      this.state.filters.rateMin,
+      this.state.filters.rateMax,
+      this.state.filters.rate,
+      this.state.searchQuery,
+      this.state.user,
+      ingredientsIn.trim().split(' '),
+      ingredientsOut.trim().split(' '),
+      (calories === '') ? undefined : Number(calories),
+      (time === '') ? undefined : Number(time)
+    );
+
+    this.setState({
+      recipes,
+      currentRecipe: undefined,
+      deltaNbPeople: 0,
+      nbTotalPages: getNbTotalPages(recipes.length).nbPages,
+      currentPage: 1
+    });
   }
 
   // SELECT the recipes with title or ingredient or step or tag or chief trick match with query
@@ -648,7 +749,11 @@ export default class App extends Component {
       this.state.filters.rateMax,
       this.state.filters.rate,
       query,
-      this.state.user
+      this.state.user,
+      this.state.filters.ingrIn,
+      this.state.filters.ingrOut,
+      this.state.filters.calMax,
+      this.state.filters.timeMax
     );
 
     this.setState({
@@ -677,7 +782,11 @@ export default class App extends Component {
         this.state.filters.rateMax,
         this.state.filters.rate,
         this.state.searchQuery,
-        this.state.user
+        this.state.user,
+        this.state.filters.ingrIn,
+        this.state.filters.ingrOut,
+        this.state.filters.calMax,
+        this.state.filters.timeMax
       );
 
       this.setState({
@@ -821,7 +930,11 @@ export default class App extends Component {
       newFilters.rateMax,
       newFilters.rate,
       this.state.searchQuery,
-      this.state.user
+      this.state.user,
+      this.state.filters.ingrIn,
+      this.state.filters.ingrOut,
+      this.state.filters.calMax,
+      this.state.filters.timeMax
     );
 
     this.setState({
@@ -857,7 +970,11 @@ export default class App extends Component {
       newFilters.rateMax,
       newFilters.rate,
       this.state.searchQuery,
-      this.state.user
+      this.state.user,
+      this.state.filters.ingrIn,
+      this.state.filters.ingrOut,
+      this.state.filters.calMax,
+      this.state.filters.timeMax
     );
 
     this.setState({
