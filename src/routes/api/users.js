@@ -17,9 +17,7 @@ module.exports = function (app) {
     // Pour récupérer le user avec ce login et ce password
     User.findOne({ login: req.params.login, password: req.params.password })
       .exec()
-      .then((user) => {
-        return res.json(user);
-      }) // return user in JSON format
+      .then(user => res.json(user)) // return user in JSON format
       .catch(err => next(err));
   });
 
@@ -73,7 +71,6 @@ module.exports = function (app) {
           newUser.email = req.body.email;
           newUser.logo = req.body.logo;
           // delete the old user
-          console.log('TRY to remove user : ', user._id);
           User.findByIdAndRemove(user._id)
             .catch(err => console.log(err));
           // save it

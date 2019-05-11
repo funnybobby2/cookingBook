@@ -63,7 +63,7 @@ class IngredientTabs extends React.Component {
         <div className={classLegend}>
           <i className="material-icons ingredientIcon" title="Catégories d'ingrédient" onClick={this.openLegend}>ballot</i>
           <div className="legend">
-            {groups.map((group, index) => (<div className="legendItem"> <i className={`material-icons item${index}`} title={group[index]}>label</i> {group} </div>))}
+            {groups.map((group, index) => (<div className="legendItem" key={group[index]} > <i className={`material-icons item${index}`} title={group[index]}>label</i> {group} </div>))}
           </div>
         </div>
         {moveIcon}

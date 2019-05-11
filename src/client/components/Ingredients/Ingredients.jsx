@@ -233,7 +233,7 @@ Ingredients.propTypes = {
   maestro: PropTypes.object,
   user: PropTypes.object,
   delta: PropTypes.number,
-  nbPerson: PropTypes.number
+  nbPerson: PropTypes.string
 };
 
 Ingredients.defaultProps = { // define the default props
@@ -244,7 +244,7 @@ Ingredients.defaultProps = { // define the default props
   maestro: { dataRefresh: () => {} },
   user: {},
   delta: 0,
-  nbPerson: 1
+  nbPerson: '1'
 };
 
 export default Ingredients;

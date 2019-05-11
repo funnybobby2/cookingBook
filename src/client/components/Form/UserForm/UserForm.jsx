@@ -112,7 +112,7 @@ class UserForm extends React.Component {
             />
             <div className="avatars">
               <div className="title">Avatars</div>
-              {this.props.avatars.map(avatar => <img alt="avatar" width="40px" height="40px" src={require(`../../../assets/img/user/${avatar}`)} className={(avatar.slice(5, -4) === this.state.logo) ? 'selected' : ''} onClick={() => { this.changeAvatar(avatar) ;}} />)}
+              {this.props.avatars.map(avatar => <img alt="avatar" key={avatar} width="40px" height="40px" src={require(`../../../assets/img/user/${avatar}`)} className={(avatar.slice(5, -4) === this.state.logo) ? 'selected' : ''} onClick={() => { this.changeAvatar(avatar); }} />)}
             </div>
 
           </div>
