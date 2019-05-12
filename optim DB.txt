@@ -1,0 +1,4 @@
+db.users.createIndex({"login": 1, "password": 1}, {unique: true});
+db.users.createIndex({"_id": 1}, {unique: true});
+
+db.recipes.createIndex({"recipeID": 1}, {unique: true});

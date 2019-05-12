@@ -6,7 +6,6 @@ const uglifyJSPlugin = require('uglifyjs-webpack-plugin'); // to minify and obfu
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin'); // to clean the output directory with each build
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // replace extractTextPlugin not available with webpack 4
-const ManifestPlugin = require('webpack-manifest-plugin');
 // cache management
 const dev = process.env.NODE_ENV === 'dev'; // get the value of the environment variable NODE_ENV
 

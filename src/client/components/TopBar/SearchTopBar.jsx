@@ -34,7 +34,7 @@ class SearchTopBar extends React.Component {
 
   searchRecipesByEnter(e) {
     if (e.key === 'Enter') {
-      this.props.maestro.dataRefresh('searchRecipes', this.page.value);
+      this.props.maestro.dataRefresh('searchRecipes', this.search.value);
     }
   }
 
