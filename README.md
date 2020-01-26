@@ -23,7 +23,7 @@ A modern website to save your favorite recipes and share them
 4. Tape "mongoexport -d menus -c users -o E:\users.json"
 
 ### How to restore your DB
-1. Open the mongoDB install folder of mongoexport.exe
+1. Open the mongoDB install folder of mongoimport.exe
 2. Tape "cmd" into the folder input
 3. Tape "mongoimport -d menus -c recipes E:\recipes.json"
 4. Tape "mongoimport -d menus -c users E:\users.json"
