@@ -34,7 +34,7 @@
   "homepage": "https://github.com/funnybobby2/cookingBook#readme",
   "dependencies": {
     "autoprefixer": "^7.2.5",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
